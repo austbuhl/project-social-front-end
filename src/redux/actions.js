@@ -61,7 +61,9 @@ export function authorizeUser() {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((resp) => resp.json())
-        .then(console.log)
+        .then((user) => {
+          dispatch({ type: 'AUTHORIZE_USER', payload: user })
+        })
     }
   }
 }

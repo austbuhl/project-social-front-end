@@ -1,7 +1,12 @@
 import './App.css'
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { fetchComments, fetchEvents, fetchParks } from './redux/actions'
+import {
+  fetchComments,
+  fetchEvents,
+  fetchParks,
+  authorizeUser,
+} from './redux/actions'
 import { Switch, Route } from 'react-router-dom'
 import EventsList from './components/events/EventsList'
 import CommentsList from './components/comments/CommentsList'
@@ -17,6 +22,7 @@ function App(props) {
     props.fetchEvents()
     props.fetchComments()
     props.fetchParks()
+    props.authorizeUser()
   }, [])
 
   return (
@@ -54,6 +60,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchEvents: () => dispatch(fetchEvents()),
     fetchComments: () => dispatch(fetchComments()),
     fetchParks: () => dispatch(fetchParks()),
+    authorizeUser: () => dispatch(authorizeUser()),
   }
 }
 
