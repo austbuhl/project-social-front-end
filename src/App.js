@@ -1,25 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+import EventsList from './components/events/EventsList';
+import CommentsList from './components/comments/CommentsList'
+import ParksList from './components/parks/ParksList'
+import {useEffect} from 'react'
+import {connect} from 'react-redux'
+import { fetchComments, fetchEvents, fetchParks } from './redux/actions';
 
-function App() {
+function App(props) {
+
+  useEffect(() => {
+    props.fetchEvents()
+    props.fetchComments()
+    props.fetchParks()
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="main">
+        <EventsList />
+        <CommentsList />
+        <ParksList />
+      </div>
     </div>
   );
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchEvents: () => dispatch(fetchEvents()),
+    fetchComments: () => dispatch(fetchComments()),
+    fetchParks: () => dispatch(fetchParks())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App);
