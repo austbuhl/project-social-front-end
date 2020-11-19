@@ -27,30 +27,32 @@ function App(props) {
 
   return (
     <div className='App'>
-      <NavBar />
-      <Switch>
-        <Route path='/events'>
-          <EventsList />
-        </Route>
-        <Route path='/comments'>
-          <CommentsList />
-        </Route>
-        <Route path='/parks'>
-          <ParksList />
-        </Route>
-        <Route path='/login'>
-          <Login />
-        </Route>
-        <Route path='/signup'>
-          <Signup />
-        </Route>
-        <Route path='/profile'>
-          <Profile />
-        </Route>
-        <Route path='/'>
-          <Map />
-        </Route>
-      </Switch>
+      <div className='ui container'>
+        <NavBar />
+        <Switch>
+          <Route path='/events'>
+            <EventsList />
+          </Route>
+          <Route path='/comments'>
+            <CommentsList />
+          </Route>
+          <Route path='/parks'>
+            <ParksList />
+          </Route>
+          <Route path='/login'>
+            <Login />
+          </Route>
+          <Route path='/signup'>
+            <Signup />
+          </Route>
+          <Route path='/profile'>
+            <Profile />
+          </Route>
+          <Route path='/'>
+            <Map />
+          </Route>
+        </Switch>
+      </div>
     </div>
   )
 }
