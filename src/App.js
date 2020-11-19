@@ -16,10 +16,11 @@ import NavBar from './components/nav/NavBar'
 import Login from './components/user/Login'
 import Signup from './components/user/Signup'
 import Profile from './components/user/Profile'
+import Filter from './components/map/Filter'
 
 function App(props) {
   useEffect(() => {
-    props.fetchEvents()
+    // props.fetchEvents()
     props.fetchComments()
     props.fetchParks()
     props.authorizeUser()
@@ -49,6 +50,7 @@ function App(props) {
             <Profile />
           </Route>
           <Route path='/'>
+            <Filter />
             <Map />
           </Route>
         </Switch>

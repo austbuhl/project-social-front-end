@@ -67,3 +67,11 @@ export function authorizeUser() {
     }
   }
 }
+
+export function setActivity(activity) {
+  return { type: 'SET_ACTIVITY', payload: activity }
+}
+
+export function resetActivity() {
+  return { type: 'RESET_ACTIVITY' }
+}

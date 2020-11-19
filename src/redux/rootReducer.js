@@ -1,3 +1,4 @@
+import { act } from 'react-dom/test-utils'
 import { combineReducers } from 'redux'
 
 const defaultState = {
@@ -5,6 +6,7 @@ const defaultState = {
   parks: [],
   comments: [],
   currentUser: null,
+  selectedActivity: null,
 }
 
 function eventsReducer(state = defaultState.events, action) {
@@ -47,11 +49,23 @@ function userReducer(state = defaultState.currentUser, action) {
   }
 }
 
+function activityReducer(state = defaultState.selectedActivity, action) {
+  switch (action.type) {
+    case 'SET_ACTIVITY':
+      return action.payload
+    case 'RESET_ACTIVITY':
+      return null
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   events: eventsReducer,
   parks: parksReducer,
   comments: commentsReducer,
   currentUser: userReducer,
+  selectedActivity: activityReducer,
 })
 
 export default rootReducer

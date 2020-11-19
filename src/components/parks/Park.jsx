@@ -3,19 +3,13 @@ import ActivityIcon from '../activities/ActivityIcon'
 import { NavLink } from 'react-router-dom'
 
 const Park = ({ park }) => {
-  // const activities = [...new Set(park.activities)]
-  const activities = park.activities.reduce((accum, current) => {
-    if (accum.find((act) => act.name === current.name)) {
-      return accum
-    } else {
-      return accum.push(current)
-    }
-  }, [])
+  let uniqActivities = park.activities
+    .map((activity) => activity.name)
+    .filter((value, index, self) => self.indexOf(value) === index)
 
-  console.log(activities)
   const renderActivityIcons = () => {
-    return activities.map((activity) => (
-      <ActivityIcon key={activity.id} activity={activity} />
+    return uniqActivities.map((activity, index) => (
+      <ActivityIcon key={index} activity={activity} />
     ))
   }
 
@@ -38,7 +32,7 @@ const Park = ({ park }) => {
               <i className='right chevron icon'></i>
             </div>
           </NavLink>
-          {/* {renderActivityIcons()} */}
+          {renderActivityIcons()}
         </div>
       </div>
     </div>

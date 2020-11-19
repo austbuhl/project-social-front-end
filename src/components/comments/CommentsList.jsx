@@ -1,10 +1,12 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import Comment from './Comment'
 
-const CommentsList = ({comments}) => {
+const CommentsList = ({ comments }) => {
   const renderComments = () => {
-    return comments.map(comment => <Comment key={comment.id} comment={comment} />)
+    return comments.map((comment) => (
+      <Comment key={comment.id} comment={comment} />
+    ))
   }
 
   return (
@@ -15,8 +17,8 @@ const CommentsList = ({comments}) => {
   )
 }
 
-const mapStateToProps = state => {
-  return {comments: state.comments}
+const mapStateToProps = (state) => {
+  return { comments: state.comments }
 }
 
 export default connect(mapStateToProps)(CommentsList)
