@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Button, Form } from 'semantic-ui-react'
-import { submitComment } from '../../redux/actions'
+import { createComment } from '../../redux/actions'
 
-const CommentForm = ({ eventId, submitComment }) => {
+const CommentForm = ({ eventId, createComment }) => {
   const [commentText, setCommentText] = useState('')
   //user, event, text
 
   const submitHandler = (e) => {
     e.preventDefault()
-    submitComment({
+    createComment({
       event_id: eventId,
       text: commentText,
     })
@@ -29,7 +29,7 @@ const CommentForm = ({ eventId, submitComment }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    submitComment: (commentObj) => dispatch(submitComment(commentObj)),
+    createComment: (commentObj) => dispatch(createComment(commentObj)),
   }
 }
 

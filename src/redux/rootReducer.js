@@ -11,6 +11,8 @@ function eventsReducer(state = defaultState.events, action) {
   switch (action.type) {
     case 'FETCH_EVENTS':
       return action.payload
+    case 'NEW_EVENT':
+      return [...state, action.payload]
     case 'NEW_COMMENT':
       return [
         ...state.map((event) => {

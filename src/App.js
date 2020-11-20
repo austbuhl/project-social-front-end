@@ -1,12 +1,7 @@
 import './App.css'
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import {
-  fetchComments,
-  fetchEvents,
-  fetchParks,
-  authorizeUser,
-} from './redux/actions'
+import { fetchEvents, fetchParks, authorizeUser } from './redux/actions'
 import { Switch, Route } from 'react-router-dom'
 import EventsList from './components/events/EventsList'
 import CommentsList from './components/comments/CommentsList'
