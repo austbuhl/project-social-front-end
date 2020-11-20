@@ -103,8 +103,8 @@ export function authorizeUser() {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((resp) => resp.json())
-        .then((data) => {
-          dispatch({ type: 'AUTHORIZE_USER', payload: data.user })
+        .then((user) => {
+          dispatch({ type: 'AUTHORIZE_USER', payload: user })
         })
     }
   }
