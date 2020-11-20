@@ -11,6 +11,7 @@ const EventForm = ({ park, createEvent }) => {
     date: '',
     time: '',
     park_id: park.id,
+    activities: [],
   }
 
   const [eventData, setEventData] = useState(initialState)
@@ -21,6 +22,13 @@ const EventForm = ({ park, createEvent }) => {
     setEventData(initialState)
   }
 
+  const options = park.activities.map((activity) => ({
+    key: activity.name,
+    value: activity.name,
+    text: activity.name,
+  }))
+
+  console.log(eventData)
   return (
     <Form
       onChange={(e) =>
@@ -41,10 +49,27 @@ const EventForm = ({ park, createEvent }) => {
             value={eventData.name}
           />
           <Form.Input
+            readOnly
             label='Location'
             name='park'
             placeholder='Location'
             value={park.name}
+          />
+          <Form.Dropdown
+            fluid
+            onChange={(e, { value }) =>
+              setEventData((prevState) => ({
+                ...prevState,
+                activities: value,
+              }))
+            }
+            multiple
+            selection
+            name='activities'
+            label='Select Activities'
+            options={options}
+            values={eventData.activities}
+            placeholder='Select your Activity'
           />
         </Form.Group>
         <Form.TextArea
