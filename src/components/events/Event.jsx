@@ -13,7 +13,7 @@ const Event = ({ event }) => {
       <ActivityIcon key={index} activity={activity} />
     ))
   }
-  console.log(event)
+
   return (
     <Item>
       <Item.Content>

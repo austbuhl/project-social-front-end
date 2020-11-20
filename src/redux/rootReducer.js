@@ -1,10 +1,8 @@
-import { act } from 'react-dom/test-utils'
 import { combineReducers } from 'redux'
 
 const defaultState = {
   parks: [],
   events: [],
-
   currentUser: null,
   selectedActivity: null,
 }
@@ -13,6 +11,16 @@ function eventsReducer(state = defaultState.events, action) {
   switch (action.type) {
     case 'FETCH_EVENTS':
       return action.payload
+    case 'NEW_COMMENT':
+      return [
+        ...state.map((event) => {
+          if (event.id === action.payload.id) {
+            return action.payload
+          } else {
+            return event
+          }
+        }),
+      ]
     default:
       return state
   }

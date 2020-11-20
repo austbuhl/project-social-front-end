@@ -45,6 +45,25 @@ export function loginHandler(userObj) {
   }
 }
 
+export function submitComment(commentObj) {
+  return function (dispatch) {
+    const token = localStorage.getItem('token')
+    fetch('http://localhost:5000/api/v1/comments', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        accepts: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(commentObj),
+    })
+      .then((resp) => resp.json())
+      .then((commentObj) => {
+        dispatch({ type: 'NEW_COMMENT', payload: commentObj.event })
+      })
+  }
+}
+
 export function logoutHandler() {
   return function (dispatch) {
     localStorage.removeItem('token')

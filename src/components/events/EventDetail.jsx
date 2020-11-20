@@ -1,5 +1,6 @@
 import React from 'react'
 import CommentsList from '../comments/CommentsList'
+import CommentForm from '../comments/CommentForm'
 
 const EventDetail = ({ event }) => {
   return (
@@ -8,6 +9,7 @@ const EventDetail = ({ event }) => {
       <h4>{event.description}</h4>
       <p>{event.num_of_people}</p>
       <CommentsList comments={event.comments} />
+      <CommentForm eventId={event.id} />
     </div>
   )
 }
