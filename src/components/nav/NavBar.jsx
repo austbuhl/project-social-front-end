@@ -15,9 +15,6 @@ const NavBar = ({ currentUser, logoutHandler }) => {
       <NavLink className='item' exact to='/events'>
         Events
       </NavLink>
-      <NavLink className='item' exact to='/comments'>
-        Comments
-      </NavLink>
       {!currentUser && (
         <>
           <NavLink className='item' exact to='/login'>

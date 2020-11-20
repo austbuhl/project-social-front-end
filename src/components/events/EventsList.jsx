@@ -1,23 +1,61 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import Event from './Event'
+import EventDetail from './EventDetail'
+import Filter from '../map/Filter'
+import { Switch, Route, withRouter } from 'react-router-dom'
+import { Grid, Item } from 'semantic-ui-react'
 
-const EventsList = ({events}) => {
-  
+const EventsList = (props) => {
+  const filteredEvents = props.selectedActivity
+    ? props.events.filter((event) => {
+        if (
+          event.activities.some(
+            (activity) => activity.name === props.selectedActivity
+          )
+        ) {
+          return event
+        }
+      })
+    : props.events
+
   const renderEvents = () => {
-    return events.map(event => <Event key={event.id} event={event} />)
+    return filteredEvents.map((event) => <Event key={event.id} event={event} />)
   }
 
   return (
-    <div>
-      <h1>Events List Here</h1>
-      {renderEvents()}
-    </div>
+    <Switch>
+      <Route
+        path='/events/:id'
+        render={(routerProps) => {
+          const eventId = parseInt(routerProps.match.params.id)
+          const event = props.events.find((e) => e.id === eventId)
+          return <EventDetail event={event} />
+        }}
+      />
+
+      <Route path='/events'>
+        <Grid container padded centered>
+          <Grid.Column width={1}>
+            <Filter />
+          </Grid.Column>
+          <Grid.Column width={10} textAlign='center'>
+            <h1>Events List Here</h1>
+            <Item.Group divided relaxed>
+              {renderEvents()}
+            </Item.Group>
+          </Grid.Column>
+        </Grid>
+      </Route>
+    </Switch>
   )
 }
 
-const mapStateToProps = state => {
-  return {events: state.events}
+const mapStateToProps = (state) => {
+  return {
+    events: state.events,
+    selectedActivity: state.selectedActivity,
+  }
 }
 
-export default connect(mapStateToProps)(EventsList)
+export default withRouter(connect(mapStateToProps)(EventsList))

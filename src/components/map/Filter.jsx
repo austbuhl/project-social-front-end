@@ -24,7 +24,6 @@ import {
   GiCanoe,
   GiBarbecue,
 } from 'react-icons/gi'
-import { act } from 'react-dom/test-utils'
 
 const Filter = ({ selectedActivity, setActivity, resetActivity }) => {
   const clickHandler = (e) => {

@@ -17,25 +17,22 @@ import Login from './components/user/Login'
 import Signup from './components/user/Signup'
 import Profile from './components/user/Profile'
 import Filter from './components/map/Filter'
+import { Container, Grid } from 'semantic-ui-react'
 
 function App(props) {
   useEffect(() => {
-    // props.fetchEvents()
-    props.fetchComments()
     props.fetchParks()
+    props.fetchEvents()
     props.authorizeUser()
   }, [])
 
   return (
     <div className='App'>
-      <div className='ui container'>
+      <Container>
         <NavBar />
         <Switch>
           <Route path='/events'>
             <EventsList />
-          </Route>
-          <Route path='/comments'>
-            <CommentsList />
           </Route>
           <Route path='/parks'>
             <ParksList />
@@ -50,11 +47,14 @@ function App(props) {
             <Profile />
           </Route>
           <Route path='/'>
-            <Filter />
-            <Map />
+            <Grid container padded columns={3}>
+              <Filter />
+              <Map />
+              {/* <EventsList /> */}
+            </Grid>
           </Route>
         </Switch>
-      </div>
+      </Container>
     </div>
   )
 }
@@ -62,7 +62,6 @@ function App(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchEvents: () => dispatch(fetchEvents()),
-    fetchComments: () => dispatch(fetchComments()),
     fetchParks: () => dispatch(fetchParks()),
     authorizeUser: () => dispatch(authorizeUser()),
   }

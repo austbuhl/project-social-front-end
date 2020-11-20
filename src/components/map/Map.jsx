@@ -8,14 +8,13 @@ import {
 } from '@react-google-maps/api'
 import ActivityIcon from '../activities/ActivityIcon'
 import { connect } from 'react-redux'
-import { FaPalette } from 'react-icons/fa'
 
 const Map = ({ parks, selectedActivity }) => {
   const [selectedPark, setSelectedPark] = useState(null)
 
   const mapContainerStyle = {
-    width: '50vw',
-    height: '90vh',
+    width: '40vw',
+    height: '100vh',
   }
   const center = {
     lat: 40.73061,
@@ -64,37 +63,37 @@ const Map = ({ parks, selectedActivity }) => {
     ))
   }
   return (
-    <>
-      <h4>Active Filter: {selectedActivity || 'All'}</h4>
-      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          zoom={13}
-          center={center}
-          options={options}
-        >
-          {renderParks()}
-          {selectedPark && (
-            <InfoWindow
-              position={{
-                lat: parseFloat(selectedPark.latitude),
-                lng: parseFloat(selectedPark.longitude),
-              }}
-              onCloseClick={() => setSelectedPark(null)}
-            >
-              <div>
-                <h4>{selectedPark.name}</h4>
-                <p>{selectedPark.location}</p>
-                <a href={selectedPark.website} target='_blank'>
-                  {selectedPark.website}
-                </a>
-                <div>{renderActivityIcons()}</div>
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
-      </LoadScript>
-    </>
+    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={13}
+        center={center}
+        options={options}
+      >
+        <h4 className='active-filter'>
+          Active Filter: {selectedActivity || 'All'}
+        </h4>
+        {renderParks()}
+        {selectedPark && (
+          <InfoWindow
+            position={{
+              lat: parseFloat(selectedPark.latitude),
+              lng: parseFloat(selectedPark.longitude),
+            }}
+            onCloseClick={() => setSelectedPark(null)}
+          >
+            <div>
+              <h4>{selectedPark.name}</h4>
+              <p>{selectedPark.location}</p>
+              <a href={selectedPark.website} target='_blank'>
+                {selectedPark.website}
+              </a>
+              <div>{renderActivityIcons()}</div>
+            </div>
+          </InfoWindow>
+        )}
+      </GoogleMap>
+    </LoadScript>
   )
 }
 

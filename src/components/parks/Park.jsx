@@ -1,6 +1,7 @@
 import React from 'react'
 import ActivityIcon from '../activities/ActivityIcon'
 import { NavLink } from 'react-router-dom'
+import { Item, Button, Icon } from 'semantic-ui-react'
 
 const Park = ({ park }) => {
   let uniqActivities = park.activities
@@ -14,28 +15,24 @@ const Park = ({ park }) => {
   }
 
   return (
-    <div className='item'>
-      <div className='content'>
-        <a className='header'>{park.name}</a>
-        <div className='meta'>
-          <span className='cinema'>{park.location}</span>
-        </div>
-        <div className='description'>
-          <a href={park.website} target='_blank'>
-            {park.website}
-          </a>
-        </div>
-        <div className='extra'>
+    <Item>
+      <Item.Content>
+        <Item.Header>{park.name}</Item.Header>
+        <Item.Meta>{park.num_of_people}</Item.Meta>
+        <Item.Description>{park.description}</Item.Description>
+        <Item.Extra>
           <NavLink to={`/parks/${park.id}`}>
-            <div className='ui right floated primary button'>
-              More Info
-              <i className='right chevron icon'></i>
-            </div>
+            <Button primary floated='right' animated>
+              <Button.Content visible>More Info</Button.Content>
+              <Button.Content hidden>
+                <Icon name='arrow right' />
+              </Button.Content>
+            </Button>
           </NavLink>
           {renderActivityIcons()}
-        </div>
-      </div>
-    </div>
+        </Item.Extra>
+      </Item.Content>
+    </Item>
   )
 }
 

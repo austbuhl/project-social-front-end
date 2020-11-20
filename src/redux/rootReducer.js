@@ -2,9 +2,9 @@ import { act } from 'react-dom/test-utils'
 import { combineReducers } from 'redux'
 
 const defaultState = {
-  events: [],
   parks: [],
-  comments: [],
+  events: [],
+
   currentUser: null,
   selectedActivity: null,
 }
@@ -21,15 +21,6 @@ function eventsReducer(state = defaultState.events, action) {
 function parksReducer(state = defaultState.parks, action) {
   switch (action.type) {
     case 'FETCH_PARKS':
-      return action.payload
-    default:
-      return state
-  }
-}
-
-function commentsReducer(state = defaultState.comments, action) {
-  switch (action.type) {
-    case 'FETCH_COMMENTS':
       return action.payload
     default:
       return state
@@ -61,9 +52,8 @@ function activityReducer(state = defaultState.selectedActivity, action) {
 }
 
 const rootReducer = combineReducers({
-  events: eventsReducer,
   parks: parksReducer,
-  comments: commentsReducer,
+  events: eventsReducer,
   currentUser: userReducer,
   selectedActivity: activityReducer,
 })

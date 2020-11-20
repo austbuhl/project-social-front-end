@@ -2,7 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Park from './Park'
 import ParkDetail from './ParkDetail'
+import Filter from '../map/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
+import { Grid, Item } from 'semantic-ui-react'
 
 const ParksList = (props) => {
   const renderParks = () => {
@@ -21,10 +23,17 @@ const ParksList = (props) => {
       />
 
       <Route path='/parks'>
-        <div>
-          <h1>Parks List Here</h1>
-          <div className='ui divided items'>{renderParks()}</div>
-        </div>
+        <Grid container padded centered>
+          <Grid.Column width={1}>
+            <Filter />
+          </Grid.Column>
+          <Grid.Column width={10} textAlign='center'>
+            <h1>Parks List Here</h1>
+            <Item.Group divided relaxed>
+              {renderParks()}
+            </Item.Group>
+          </Grid.Column>
+        </Grid>
       </Route>
     </Switch>
   )

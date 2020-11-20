@@ -1,24 +1,25 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import Comment from './Comment'
+import CommentDetail from './CommentDetail'
+import { Comment, Header } from 'semantic-ui-react'
 
 const CommentsList = ({ comments }) => {
+  console.log(comments)
   const renderComments = () => {
     return comments.map((comment) => (
-      <Comment key={comment.id} comment={comment} />
+      <CommentDetail key={comment.id} comment={comment} />
     ))
   }
 
   return (
     <div>
-      <h1>Comments List Here</h1>
-      {renderComments()}
+      <Comment.Group>
+        <Header as='h3' dividing>
+          Comments
+        </Header>
+        {renderComments()}
+      </Comment.Group>
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return { comments: state.comments }
-}
-
-export default connect(mapStateToProps)(CommentsList)
+export default CommentsList
