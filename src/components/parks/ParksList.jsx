@@ -7,8 +7,20 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid, Item } from 'semantic-ui-react'
 
 const ParksList = (props) => {
+  const filteredParks = props.selectedActivity
+    ? props.parks.filter((park) => {
+        if (
+          park.activities.some(
+            (activity) => activity.name === props.selectedActivity
+          )
+        ) {
+          return park
+        }
+      })
+    : props.parks
+
   const renderParks = () => {
-    return props.parks.map((park) => <Park key={park.id} park={park} />)
+    return filteredParks.map((park) => <Park key={park.id} park={park} />)
   }
 
   return (
@@ -40,7 +52,10 @@ const ParksList = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  return { parks: state.parks }
+  return {
+    parks: state.parks,
+    selectedActivity: state.selectedActivity,
+  }
 }
 
 export default withRouter(connect(mapStateToProps)(ParksList))

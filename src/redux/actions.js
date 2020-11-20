@@ -80,10 +80,28 @@ export function authorizeUser() {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((resp) => resp.json())
-        .then((user) => {
-          dispatch({ type: 'AUTHORIZE_USER', payload: user })
+        .then((data) => {
+          dispatch({ type: 'AUTHORIZE_USER', payload: data.user })
         })
     }
+  }
+}
+
+export function createUser(userObj) {
+  return function (dispatch) {
+    fetch('http://localhost:5000/api/v1/users', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        accepts: 'application/json',
+      },
+      body: JSON.stringify({ user: userObj }),
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        localStorage.setItem('token', data.jwt)
+        dispatch({ type: 'LOGIN_USER', payload: data.user })
+      })
   }
 }
 
