@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { loginHandler } from '../../redux/actions'
 import { Form, Button } from 'semantic-ui-react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, NavLink } from 'react-router-dom'
 import SuccessMessage from './SuccessMessage'
 
 const Login = ({ loginHandler }) => {
@@ -40,7 +40,7 @@ const Login = ({ loginHandler }) => {
       [e.target.name]: e.target.value,
     }))
   }
-
+  console.log(redirectTime)
   return (
     <Form onSubmit={submitHandler}>
       <Form.Input
@@ -63,6 +63,7 @@ const Login = ({ loginHandler }) => {
         <SuccessMessage header={'Login Succesful'} seconds={redirectTime} />
       )}
       <Button content='Login' labelPosition='left' icon='user' primary />
+      <NavLink to='/signup'>Don't have an account?</NavLink>
     </Form>
   )
 }

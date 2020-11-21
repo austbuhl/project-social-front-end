@@ -87,6 +87,25 @@ export function createEvent(eventObj) {
   }
 }
 
+export function attendEvent(userEvent) {
+  return function (dispatch) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetch(`http://localhost:5000/api/v1/events/${userEvent.event_id}/rsvp`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          accepts: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ event: userEvent }),
+      })
+        .then((resp) => resp.json())
+        .then(console.log)
+    }
+  }
+}
+
 export function logoutHandler() {
   return function (dispatch) {
     localStorage.removeItem('token')
