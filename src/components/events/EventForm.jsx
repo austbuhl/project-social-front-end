@@ -28,7 +28,6 @@ const EventForm = ({ park, createEvent }) => {
     text: activity.name,
   }))
 
-  console.log(eventData)
   return (
     <Form
       onChange={(e) =>
