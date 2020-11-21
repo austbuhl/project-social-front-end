@@ -1,14 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { loginHandler } from '../../redux/actions'
+import { Form, Button } from 'semantic-ui-react'
+import { useHistory } from 'react-router-dom'
+import LoginMessage from './LoginMessage'
 
-const Login = (props) => {
+const Login = ({ loginHandler }) => {
   const [userInfo, setUserInfo] = useState({ username: '', password: '' })
+  const [redirectTime, setRedirectTime] = useState(3)
+  const [successMsg, setSuccessMsg] = useState(false)
+  const history = useHistory()
 
   const submitHandler = (e) => {
     e.preventDefault()
-    props.loginHandler(userInfo)
+    loginHandler(userInfo)
+    redirectTimeout()
   }
+
+  const redirectTimeout = () =>
+    setInterval(() => {
+      setSuccessMsg(true)
+      setRedirectTime((prevState) => prevState - 1)
+    }, 1000)
+
+  useEffect(() => {
+    if (redirectTime === 0) {
+      if (history.location.state) {
+        history.push(history.location.state)
+      } else {
+        history.push('/')
+      }
+    }
+    return () => clearTimeout(redirectTimeout)
+  }, [redirectTime])
 
   const changeHandler = (e) => {
     setUserInfo((prevState) => ({
@@ -18,25 +42,26 @@ const Login = (props) => {
   }
 
   return (
-    <form onSubmit={submitHandler}>
-      <input
-        type='text'
-        label='username'
+    <Form onSubmit={submitHandler}>
+      <Form.Input
+        label='Username'
         name='username'
-        placeholder='username'
+        placeholder='Enter Username'
         value={userInfo.username}
         onChange={changeHandler}
       />
-      <input
+
+      <Form.Input
         type='password'
-        label='password'
+        label='Password'
         name='password'
-        placeholder='password'
+        placeholder='Enter Password'
         value={userInfo.password}
         onChange={changeHandler}
       />
-      <button type='submit'>Login</button>
-    </form>
+      {successMsg && <LoginMessage seconds={redirectTime} />}
+      <Button content='Login' labelPosition='left' icon='user' primary />
+    </Form>
   )
 }
 

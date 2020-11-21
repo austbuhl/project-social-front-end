@@ -2,18 +2,23 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Button, Form } from 'semantic-ui-react'
 import { createComment } from '../../redux/actions'
+import { useHistory } from 'react-router-dom'
 
-const CommentForm = ({ eventId, createComment }) => {
+const CommentForm = ({ eventId, createComment, currentUser }) => {
   const [commentText, setCommentText] = useState('')
-  //user, event, text
+  const history = useHistory()
 
   const submitHandler = (e) => {
-    e.preventDefault()
-    createComment({
-      event_id: eventId,
-      text: commentText,
-    })
-    setCommentText('')
+    if (currentUser) {
+      e.preventDefault()
+      createComment({
+        event_id: eventId,
+        text: commentText,
+      })
+      setCommentText('')
+    } else {
+      history.push('/login', history.location.pathname)
+    }
   }
 
   return (
@@ -27,10 +32,16 @@ const CommentForm = ({ eventId, createComment }) => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.currentUser,
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     createComment: (commentObj) => dispatch(createComment(commentObj)),
   }
 }
 
-export default connect(null, mapDispatchToProps)(CommentForm)
+export default connect(mapStateToProps, mapDispatchToProps)(CommentForm)

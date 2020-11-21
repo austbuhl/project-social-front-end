@@ -27,8 +27,8 @@ const ParksList = (props) => {
     <Switch>
       <Route
         path='/parks/:id'
-        render={(routerProps) => {
-          const parkId = parseInt(routerProps.match.params.id)
+        render={({ match }) => {
+          const parkId = parseInt(match.params.id)
           const park = props.parks.find((p) => p.id === parkId)
           return <ParkDetail park={park} />
         }}

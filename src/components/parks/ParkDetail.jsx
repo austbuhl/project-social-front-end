@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import Activity from '../activities/Activity'
 import EventForm from '../events/EventForm'
 import Event from '../events/Event'
+import { Button } from 'semantic-ui-react'
+import { useHistory } from 'react-router-dom'
 
-const ParkDetail = ({ park }) => {
+const ParkDetail = ({ park, currentUser }) => {
+  const [showForm, setShowForm] = useState(false)
+  const history = useHistory()
   const activities = [...new Set(park.activities)]
   const renderActivities = () => {
     return activities.map((activity) => (
@@ -13,7 +18,12 @@ const ParkDetail = ({ park }) => {
   const renderEvents = () => {
     return park.events.map((event) => <Event key={event.id} event={event} />)
   }
-  console.log(park.events)
+  const clickHandler = () => {
+    currentUser
+      ? setShowForm(true)
+      : history.push('/login', history.location.pathname)
+  }
+
   return (
     <div>
       <h1>{park.name}</h1>
@@ -25,9 +35,22 @@ const ParkDetail = ({ park }) => {
       {renderEvents()}
       <h3>Available Activities</h3>
       {renderActivities()}
-      <EventForm park={park} />
+
+      <Button animated='fade' secondary onClick={clickHandler}>
+        <Button.Content visible>Create an Event</Button.Content>
+        <Button.Content hidden>
+          {currentUser ? 'Show Form' : 'Login'}
+        </Button.Content>
+      </Button>
+      {showForm && <EventForm park={park} />}
     </div>
   )
 }
 
-export default ParkDetail
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.currentUser,
+  }
+}
+
+export default connect(mapStateToProps)(ParkDetail)
