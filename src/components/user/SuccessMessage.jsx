@@ -1,13 +1,13 @@
 import React from 'react'
 import { Message } from 'semantic-ui-react'
 
-const LoginMessage = ({ seconds }) => {
+const SuccessMessage = ({ seconds, header }) => {
   return (
     <Message positive>
-      <Message.Header>Login Succesful</Message.Header>
+      <Message.Header>{header}</Message.Header>
       <p>Redirecting you in {seconds}...</p>
     </Message>
   )
 }
 
-export default LoginMessage
+export default SuccessMessage

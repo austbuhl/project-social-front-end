@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { loginHandler } from '../../redux/actions'
 import { Form, Button } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import LoginMessage from './LoginMessage'
+import SuccessMessage from './SuccessMessage'
 
 const Login = ({ loginHandler }) => {
   const [userInfo, setUserInfo] = useState({ username: '', password: '' })
@@ -59,7 +59,9 @@ const Login = ({ loginHandler }) => {
         value={userInfo.password}
         onChange={changeHandler}
       />
-      {successMsg && <LoginMessage seconds={redirectTime} />}
+      {successMsg && (
+        <SuccessMessage header={'Login Succesful'} seconds={redirectTime} />
+      )}
       <Button content='Login' labelPosition='left' icon='user' primary />
     </Form>
   )

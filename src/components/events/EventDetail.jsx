@@ -3,6 +3,7 @@ import CommentsList from '../comments/CommentsList'
 import CommentForm from '../comments/CommentForm'
 
 const EventDetail = ({ event }) => {
+  console.log(event)
   return (
     <div>
       <h1>{event.name}</h1>

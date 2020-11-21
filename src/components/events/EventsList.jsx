@@ -36,9 +36,7 @@ const EventsList = (props) => {
 
       <Route path='/events'>
         <Grid container padded centered>
-          <Grid.Column width={1}>
-            <Filter />
-          </Grid.Column>
+          <Filter />
           <Grid.Column width={10} textAlign='center'>
             <h1>Events List Here</h1>
             <Item.Group divided relaxed>

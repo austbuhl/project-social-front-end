@@ -42,10 +42,9 @@ function App(props) {
             <Profile />
           </Route>
           <Route path='/'>
-            <Grid container padded columns={3}>
+            <Grid container padded centered>
               <Filter />
               <Map />
-              {/* <EventsList /> */}
             </Grid>
           </Route>
         </Switch>

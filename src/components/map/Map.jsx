@@ -9,7 +9,7 @@ import {
 import ActivityIcon from '../activities/ActivityIcon'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { Dimmer, Loader, Segment } from 'semantic-ui-react'
+import { Dimmer, Loader, Segment, Grid } from 'semantic-ui-react'
 
 const Map = ({ parks, selectedActivity }) => {
   const [selectedPark, setSelectedPark] = useState(null)
@@ -17,7 +17,7 @@ const Map = ({ parks, selectedActivity }) => {
 
   const mapContainerStyle = {
     width: '40vw',
-    height: '100vh',
+    height: '85vh',
   }
   const center = {
     lat: 40.73061,
@@ -80,32 +80,36 @@ const Map = ({ parks, selectedActivity }) => {
           center={center}
           options={options}
         >
-          <h4 className='active-filter'>
-            Active Filter: {selectedActivity || 'All'}
-          </h4>
-          <Dimmer active={loading}>
-            <Loader />
-            {renderParks()}
-            {selectedPark && (
-              <InfoWindow
-                position={{
-                  lat: parseFloat(selectedPark.latitude),
-                  lng: parseFloat(selectedPark.longitude),
-                }}
-                onCloseClick={() => setSelectedPark(null)}
-              >
-                <div>
-                  <h4>{selectedPark.name}</h4>
-                  <p>{selectedPark.location}</p>
-                  <a href={selectedPark.website} target='_blank'>
-                    {selectedPark.website}
-                  </a>
-                  <div>{renderActivityIcons()}</div>
-                  <NavLink to={`/parks/${selectedPark.id}`}>More Info</NavLink>
-                </div>
-              </InfoWindow>
-            )}
-          </Dimmer>
+          <Grid.Column width={10}>
+            <h4 className='active-filter'>
+              Active Filter: {selectedActivity || 'All'}
+            </h4>
+            <Dimmer active={loading}>
+              <Loader />
+              {renderParks()}
+              {selectedPark && (
+                <InfoWindow
+                  position={{
+                    lat: parseFloat(selectedPark.latitude),
+                    lng: parseFloat(selectedPark.longitude),
+                  }}
+                  onCloseClick={() => setSelectedPark(null)}
+                >
+                  <div>
+                    <h4>{selectedPark.name}</h4>
+                    <p>{selectedPark.location}</p>
+                    <a href={selectedPark.website} target='_blank'>
+                      {selectedPark.website}
+                    </a>
+                    <div>{renderActivityIcons()}</div>
+                    <NavLink to={`/parks/${selectedPark.id}`}>
+                      More Info
+                    </NavLink>
+                  </div>
+                </InfoWindow>
+              )}
+            </Dimmer>
+          </Grid.Column>
         </GoogleMap>
       </Segment>
     </LoadScript>
