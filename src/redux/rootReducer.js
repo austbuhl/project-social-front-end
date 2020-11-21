@@ -13,7 +13,7 @@ function eventsReducer(state = defaultState.events, action) {
       return action.payload
     case 'NEW_EVENT':
       return [...state, action.payload]
-    case 'NEW_COMMENT':
+    case 'UPDATE_EVENT':
       return [
         ...state.map((event) => {
           if (event.id === action.payload.id) {

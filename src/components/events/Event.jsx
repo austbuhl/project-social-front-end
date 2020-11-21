@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom'
 import { Item, Button, Icon } from 'semantic-ui-react'
 
 const Event = ({ event }) => {
-  let uniqActivities = event.activities
+  console.log(event);
+  let uniqActivities = event.event_activities
     .map((activity) => activity.name)
     .filter((value, index, self) => self.indexOf(value) === index)
 

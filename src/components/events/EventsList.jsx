@@ -10,7 +10,7 @@ const EventsList = (props) => {
   const filteredEvents = props.selectedActivity
     ? props.events.filter((event) => {
         if (
-          event.activities.some(
+          event.event_activities.some(
             (activity) => activity.name === props.selectedActivity
           )
         ) {

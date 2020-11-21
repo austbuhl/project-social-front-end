@@ -32,7 +32,7 @@ const ParkDetail = ({ park, currentUser }) => {
         {park.website}
       </a>
       <h3>Upcoming Events</h3>
-      {renderEvents()}
+      {/* {renderEvents()} */}
       <h3>Available Activities</h3>
       {renderActivities()}
 

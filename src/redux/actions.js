@@ -42,6 +42,7 @@ export function loginHandler(userObj) {
         localStorage.setItem('token', data.jwt)
         dispatch({ type: 'LOGIN_USER', payload: data.user })
       })
+      .catch(console.log)
   }
 }
 
@@ -60,8 +61,9 @@ export function createComment(commentObj) {
       })
         .then((resp) => resp.json())
         .then((commentObj) => {
-          dispatch({ type: 'NEW_COMMENT', payload: commentObj.event })
+          dispatch({ type: 'UPDATE_EVENT', payload: commentObj.event })
         })
+        .catch(console.log)
     }
   }
 }
@@ -83,6 +85,7 @@ export function createEvent(eventObj) {
         .then((event) => {
           dispatch({ type: 'NEW_EVENT', payload: event })
         })
+        .catch(console.log)
     }
   }
 }
@@ -101,7 +104,10 @@ export function attendEvent(userEvent) {
         body: JSON.stringify({ event: userEvent }),
       })
         .then((resp) => resp.json())
-        .then(console.log)
+        .then((eventObj) => {
+          dispatch({ type: 'UPDATE_EVENT', payload: eventObj })
+        })
+        .catch(console.log)
     }
   }
 }
@@ -125,6 +131,7 @@ export function authorizeUser() {
         .then((user) => {
           dispatch({ type: 'AUTHORIZE_USER', payload: user })
         })
+        .catch(console.log)
     }
   }
 }
@@ -144,6 +151,7 @@ export function createUser(userObj) {
         localStorage.setItem('token', data.jwt)
         dispatch({ type: 'LOGIN_USER', payload: data.user })
       })
+      .catch(console.log)
   }
 }
 
