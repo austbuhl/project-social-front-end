@@ -40,6 +40,16 @@ function activitiesReducer(state = defaultState.activities, action) {
   }
 }
 
+function commentsReducer(state = defaultState.comments, action) {
+  switch(action.type) {
+    case 'FETCH_COMMENTS':
+      return action.payload
+    default: 
+      return state
+  }
+}
+
+
 function parksReducer(state = defaultState.parks, action) {
   switch (action.type) {
     case 'FETCH_PARKS':
@@ -73,10 +83,12 @@ function activityReducer(state = defaultState.selectedActivity, action) {
   }
 }
 
+
 const rootReducer = combineReducers({
   parks: parksReducer,
   activities: activitiesReducer,
   events: eventsReducer,
+  comments: commentsReducer,
   currentUser: userReducer,
   selectedActivity: activityReducer,
 })

@@ -4,7 +4,7 @@ export function fetchEvents() {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/events')
       .then((resp) => resp.json())
-      .then((events) => dispatch({ type: 'FETCH_EVENTS', payload: events }))
+      .then((events) => dispatch({ type: 'FETCH_EVENTS', payload: normalize(events).event }))
       .catch(console.log)
   }
 }
@@ -26,8 +26,9 @@ export function fetchComments() {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/comments')
       .then((resp) => resp.json())
-      .then((comments) =>
-        dispatch({ type: 'FETCH_COMMENTS', payload: comments })
+      .then((comments) => {
+        dispatch({ type: 'FETCH_COMMENTS', payload: normalize(comments).comment })
+      }
       )
       .catch(console.log)
   }
@@ -89,6 +90,7 @@ export function createEvent(eventObj) {
       })
         .then((resp) => resp.json())
         .then((event) => {
+          console.log(event);
           dispatch({ type: 'NEW_EVENT', payload: event })
         })
         .catch(console.log)
