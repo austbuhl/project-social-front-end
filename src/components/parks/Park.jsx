@@ -7,9 +7,7 @@ import {selectParkActivities} from '../../redux/selectors'
 
 const Park = ({ park }) => {
   const activities = useSelector(state => selectParkActivities(state)(park.id))
-  
   const activityNames = activities.map(activity => activity.attributes.name).filter((value, index, self) => self.indexOf(value) === index)
-
 
   const renderActivityIcons = () => {
     return activityNames.map((activity, index) => (

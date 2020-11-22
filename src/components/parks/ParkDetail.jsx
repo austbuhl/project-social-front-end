@@ -14,8 +14,7 @@ const ParkDetail = ({ park, currentUser }) => {
 
   const renderActivities = () => {
     return activities.map((activity) => (
-      console.log(activity)
-      // <Activity key={activity.id} activity={activity} />
+      <Activity key={activity.id} activity={activity} />
     ))
   }
   const renderEvents = () => {

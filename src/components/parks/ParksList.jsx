@@ -5,9 +5,9 @@ import ParkDetail from './ParkDetail'
 import Filter from '../map/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid, Item } from 'semantic-ui-react'
-import {selectParks, selectParkActivities} from '../../redux/selectors'
+import {selectParks, selectPark, selectParkActivities} from '../../redux/selectors'
 
-const ParksList = ({parks, selectedActivity, parkActivities}) => {
+const ParksList = ({parks, selectedActivity, parkActivities, selectPark}) => {
   const filteredParks = selectedActivity
     ? 
     parks.filter((park) => { 
@@ -29,8 +29,7 @@ const ParksList = ({parks, selectedActivity, parkActivities}) => {
       <Route
         path='/parks/:id'
         render={({ match }) => {
-          const parkId = parseInt(match.params.id)
-          const park = parks[parkId]
+          const park = selectPark(parseInt(match.params.id))
           return <ParkDetail park={park} />
         }}
       />
@@ -55,6 +54,7 @@ const ParksList = ({parks, selectedActivity, parkActivities}) => {
 const mapStateToProps = (state) => {
   return {
     parks: selectParks(state),
+    selectPark: selectPark(state),
     selectedActivity: state.selectedActivity,
     parkActivities: selectParkActivities(state)
   }
