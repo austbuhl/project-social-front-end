@@ -23,7 +23,6 @@ import {
 } from 'react-icons/gi'
 
 const ActivityIcon = ({ activity }) => {
-  // need icons for every activity - font awesome?
 
   const icons = {
     Art: <FaPalette />,
@@ -48,8 +47,7 @@ const ActivityIcon = ({ activity }) => {
   }
 
   return icons[activity] || null
-  // return <i className='fas fa-mug-hot'></i>
-  return
+  
 }
 
 export default ActivityIcon

@@ -6692,6 +6692,13 @@ jsesc@~0.5.0:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz"
   integrity sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
 
+json-api-normalizer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/json-api-normalizer/-/json-api-normalizer-1.0.0.tgz#183c53017aa8f8cfd96dbed45227bb4790bbfd04"
+  integrity sha512-usS3CbKJliWLVhARZF4sUlalLVetITDeGZghV9lpBbP25Gm8xx0GUmmMXM0aimCGb9ntva+1gvTbQ/MekcMucA==
+  dependencies:
+    lodash "^4.17.15"
+
 json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz"

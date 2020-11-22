@@ -5,19 +5,20 @@ import EventDetail from './EventDetail'
 import Filter from '../map/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid, Item } from 'semantic-ui-react'
+import {selectEvents, selectEvent, selectEventActivities} from '../../redux/selectors'
 
-const EventsList = (props) => {
-  const filteredEvents = props.selectedActivity
-    ? props.events.filter((event) => {
+const EventsList = ({events, selectEvent, selectedActivity, eventActivities}) => {
+  const filteredEvents = selectedActivity
+    ? events.filter((event) => {
         if (
-          event.event_activities.some(
-            (activity) => activity.name === props.selectedActivity
+          eventActivities(event.id).some(
+            (activity) => activity.attributes.name === selectedActivity
           )
         ) {
           return event
         }
       })
-    : props.events
+    : events
 
   const renderEvents = () => {
     return filteredEvents.map((event) => <Event key={event.id} event={event} />)
@@ -27,9 +28,8 @@ const EventsList = (props) => {
     <Switch>
       <Route
         path='/events/:id'
-        render={(routerProps) => {
-          const eventId = parseInt(routerProps.match.params.id)
-          const event = props.events.find((e) => e.id === eventId)
+        render={({match}) => {
+          const event = selectEvent(parseInt(match.params.id))
           return <EventDetail event={event} />
         }}
       />
@@ -51,8 +51,10 @@ const EventsList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    events: state.events,
+    events: selectEvents(state),
+    selectEvent: selectEvent(state),
     selectedActivity: state.selectedActivity,
+    eventActivities: selectEventActivities(state)
   }
 }
 

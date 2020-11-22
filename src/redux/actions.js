@@ -1,8 +1,10 @@
+import normalize from 'json-api-normalizer';
+
 export function fetchEvents() {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/events')
       .then((resp) => resp.json())
-      .then((events) => dispatch({ type: 'FETCH_EVENTS', payload: events }))
+      .then((events) => dispatch({ type: 'FETCH_EVENTS', payload: normalize(events).event }))
       .catch(console.log)
   }
 }
@@ -11,7 +13,11 @@ export function fetchParks() {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/parks')
       .then((resp) => resp.json())
-      .then((parks) => dispatch({ type: 'FETCH_PARKS', payload: parks }))
+      .then((parks) => {
+        dispatch({ type: 'FETCH_PARKS', payload: normalize(parks).park })
+        dispatch({type: 'FETCH_ACTIVITIES', payload: normalize(parks).activity})
+      })
+        
       .catch(console.log)
   }
 }
@@ -20,10 +26,21 @@ export function fetchComments() {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/comments')
       .then((resp) => resp.json())
-      .then((comments) =>
-        dispatch({ type: 'FETCH_COMMENTS', payload: comments })
+      .then((comments) => {
+        dispatch({ type: 'FETCH_COMMENTS', payload: normalize(comments).comment })
+      }
       )
       .catch(console.log)
+  }
+}
+
+export function fetchUsers() {
+  return function(dispatch) {
+    fetch('http://localhost:5000/api/v1/users')
+      .then(resp => resp.json())
+      .then((users) => {
+        dispatch({type: 'FETCH_USERS', payload: normalize(users).user})
+      })
   }
 }
 
@@ -47,7 +64,7 @@ export function loginHandler(userObj) {
 }
 
 export function createComment(commentObj) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     const token = localStorage.getItem('token')
     if (token) {
       fetch('http://localhost:5000/api/v1/comments', {
@@ -60,8 +77,11 @@ export function createComment(commentObj) {
         body: JSON.stringify(commentObj),
       })
         .then((resp) => resp.json())
-        .then((commentObj) => {
-          dispatch({ type: 'UPDATE_EVENT', payload: commentObj.event })
+        .then((comment) => {
+          const commentId = comment.data.id
+          const eventId = comment.data.relationships.event.data.id
+          const userId = Object.keys(getState().currentUser)[0]
+          dispatch({ type: 'NEW_COMMENT', payload: normalize(comment).comment, commentId: commentId, eventId: eventId, userId: userId})
         })
         .catch(console.log)
     }
@@ -69,7 +89,7 @@ export function createComment(commentObj) {
 }
 
 export function createEvent(eventObj) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     const token = localStorage.getItem('token')
     if (token) {
       fetch('http://localhost:5000/api/v1/events', {
@@ -83,7 +103,10 @@ export function createEvent(eventObj) {
       })
         .then((resp) => resp.json())
         .then((event) => {
-          dispatch({ type: 'NEW_EVENT', payload: event })
+          const eventId = event.data.id
+          const parkId = event.data.relationships.park.data.id
+          const userId = Object.keys(getState().currentUser)[0]
+          dispatch({ type: 'NEW_EVENT', payload: normalize(event).event, eventId: eventId, userId: userId, parkId: parkId })
         })
         .catch(console.log)
     }
@@ -91,7 +114,7 @@ export function createEvent(eventObj) {
 }
 
 export function attendEvent(userEvent) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     const token = localStorage.getItem('token')
     if (token) {
       fetch(`http://localhost:5000/api/v1/events/${userEvent.event_id}/rsvp`, {
@@ -104,8 +127,10 @@ export function attendEvent(userEvent) {
         body: JSON.stringify({ event: userEvent }),
       })
         .then((resp) => resp.json())
-        .then((eventObj) => {
-          dispatch({ type: 'UPDATE_EVENT', payload: eventObj })
+        .then((event) => {
+          const eventId = event.data.id
+          const userId = Object.keys(getState().currentUser)[0]
+          dispatch({ type: 'ATTEND_EVENT', payload: normalize(event).event, eventId: eventId, userId: userId})
         })
         .catch(console.log)
     }
@@ -123,13 +148,13 @@ export function authorizeUser() {
   return function (dispatch) {
     const token = localStorage.getItem('token')
     if (token) {
-      fetch('http://localhost:5000/api/v1/users', {
+      fetch('http://localhost:5000/api/v1/users/auth', {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((resp) => resp.json())
         .then((user) => {
-          dispatch({ type: 'AUTHORIZE_USER', payload: user })
+          dispatch({ type: 'AUTHORIZE_USER', payload: normalize(user).user })
         })
         .catch(console.log)
     }
@@ -138,7 +163,7 @@ export function authorizeUser() {
 
 export function createUser(userObj) {
   return function (dispatch) {
-    fetch('http://localhost:5000/api/v1/users', {
+    fetch('http://localhost:5000/api/v1/users/', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Activity = (props) => {
-  return <p>{props.activity.name}</p>
+const Activity = ({activity}) => {
+  return <p>{activity.attributes.name}</p>
 }
 
 export default Activity

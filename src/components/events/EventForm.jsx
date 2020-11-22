@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { Form, Header, Button } from 'semantic-ui-react'
 import { createEvent } from '../../redux/actions'
+import {selectParkActivities} from '../../redux/selectors'
 
 const EventForm = ({ park, createEvent }) => {
   const initialState = {
@@ -15,6 +16,7 @@ const EventForm = ({ park, createEvent }) => {
   }
 
   const [eventData, setEventData] = useState(initialState)
+  const activities = useSelector(state => selectParkActivities(state)(park.id))
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -22,10 +24,10 @@ const EventForm = ({ park, createEvent }) => {
     setEventData(initialState)
   }
 
-  const options = park.activities.map((activity) => ({
-    key: activity.name,
-    value: activity.name,
-    text: activity.name,
+  const options = activities.map((activity) => ({
+    key: activity.id,
+    value: activity.attributes.name,
+    text: activity.attributes.name,
   }))
 
   return (
@@ -52,7 +54,7 @@ const EventForm = ({ park, createEvent }) => {
             label='Location'
             name='park'
             placeholder='Location'
-            value={park.name}
+            value={park.attributes.name}
           />
           <Form.Dropdown
             fluid
