@@ -28,10 +28,12 @@ function eventsReducer(state = defaultState.events, action) {
             relationships: 
             {
               ...event.relationships,
-              comments: [
-                ...event.relationships.comments.data, 
-                {id: commentId[0], type: "comment"}
-              ]
+              comments: {
+                data: [
+                  ...event.relationships.comments.data, 
+                  {id: commentId[0], type: "comment"}
+                ]
+              }
             }
           }
         }
@@ -56,10 +58,12 @@ function usersReducer(state = defaultState.users, action) {
           relationships: 
           {
             ...user.relationships,
-            comments: [
+            comments: {
+              data: [
               ...user.relationships.comments.data, 
               {id: commentId[0], type: "comment"}
-            ]
+              ]
+            }
           }
         }
       }
@@ -67,7 +71,6 @@ function usersReducer(state = defaultState.users, action) {
       return state
   }
 }
-
 
 function commentsReducer(state = defaultState.comments, action) {
   switch(action.type) {
@@ -79,7 +82,6 @@ function commentsReducer(state = defaultState.comments, action) {
       return state
   }
 }
-
 
 
 function parksReducer(state = defaultState.parks, action) {

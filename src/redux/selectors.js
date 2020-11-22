@@ -20,6 +20,14 @@ export const selectEvent = state => eventId => state.events[eventId]
 export const selectComment = (state, commentId) => state.comments[commentId]
 export const selectUser = (state, userId) => state.users[userId]
 
+export const selectCommentAuthor = state => commentId => {
+  const comment = selectComment(state, commentId)
+  if(comment) {
+    const userId = comment.relationships.user.data.id
+    return selectUser(state, userId)
+  }
+}
+
 export const selectEventComments = state => eventId => {
   const event = selectEvent(state)(eventId)
   if(event) {
