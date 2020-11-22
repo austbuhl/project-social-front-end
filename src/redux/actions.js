@@ -34,6 +34,16 @@ export function fetchComments() {
   }
 }
 
+export function fetchUsers() {
+  return function(dispatch) {
+    fetch('http://localhost:5000/api/v1/users')
+      .then(resp => resp.json())
+      .then((users) => {
+        dispatch({type: 'FETCH_USERS', payload: normalize(users).user})
+      })
+  }
+}
+
 export function loginHandler(userObj) {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/login', {
@@ -130,13 +140,13 @@ export function authorizeUser() {
   return function (dispatch) {
     const token = localStorage.getItem('token')
     if (token) {
-      fetch('http://localhost:5000/api/v1/users', {
+      fetch('http://localhost:5000/api/v1/users/auth', {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((resp) => resp.json())
         .then((user) => {
-          dispatch({ type: 'AUTHORIZE_USER', payload: user })
+          dispatch({ type: 'AUTHORIZE_USER', payload: normalize(user).user })
         })
         .catch(console.log)
     }
@@ -145,7 +155,7 @@ export function authorizeUser() {
 
 export function createUser(userObj) {
   return function (dispatch) {
-    fetch('http://localhost:5000/api/v1/users', {
+    fetch('http://localhost:5000/api/v1/users/', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',

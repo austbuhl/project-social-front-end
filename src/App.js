@@ -1,7 +1,7 @@
 import './App.css'
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { fetchEvents, fetchParks, authorizeUser, fetchComments } from './redux/actions'
+import { fetchEvents, fetchParks, authorizeUser, fetchComments, fetchUsers } from './redux/actions'
 import { Switch, Route } from 'react-router-dom'
 import EventsList from './components/events/EventsList'
 import ParksList from './components/parks/ParksList'
@@ -13,12 +13,13 @@ import Profile from './components/user/Profile'
 import Filter from './components/map/Filter'
 import { Container, Grid } from 'semantic-ui-react'
 
-function App({fetchEvents, fetchParks, fetchComments, authorizeUser}) {
+function App({fetchEvents, fetchParks, fetchComments, fetchUsers, authorizeUser}) {
   useEffect(() => {
     fetchParks()
     fetchEvents()
-    authorizeUser()
     fetchComments()
+    fetchUsers()
+    authorizeUser()
   }, [])
 
   return (
@@ -58,6 +59,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchEvents: () => dispatch(fetchEvents()),
     fetchParks: () => dispatch(fetchParks()),
     fetchComments: () => dispatch(fetchComments()),
+    fetchUsers: () => dispatch(fetchUsers()),
     authorizeUser: () => dispatch(authorizeUser()),
   }
 }

@@ -59,7 +59,7 @@ function parksReducer(state = defaultState.parks, action) {
   }
 }
 
-function userReducer(state = defaultState.currentUser, action) {
+function authReducer(state = defaultState.currentUser, action) {
   switch (action.type) {
     case 'LOGIN_USER':
       return action.payload
@@ -67,6 +67,15 @@ function userReducer(state = defaultState.currentUser, action) {
       return action.payload
     case 'LOGOUT_USER':
       return null
+    default:
+      return state
+  }
+}
+
+function usersReducer(state = defaultState.users, action) {
+  switch(action.type) {
+    case 'FETCH_USERS' :
+      return action.payload
     default:
       return state
   }
@@ -89,7 +98,8 @@ const rootReducer = combineReducers({
   activities: activitiesReducer,
   events: eventsReducer,
   comments: commentsReducer,
-  currentUser: userReducer,
+  currentUser: authReducer,
+  users: usersReducer,
   selectedActivity: activityReducer,
 })
 
