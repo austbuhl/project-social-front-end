@@ -78,10 +78,9 @@ export function createComment(commentObj) {
       })
         .then((resp) => resp.json())
         .then((comment) => {
-          const commentId = comment.data.attributes.id
+          const commentId = comment.data.id
           const eventId = comment.data.relationships.event.data.id
           const userId = Object.keys(getState().currentUser)[0]
-
           dispatch({ type: 'NEW_COMMENT', payload: normalize(comment).comment, commentId: commentId, eventId: eventId, userId: userId})
         })
         .catch(console.log)
@@ -90,7 +89,7 @@ export function createComment(commentObj) {
 }
 
 export function createEvent(eventObj) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     const token = localStorage.getItem('token')
     if (token) {
       fetch('http://localhost:5000/api/v1/events', {
@@ -104,7 +103,10 @@ export function createEvent(eventObj) {
       })
         .then((resp) => resp.json())
         .then((event) => {
-          dispatch({ type: 'NEW_EVENT', payload: normalize(event).event })
+          const eventId = event.data.id
+          const parkId = event.data.relationships.park.data.id
+          const userId = Object.keys(getState().currentUser)[0]
+          dispatch({ type: 'NEW_EVENT', payload: normalize(event).event, eventId: eventId, userId: userId, parkId: parkId })
         })
         .catch(console.log)
     }
@@ -126,7 +128,7 @@ export function attendEvent(userEvent) {
       })
         .then((resp) => resp.json())
         .then((event) => {
-          const eventId = event.data.attributes.id
+          const eventId = event.data.id
           const userId = Object.keys(getState().currentUser)[0]
           dispatch({ type: 'ATTEND_EVENT', payload: normalize(event).event, eventId: eventId, userId: userId})
         })

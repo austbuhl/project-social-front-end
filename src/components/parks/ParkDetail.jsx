@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import Activity from '../activities/Activity'
 import EventForm from '../events/EventForm'
 import Event from '../events/Event'
 import { Button } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import {selectParkActivities} from '../../redux/selectors'
+import {selectParkActivities, selectParkEvents} from '../../redux/selectors'
 
-const ParkDetail = ({ park, currentUser }) => {
+const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
   const [showForm, setShowForm] = useState(false)
   const history = useHistory()
-  const activities = useSelector(state => selectParkActivities(state)(park.id))
+  const activities = parkActivities(park.id)
+  const events = parkEvents(park.id)
 
   const renderActivities = () => {
     return activities.map((activity) => (
@@ -18,7 +19,7 @@ const ParkDetail = ({ park, currentUser }) => {
     ))
   }
   const renderEvents = () => {
-    return park.events.map((event) => <Event key={event.id} event={event} />)
+    return events.map((event) => <Event key={event.id} event={event} />)
   }
   const clickHandler = () => {
     currentUser
@@ -34,7 +35,7 @@ const ParkDetail = ({ park, currentUser }) => {
         {park.attributes.website}
       </a>
       <h3>Upcoming Events</h3>
-      {/* {renderEvents()} */}
+      {renderEvents()}
       <h3>Available Activities</h3>
       {renderActivities()}
 
@@ -52,6 +53,8 @@ const ParkDetail = ({ park, currentUser }) => {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.currentUser,
+    parkActivities: selectParkActivities(state),
+    parkEvents: selectParkEvents(state)
   }
 }
 

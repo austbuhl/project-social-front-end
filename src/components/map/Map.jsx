@@ -10,9 +10,9 @@ import ActivityIcon from '../activities/ActivityIcon'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Dimmer, Loader, Segment, Grid } from 'semantic-ui-react'
-import {selectActivities, selectParks, selectParkActivities} from '../../redux/selectors'
+import {selectParks, selectParkActivities} from '../../redux/selectors'
 
-const Map = ({ parks, activities, selectedActivity, parkActivities }) => {
+const Map = ({ parks, selectedActivity, parkActivities }) => {
   const [selectedPark, setSelectedPark] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -63,13 +63,11 @@ const Map = ({ parks, activities, selectedActivity, parkActivities }) => {
     })
   }
 
-  const uniqActivities = selectedPark
-    ? parkActivities(selectedPark.id)
-        .filter((value, index, self) => self.indexOf(value) === index)
-    : null
+  const activities = selectedPark ? parkActivities(selectedPark.id) : []
+  const activityNames = activities.map(activity => activity.attributes.name).filter((value, index, self) => self.indexOf(value) === index)
 
   const renderActivityIcons = () => {
-    return uniqActivities.map((activity, index) => (
+    return activityNames.map((activity, index) => (
       <ActivityIcon key={index} activity={activity} />
     ))
   }
@@ -123,7 +121,6 @@ const mapStateToProps = (state) => {
   return {
     parks: selectParks(state),
     selectedActivity: state.selectedActivity,
-    activities: selectActivities(state),
     parkActivities: selectParkActivities(state)
   }
 }

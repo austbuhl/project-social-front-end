@@ -12,6 +12,14 @@ export const selectParkActivities = state => parkId => {
   }
 }
 
+export const selectParkEvents = state => parkId =>  {
+  const park = selectPark(state)(parkId)
+  if(park) {
+    const eventIds = park.relationships.events.data.map((event) => event.id)
+    return eventIds.map((eventId) => selectEvent(state)(eventId))
+  }
+}
+
 export const selectEvents = state => Object.values((state.events))
 export const selectComments = state => Object.values((state.comments))
 export const selectUsers = state => Object.values((state.users))

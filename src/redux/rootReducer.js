@@ -6,7 +6,7 @@ const defaultState = {
   events: {},
   comments: {},
   users: {},
-  currentUser: null,
+  currentUser: {},
   selectedActivity: null,
 }
 
@@ -80,6 +80,22 @@ function usersReducer(state = defaultState.users, action) {
           }
         }
       }
+    case 'NEW_EVENT':
+      return {
+        ...state,
+        [userId]:
+          {...user,
+            relationships: {
+              ...user.relationships,
+              events: {
+                data: [
+                  ...user.relationships.events.data,
+                  {id: eventId, type: "event"}
+                ]
+              }
+            }
+          }
+      }
     case 'ATTEND_EVENT' :
       return {
         ...state,
@@ -102,6 +118,102 @@ function usersReducer(state = defaultState.users, action) {
   }
 }
 
+function parksReducer(state = defaultState.parks, action) {
+  const {eventId, parkId} = action
+  const park = state[parkId]
+  switch (action.type) {
+    case 'FETCH_PARKS':
+      return action.payload
+    case 'NEW_EVENT' :
+      return {
+        ...state,
+        [parkId]:
+          {
+            ...park,
+              relationships: {
+                ...park.relationships,
+                events: {
+                  data: [
+                    ...park.relationships.events.data,
+                    {id: eventId, type: "event"}
+                  ]
+                }
+              }
+          }
+      }
+    default:
+      return state
+  }
+}
+
+function authReducer(state = defaultState.currentUser, action) {
+  const {userId, eventId, commentId} = action
+  const user = state[userId]
+  switch (action.type) {
+    case 'LOGIN_USER':
+      return action.payload
+    case 'AUTHORIZE_USER':
+      return action.payload
+    case 'LOGOUT_USER':
+      return null
+    case 'NEW_COMMENT':
+      return { 
+        ...state, 
+        [userId]: 
+          {...user, 
+            relationships: 
+            {
+              ...user.relationships,
+              comments: {
+                data: [
+                ...user.relationships.comments.data, 
+                {id: commentId, type: "comment"}
+                ]
+              }
+            }
+          }
+        }
+    case 'NEW_EVENT':
+      return { 
+        ...state, 
+        [userId]: 
+          {...user, 
+            relationships: 
+            {
+              ...user.relationships,
+              events: {
+                data: [
+                ...user.relationships.events.data, 
+                {id: eventId, type: "event"}
+                ]
+              }
+            }
+          }
+        }
+    case 'ATTEND_EVENT':
+      return { 
+        ...state, 
+        [userId]: 
+          {...user, 
+            relationships: 
+            {
+              ...user.relationships,
+              events: {
+                data: [
+                ...user.relationships.events.data, 
+                {id: eventId, type: "event"}
+                ]
+              }
+            }
+          }
+        }
+    default:
+      return state
+  }
+}
+
+
+
 function commentsReducer(state = defaultState.comments, action) {
   switch(action.type) {
     case 'FETCH_COMMENTS':
@@ -114,14 +226,7 @@ function commentsReducer(state = defaultState.comments, action) {
 }
 
 
-function parksReducer(state = defaultState.parks, action) {
-  switch (action.type) {
-    case 'FETCH_PARKS':
-      return action.payload
-    default:
-      return state
-  }
-}
+
 
 function activitiesReducer(state = defaultState.activities, action) {
   switch (action.type) {
@@ -133,18 +238,7 @@ function activitiesReducer(state = defaultState.activities, action) {
 }
 
 
-function authReducer(state = defaultState.currentUser, action) {
-  switch (action.type) {
-    case 'LOGIN_USER':
-      return action.payload
-    case 'AUTHORIZE_USER':
-      return action.payload
-    case 'LOGOUT_USER':
-      return null
-    default:
-      return state
-  }
-}
+
 
 function activityReducer(state = defaultState.selectedActivity, action) {
   switch (action.type) {

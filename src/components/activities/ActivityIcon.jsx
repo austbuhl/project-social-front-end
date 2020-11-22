@@ -23,7 +23,7 @@ import {
 } from 'react-icons/gi'
 
 const ActivityIcon = ({ activity }) => {
-  // need icons for every activity - font awesome?
+
   const icons = {
     Art: <FaPalette />,
     Barbecue: <GiBarbecue />,
