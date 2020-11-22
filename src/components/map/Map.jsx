@@ -7,11 +7,12 @@ import {
   StreetViewPanorama,
 } from '@react-google-maps/api'
 import ActivityIcon from '../activities/ActivityIcon'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Dimmer, Loader, Segment, Grid } from 'semantic-ui-react'
+import {selectActivities, selectParks, selectParkActivities} from '../../redux/selectors'
 
-const Map = ({ parks, selectedActivity }) => {
+const Map = ({ parks, activities, selectedActivity, parkActivities }) => {
   const [selectedPark, setSelectedPark] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -35,10 +36,12 @@ const Map = ({ parks, selectedActivity }) => {
     }
   }, [parks])
 
+
   const filteredParks = selectedActivity
-    ? parks.filter((park) => {
+    ? 
+    parks.filter((park) => { 
         if (
-          park.activities.some((activity) => activity.name === selectedActivity)
+          parkActivities(park.id).some((activity) => activity.name === selectedActivity)
         ) {
           return park
         }
@@ -51,8 +54,8 @@ const Map = ({ parks, selectedActivity }) => {
         <Marker
           key={park.id}
           position={{
-            lat: parseFloat(park.latitude),
-            lng: parseFloat(park.longitude),
+            lat: parseFloat(park.attributes.latitude),
+            lng: parseFloat(park.attributes.longitude),
           }}
           onClick={() => setSelectedPark(park)}
         />
@@ -60,17 +63,18 @@ const Map = ({ parks, selectedActivity }) => {
     })
   }
 
-  let uniqActivities = selectedPark
-    ? selectedPark.activities
-        .map((activity) => activity.name)
+  const uniqActivities = selectedPark
+    ? parkActivities(selectedPark.id)
         .filter((value, index, self) => self.indexOf(value) === index)
     : null
 
+  console.log(uniqActivities);
   const renderActivityIcons = () => {
     return uniqActivities.map((activity, index) => (
       <ActivityIcon key={index} activity={activity} />
     ))
   }
+
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
       <Segment>
@@ -90,16 +94,16 @@ const Map = ({ parks, selectedActivity }) => {
               {selectedPark && (
                 <InfoWindow
                   position={{
-                    lat: parseFloat(selectedPark.latitude),
-                    lng: parseFloat(selectedPark.longitude),
+                    lat: parseFloat(selectedPark.attributes.latitude),
+                    lng: parseFloat(selectedPark.attributes.longitude),
                   }}
                   onCloseClick={() => setSelectedPark(null)}
                 >
                   <div>
-                    <h4>{selectedPark.name}</h4>
-                    <p>{selectedPark.location}</p>
-                    <a href={selectedPark.website} target='_blank'>
-                      {selectedPark.website}
+                    <h4>{selectedPark.attributes.name}</h4>
+                    <p>{selectedPark.attributes.location}</p>
+                    <a href={selectedPark.attributes.website} target='_blank'>
+                      {selectedPark.attributes.website}
                     </a>
                     <div>{renderActivityIcons()}</div>
                     <NavLink to={`/parks/${selectedPark.id}`}>
@@ -118,8 +122,10 @@ const Map = ({ parks, selectedActivity }) => {
 
 const mapStateToProps = (state) => {
   return {
-    parks: state.parks,
+    activities: selectActivities(state),
     selectedActivity: state.selectedActivity,
+    parks: selectParks(state),
+    parkActivities: selectParkActivities(state)
   }
 }
 

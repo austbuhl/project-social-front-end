@@ -2,7 +2,10 @@ import { combineReducers } from 'redux'
 
 const defaultState = {
   parks: [],
+  activities: [],
   events: [],
+  comments: [],
+  users: [],
   currentUser: null,
   selectedActivity: null,
 }
@@ -24,6 +27,15 @@ function eventsReducer(state = defaultState.events, action) {
         }),
       ]
     default:
+      return state
+  }
+}
+
+function activitiesReducer(state = defaultState.activities, action) {
+  switch (action.type) {
+    case 'FETCH_ACTIVITIES':
+      return action.payload
+    default: 
       return state
   }
 }
@@ -63,6 +75,7 @@ function activityReducer(state = defaultState.selectedActivity, action) {
 
 const rootReducer = combineReducers({
   parks: parksReducer,
+  activities: activitiesReducer,
   events: eventsReducer,
   currentUser: userReducer,
   selectedActivity: activityReducer,

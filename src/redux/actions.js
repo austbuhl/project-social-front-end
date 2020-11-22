@@ -1,3 +1,5 @@
+import normalize from 'json-api-normalizer';
+
 export function fetchEvents() {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/events')
@@ -11,7 +13,11 @@ export function fetchParks() {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/parks')
       .then((resp) => resp.json())
-      .then((parks) => dispatch({ type: 'FETCH_PARKS', payload: parks }))
+      .then((parks) => {
+        dispatch({ type: 'FETCH_PARKS', payload: normalize(parks).park })
+        dispatch({type: 'FETCH_ACTIVITIES', payload: normalize(parks).activity})
+      })
+        
       .catch(console.log)
   }
 }
