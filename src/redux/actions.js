@@ -90,8 +90,7 @@ export function createEvent(eventObj) {
       })
         .then((resp) => resp.json())
         .then((event) => {
-          console.log(event);
-          dispatch({ type: 'NEW_EVENT', payload: event })
+          dispatch({ type: 'NEW_EVENT', payload: normalize(event).event })
         })
         .catch(console.log)
     }

@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 
 const defaultState = {
-  parks: [],
-  activities: [],
-  events: [],
-  comments: [],
-  users: [],
+  parks: {},
+  activities: {},
+  events: {},
+  comments: {},
+  users: {},
   currentUser: null,
   selectedActivity: null,
 }
@@ -15,7 +15,7 @@ function eventsReducer(state = defaultState.events, action) {
     case 'FETCH_EVENTS':
       return action.payload
     case 'NEW_EVENT':
-      return [...state, action.payload]
+      return {...state, ...action.payload}
     case 'UPDATE_EVENT':
       return [
         ...state.map((event) => {

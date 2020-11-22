@@ -18,7 +18,6 @@ const EventForm = ({ park, createEvent }) => {
   const [eventData, setEventData] = useState(initialState)
   const activities = useSelector(state => selectParkActivities(state)(park.id))
 
-  console.log(activities);
   const submitHandler = (e) => {
     e.preventDefault()
     createEvent(eventData)
@@ -26,7 +25,7 @@ const EventForm = ({ park, createEvent }) => {
   }
 
   const options = activities.map((activity) => ({
-    key: activity.attributes.name,
+    key: activity.id,
     value: activity.attributes.name,
     text: activity.attributes.name,
   }))
