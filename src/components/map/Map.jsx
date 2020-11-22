@@ -11,17 +11,8 @@ import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Dimmer, Loader, Segment, Grid } from 'semantic-ui-react'
 import { selectParks, selectParkActivities } from '../../redux/selectors'
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from 'use-places-autocomplete'
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from '@reach/combobox'
+import Search from './Search'
+import Locate from './Locate'
 // import { formatRelative } from 'date-fns'
 
 import '@reach/combobox/styles.css'
@@ -34,6 +25,7 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
     width: '40vw',
     height: '85vh',
   }
+
   const center = {
     lat: 40.73061,
     lng: -73.935242,
@@ -58,6 +50,7 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
 
   const onMapLoad = React.useCallback((map) => {
     mapRef.current = map
+    console.log(mapRef)
   }, [])
 
   useEffect(() => {
@@ -104,82 +97,9 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
     ))
   }
 
-  const Locate = ({ panTo }) => {
-    return (
-      <button
-        onClick={() => {
-          navigator.geolocation.getCurrentPosition(
-            (position) =>
-              panTo({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              }),
-            () => null,
-            options
-          )
-        }}
-      >
-        GEOLOCATE
-      </button>
-    )
-  }
-
-  const Search = ({ panTo }) => {
-    const {
-      ready,
-      value,
-      suggestions: { status, data },
-      setValue,
-      clearSuggestions,
-    } = usePlacesAutocomplete({
-      requestOptions: {
-        location: { lat: () => center.lat, lng: () => center.lng },
-        // distance in meters
-        radius: 200 * 1000,
-      },
-    })
-
-    if (loadError) return 'Error'
-    if (!isLoaded) return 'Loading...'
-
-    return (
-      <Combobox
-        onSelect={async (address) => {
-          setValue(address, false)
-          clearSuggestions()
-
-          try {
-            const results = await getGeocode({ address })
-            const { lat, lng } = await getLatLng(results[0])
-            panTo({ lat, lng })
-          } catch (error) {
-            console.log(error)
-          }
-        }}
-      >
-        <ComboboxInput
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          disabled={!ready}
-          placeholder='Enter an address'
-        />
-        <ComboboxPopover>
-          <ComboboxList>
-            {status === 'OK' &&
-              data.map(({ id, description }) => (
-                <ComboboxOption key={id} value={description} />
-              ))}
-          </ComboboxList>
-        </ComboboxPopover>
-      </Combobox>
-    )
-  }
-
+  if (loadError) return 'Error'
+  if (!isLoaded) return 'Loading...'
   return (
-    // <LoadScript
-    //   googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-    //   libraries={'places'}
-    // >
     <Segment>
       <Locate panTo={panTo} />
       <Search panTo={panTo} />
@@ -222,7 +142,6 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
         </Grid.Column>
       </GoogleMap>
     </Segment>
-    // </LoadScript>
   )
 }
 
