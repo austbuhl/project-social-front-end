@@ -1,18 +1,21 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import Activity from '../activities/Activity'
 import EventForm from '../events/EventForm'
 import Event from '../events/Event'
 import { Button } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
+import {selectParkActivities} from '../../redux/selectors'
 
 const ParkDetail = ({ park, currentUser }) => {
   const [showForm, setShowForm] = useState(false)
   const history = useHistory()
-  const activities = [...new Set(park.activities)]
+  const activities = useSelector(state => selectParkActivities(state)(park.id))
+
   const renderActivities = () => {
     return activities.map((activity) => (
-      <Activity key={activity.id} activity={activity} />
+      console.log(activity)
+      // <Activity key={activity.id} activity={activity} />
     ))
   }
   const renderEvents = () => {
@@ -26,10 +29,10 @@ const ParkDetail = ({ park, currentUser }) => {
 
   return (
     <div>
-      <h1>{park.name}</h1>
-      <h4>{park.location}</h4>
-      <a href={park.website} target='_blank'>
-        {park.website}
+      <h1>{park.attributes.name}</h1>
+      <h4>{park.attributes.location}</h4>
+      <a href={park.attributes.website} target='_blank'>
+        {park.attributes.website}
       </a>
       <h3>Upcoming Events</h3>
       {/* {renderEvents()} */}

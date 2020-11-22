@@ -24,7 +24,6 @@ import {
 
 const ActivityIcon = ({ activity }) => {
   // need icons for every activity - font awesome?
-  console.log(activity);
   const icons = {
     Art: <FaPalette />,
     Barbecue: <GiBarbecue />,
@@ -47,9 +46,8 @@ const ActivityIcon = ({ activity }) => {
     Zoo: <FaHippo />,
   }
 
-  return icons[activity.name] || null
-  // return <i className='fas fa-mug-hot'></i>
-  return
+  return icons[activity] || null
+  
 }
 
 export default ActivityIcon

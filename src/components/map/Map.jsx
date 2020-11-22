@@ -7,7 +7,7 @@ import {
   StreetViewPanorama,
 } from '@react-google-maps/api'
 import ActivityIcon from '../activities/ActivityIcon'
-import { connect, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Dimmer, Loader, Segment, Grid } from 'semantic-ui-react'
 import {selectActivities, selectParks, selectParkActivities} from '../../redux/selectors'
@@ -41,7 +41,7 @@ const Map = ({ parks, activities, selectedActivity, parkActivities }) => {
     ? 
     parks.filter((park) => { 
         if (
-          parkActivities(park.id).some((activity) => activity.name === selectedActivity)
+          parkActivities(park.id).some((activity) => activity.attributes.name === selectedActivity)
         ) {
           return park
         }
@@ -68,7 +68,6 @@ const Map = ({ parks, activities, selectedActivity, parkActivities }) => {
         .filter((value, index, self) => self.indexOf(value) === index)
     : null
 
-  console.log(uniqActivities);
   const renderActivityIcons = () => {
     return uniqActivities.map((activity, index) => (
       <ActivityIcon key={index} activity={activity} />
@@ -122,9 +121,9 @@ const Map = ({ parks, activities, selectedActivity, parkActivities }) => {
 
 const mapStateToProps = (state) => {
   return {
-    activities: selectActivities(state),
-    selectedActivity: state.selectedActivity,
     parks: selectParks(state),
+    selectedActivity: state.selectedActivity,
+    activities: selectActivities(state),
     parkActivities: selectParkActivities(state)
   }
 }
