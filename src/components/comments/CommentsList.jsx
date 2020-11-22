@@ -3,6 +3,8 @@ import CommentDetail from './CommentDetail'
 import { Comment, Header } from 'semantic-ui-react'
 
 const CommentsList = ({ comments }) => {
+
+
   const renderComments = () => {
     return comments.map((comment) => (
       <CommentDetail key={comment.id} comment={comment} />

@@ -77,8 +77,8 @@ export function createComment(commentObj) {
         body: JSON.stringify(commentObj),
       })
         .then((resp) => resp.json())
-        .then((commentObj) => {
-          dispatch({ type: 'UPDATE_EVENT', payload: commentObj.event })
+        .then((comment) => {
+          dispatch({ type: 'NEW_COMMENT', payload: normalize(comment).comment })
         })
         .catch(console.log)
     }

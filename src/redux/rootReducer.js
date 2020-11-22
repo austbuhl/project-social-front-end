@@ -16,16 +16,76 @@ function eventsReducer(state = defaultState.events, action) {
       return action.payload
     case 'NEW_EVENT':
       return {...state, ...action.payload}
-    case 'UPDATE_EVENT':
-      return [
-        ...state.map((event) => {
-          if (event.id === action.payload.id) {
-            return action.payload
-          } else {
-            return event
+    case 'NEW_COMMENT':
+      const commentId = Object.keys(action.payload)
+      const comment = action.payload[commentId]
+      const eventId = comment.relationships.event.data.id
+      const event = state[eventId]
+      return {
+        ...state, 
+        [eventId]: 
+          {...event, 
+            relationships: 
+            {
+              ...event.relationships,
+              comments: [
+                ...event.relationships.comments.data, 
+                {id: commentId[0], type: "comment"}
+              ]
+            }
           }
-        }),
-      ]
+        }
+    default:
+      return state
+  }
+}
+
+function usersReducer(state = defaultState.users, action) {
+  switch(action.type) {
+    case 'FETCH_USERS' :
+      return action.payload
+    case 'NEW_COMMENT': 
+    const commentId = Object.keys(action.payload)
+    const comment = action.payload[commentId]
+    const userId = comment.relationships.user.data.id
+    const user = state[userId]
+    return {
+      ...state, 
+      [userId]: 
+        {...user, 
+          relationships: 
+          {
+            ...user.relationships,
+            comments: [
+              ...user.relationships.comments.data, 
+              {id: commentId[0], type: "comment"}
+            ]
+          }
+        }
+      }
+    default:
+      return state
+  }
+}
+
+
+function commentsReducer(state = defaultState.comments, action) {
+  switch(action.type) {
+    case 'FETCH_COMMENTS':
+      return action.payload
+    case 'NEW_COMMENT':
+      return {...state, ...action.payload}
+    default: 
+      return state
+  }
+}
+
+
+
+function parksReducer(state = defaultState.parks, action) {
+  switch (action.type) {
+    case 'FETCH_PARKS':
+      return action.payload
     default:
       return state
   }
@@ -40,24 +100,6 @@ function activitiesReducer(state = defaultState.activities, action) {
   }
 }
 
-function commentsReducer(state = defaultState.comments, action) {
-  switch(action.type) {
-    case 'FETCH_COMMENTS':
-      return action.payload
-    default: 
-      return state
-  }
-}
-
-
-function parksReducer(state = defaultState.parks, action) {
-  switch (action.type) {
-    case 'FETCH_PARKS':
-      return action.payload
-    default:
-      return state
-  }
-}
 
 function authReducer(state = defaultState.currentUser, action) {
   switch (action.type) {
@@ -67,15 +109,6 @@ function authReducer(state = defaultState.currentUser, action) {
       return action.payload
     case 'LOGOUT_USER':
       return null
-    default:
-      return state
-  }
-}
-
-function usersReducer(state = defaultState.users, action) {
-  switch(action.type) {
-    case 'FETCH_USERS' :
-      return action.payload
     default:
       return state
   }

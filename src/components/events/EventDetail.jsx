@@ -1,24 +1,27 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import CommentsList from '../comments/CommentsList'
 import CommentForm from '../comments/CommentForm'
 import RSVPButton from './RSVPButton'
+import {selectEventUsers, selectEventComments} from '../../redux/selectors'
 
 const EventDetail = ({ event }) => {
-  console.log(event);
+  
+  const attendees = useSelector(state => selectEventUsers(state)(event.id))
+  const comments = useSelector(state => selectEventComments(state)(event.id))
+
   const renderAttendees = () => {
-    return event.users.map((user) => <li>{user.username}</li>)
+    return attendees.map((user) => <li>{user.attributes.username}</li>)
   }
 
   return (
     <div>
-      <h1>{event.name}</h1>
-      <h4>{event.description}</h4>
-      <p>{event.num_of_people}</p>
-      <ul>
-        {renderAttendees()}
-      </ul>
+      <h1>{event.attributes.name}</h1>
+      <h4>{event.attributes.description}</h4>
+      <p>{event.attributes.num_of_people}</p>
+      <ul>{renderAttendees()}</ul>
       <RSVPButton eventId={event.id} />
-      <CommentsList comments={event.comments} />
+      <CommentsList comments={comments} />
       <CommentForm eventId={event.id} />
     </div>
   )
