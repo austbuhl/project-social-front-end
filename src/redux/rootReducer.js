@@ -11,46 +11,59 @@ const defaultState = {
 }
 
 function eventsReducer(state = defaultState.events, action) {
+  const {eventId, commentId, userId} = action
+  const event = state[eventId]
+
   switch (action.type) {
     case 'FETCH_EVENTS':
       return action.payload
     case 'NEW_EVENT':
       return {...state, ...action.payload}
     case 'NEW_COMMENT':
-      const commentId = Object.keys(action.payload)
-      const comment = action.payload[commentId]
-      const eventId = comment.relationships.event.data.id
-      const event = state[eventId]
       return {
         ...state, 
         [eventId]: 
           {...event, 
-            relationships: 
-            {
+            relationships: {
               ...event.relationships,
               comments: {
                 data: [
                   ...event.relationships.comments.data, 
-                  {id: commentId[0], type: "comment"}
+                  {id: commentId, type: "comment"}
                 ]
               }
             }
           }
         }
+    case 'ATTEND_EVENT': 
+      return {
+        ...state,
+        [eventId]:
+          {...event,
+            relationships: {
+              ...event.relationships,
+              users: {
+                data: [
+                  ...event.relationships.users.data,
+                  {id: userId, type: "user"}
+                ]
+              }
+            }
+          }
+      }
+
     default:
       return state
   }
 }
 
 function usersReducer(state = defaultState.users, action) {
+  const {eventId, commentId, userId} = action
+  const user = state[userId]
   switch(action.type) {
     case 'FETCH_USERS' :
       return action.payload
     case 'NEW_COMMENT': 
-    const commentId = Object.keys(action.payload)
-    const comment = action.payload[commentId]
-    const userId = comment.relationships.user.data.id
-    const user = state[userId]
     return {
       ...state, 
       [userId]: 
@@ -61,12 +74,29 @@ function usersReducer(state = defaultState.users, action) {
             comments: {
               data: [
               ...user.relationships.comments.data, 
-              {id: commentId[0], type: "comment"}
+              {id: commentId, type: "comment"}
               ]
             }
           }
         }
       }
+    case 'ATTEND_EVENT' :
+      return {
+        ...state,
+        [userId]:
+          {...user,
+            relationships: {
+              ...user.relationships,
+              events: {
+                data: [
+                  ...user.relationships.events.data,
+                  {id: eventId, type: "event"}
+                ]
+              }
+            }
+          }
+      }
+
     default:
       return state
   }

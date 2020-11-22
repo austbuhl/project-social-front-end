@@ -64,7 +64,7 @@ export function loginHandler(userObj) {
 }
 
 export function createComment(commentObj) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     const token = localStorage.getItem('token')
     if (token) {
       fetch('http://localhost:5000/api/v1/comments', {
@@ -78,7 +78,11 @@ export function createComment(commentObj) {
       })
         .then((resp) => resp.json())
         .then((comment) => {
-          dispatch({ type: 'NEW_COMMENT', payload: normalize(comment).comment })
+          const commentId = comment.data.attributes.id
+          const eventId = comment.data.relationships.event.data.id
+          const userId = Object.keys(getState().currentUser)[0]
+
+          dispatch({ type: 'NEW_COMMENT', payload: normalize(comment).comment, commentId: commentId, eventId: eventId, userId: userId})
         })
         .catch(console.log)
     }
@@ -108,7 +112,7 @@ export function createEvent(eventObj) {
 }
 
 export function attendEvent(userEvent) {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     const token = localStorage.getItem('token')
     if (token) {
       fetch(`http://localhost:5000/api/v1/events/${userEvent.event_id}/rsvp`, {
@@ -121,8 +125,10 @@ export function attendEvent(userEvent) {
         body: JSON.stringify({ event: userEvent }),
       })
         .then((resp) => resp.json())
-        .then((eventObj) => {
-          dispatch({ type: 'UPDATE_EVENT', payload: eventObj })
+        .then((event) => {
+          const eventId = event.data.attributes.id
+          const userId = Object.keys(getState().currentUser)[0]
+          dispatch({ type: 'ATTEND_EVENT', payload: normalize(event).event, eventId: eventId, userId: userId})
         })
         .catch(console.log)
     }
