@@ -8,6 +8,7 @@ import { Grid, Item } from 'semantic-ui-react'
 import {selectEvents, selectEvent, selectEventActivities} from '../../redux/selectors'
 
 const EventsList = ({events, selectEvent, selectedActivity, eventActivities}) => {
+
   const filteredEvents = selectedActivity
     ? events.filter((event) => {
         if (
@@ -21,7 +22,9 @@ const EventsList = ({events, selectEvent, selectedActivity, eventActivities}) =>
     : events
 
   const renderEvents = () => {
-    return filteredEvents.map((event) => <Event key={event.id} event={event} />)
+    return filteredEvents.map((event) => {
+      return <Event key={event.id} event={event} />
+    })
   }
 
   return (
@@ -45,6 +48,7 @@ const EventsList = ({events, selectEvent, selectedActivity, eventActivities}) =>
           </Grid.Column>
         </Grid>
       </Route>
+
     </Switch>
   )
 }

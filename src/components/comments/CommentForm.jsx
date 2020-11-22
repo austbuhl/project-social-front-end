@@ -4,12 +4,12 @@ import { Button, Form } from 'semantic-ui-react'
 import { createComment } from '../../redux/actions'
 import { useHistory } from 'react-router-dom'
 
-const CommentForm = ({ eventId, createComment, currentUser }) => {
+const CommentForm = ({ eventId, createComment, loggedIn }) => {
   const [commentText, setCommentText] = useState('')
   const history = useHistory()
 
   const submitHandler = (e) => {
-    if (currentUser) {
+    if (loggedIn) {
       e.preventDefault()
       createComment({
         event_id: eventId,
@@ -34,7 +34,7 @@ const CommentForm = ({ eventId, createComment, currentUser }) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser,
+    loggedIn: state.loggedIn,
   }
 }
 

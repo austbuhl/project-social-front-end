@@ -46,6 +46,7 @@ function App({fetchEvents, fetchParks, fetchComments, fetchUsers, authorizeUser}
             <Grid container padded centered>
               <Filter />
               <Map />
+              {/* <EventsList /> */}
             </Grid>
           </Route>
         </Switch>

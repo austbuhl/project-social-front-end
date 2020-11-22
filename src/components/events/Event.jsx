@@ -1,14 +1,14 @@
 import React from 'react'
 import ActivityIcon from '../activities/ActivityIcon'
+import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import {selectEventActivities} from '../../redux/selectors'
 import { Item, Button, Icon } from 'semantic-ui-react'
+import { selectEventActivities } from '../../redux/selectors'
 
-const Event = ({ event }) => {
-
-  const activities = useSelector(state => selectEventActivities(state)(event.id))
-  const activityNames = activities.map(activity => activity.attributes.name).filter((value, index, self) => self.indexOf(value) === index)
+const Event = ({ event, eventActivities }) => {
+  const activityNames = eventActivities(event.id)
+    .map((activity) => activity.attributes.name)
+    .filter((value, index, self) => self.indexOf(value) === index)
 
   const renderActivityIcons = () => {
     return activityNames.map((activity, index) => (
@@ -38,4 +38,10 @@ const Event = ({ event }) => {
   )
 }
 
-export default Event
+const mapStateToProps = (state) => {
+  return {
+    eventActivities: selectEventActivities(state),
+  }
+}
+
+export default connect(mapStateToProps)(Event)

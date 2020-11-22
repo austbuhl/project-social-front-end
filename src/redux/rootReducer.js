@@ -7,49 +7,50 @@ const defaultState = {
   comments: {},
   users: {},
   currentUser: {},
+  loggedIn: false,
   selectedActivity: null,
 }
 
 function eventsReducer(state = defaultState.events, action) {
-  const {eventId, commentId, userId} = action
+  const { eventId, commentId, userId } = action
   const event = state[eventId]
 
   switch (action.type) {
     case 'FETCH_EVENTS':
       return action.payload
     case 'NEW_EVENT':
-      return {...state, ...action.payload}
+      return { ...state, ...action.payload }
     case 'NEW_COMMENT':
       return {
-        ...state, 
-        [eventId]: 
-          {...event, 
-            relationships: {
-              ...event.relationships,
-              comments: {
-                data: [
-                  ...event.relationships.comments.data, 
-                  {id: commentId, type: "comment"}
-                ]
-              }
-            }
-          }
-        }
-    case 'ATTEND_EVENT': 
+        ...state,
+        [eventId]: {
+          ...event,
+          relationships: {
+            ...event.relationships,
+            comments: {
+              data: [
+                ...event.relationships.comments.data,
+                { id: commentId, type: 'comment' },
+              ],
+            },
+          },
+        },
+      }
+    case 'ATTEND_EVENT':
       return {
         ...state,
-        [eventId]:
-          {...event,
-            relationships: {
-              ...event.relationships,
-              users: {
-                data: [
-                  ...event.relationships.users.data,
-                  {id: userId, type: "user"}
-                ]
-              }
-            }
-          }
+        [eventId]: {
+          ...event,
+          relationships: {
+            ...event.relationships,
+            users: {
+              data: [
+                ...event.relationships.users.data,
+                { id: userId, type: 'user' },
+              ],
+            },
+          },
+        },
       }
 
     default:
@@ -58,59 +59,58 @@ function eventsReducer(state = defaultState.events, action) {
 }
 
 function usersReducer(state = defaultState.users, action) {
-  const {eventId, commentId, userId} = action
+  const { eventId, commentId, userId } = action
   const user = state[userId]
-  switch(action.type) {
-    case 'FETCH_USERS' :
+  switch (action.type) {
+    case 'FETCH_USERS':
       return action.payload
-    case 'NEW_COMMENT': 
-    return {
-      ...state, 
-      [userId]: 
-        {...user, 
-          relationships: 
-          {
+    case 'NEW_COMMENT':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
             ...user.relationships,
             comments: {
               data: [
-              ...user.relationships.comments.data, 
-              {id: commentId, type: "comment"}
-              ]
-            }
-          }
-        }
+                ...user.relationships.comments.data,
+                { id: commentId, type: 'comment' },
+              ],
+            },
+          },
+        },
       }
     case 'NEW_EVENT':
       return {
         ...state,
-        [userId]:
-          {...user,
-            relationships: {
-              ...user.relationships,
-              events: {
-                data: [
-                  ...user.relationships.events.data,
-                  {id: eventId, type: "event"}
-                ]
-              }
-            }
-          }
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            events: {
+              data: [
+                ...user.relationships.events.data,
+                { id: eventId, type: 'event' },
+              ],
+            },
+          },
+        },
       }
-    case 'ATTEND_EVENT' :
+    case 'ATTEND_EVENT':
       return {
         ...state,
-        [userId]:
-          {...user,
-            relationships: {
-              ...user.relationships,
-              events: {
-                data: [
-                  ...user.relationships.events.data,
-                  {id: eventId, type: "event"}
-                ]
-              }
-            }
-          }
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            events: {
+              data: [
+                ...user.relationships.events.data,
+                { id: eventId, type: 'event' },
+              ],
+            },
+          },
+        },
       }
 
     default:
@@ -119,126 +119,127 @@ function usersReducer(state = defaultState.users, action) {
 }
 
 function parksReducer(state = defaultState.parks, action) {
-  const {eventId, parkId} = action
+  const { eventId, parkId } = action
   const park = state[parkId]
   switch (action.type) {
     case 'FETCH_PARKS':
       return action.payload
-    case 'NEW_EVENT' :
+    case 'NEW_EVENT':
       return {
         ...state,
-        [parkId]:
-          {
-            ...park,
-              relationships: {
-                ...park.relationships,
-                events: {
-                  data: [
-                    ...park.relationships.events.data,
-                    {id: eventId, type: "event"}
-                  ]
-                }
-              }
-          }
+        [parkId]: {
+          ...park,
+          relationships: {
+            ...park.relationships,
+            events: {
+              data: [
+                ...park.relationships.events.data,
+                { id: eventId, type: 'event' },
+              ],
+            },
+          },
+        },
       }
     default:
       return state
   }
 }
 
-function authReducer(state = defaultState.currentUser, action) {
-  const {userId, eventId, commentId} = action
-  const user = state[userId]
+function loggedInReducer(state = defaultState.loggedIn, action) {
+  switch (action.type) {
+    case 'LOGIN_USER':
+      return true
+    case 'AUTHORIZE_USER':
+      return true
+    case 'LOGOUT_USER':
+      return false
+    default:
+      return state
+  }
+}
+
+function currentUserReducer(state = defaultState.currentUser, action) {
+  const { userId, eventId, commentId } = action
+  const user = userId ? state[userId] : {}
   switch (action.type) {
     case 'LOGIN_USER':
       return action.payload
     case 'AUTHORIZE_USER':
       return action.payload
     case 'LOGOUT_USER':
-      return null
+      return {}
     case 'NEW_COMMENT':
-      return { 
-        ...state, 
-        [userId]: 
-          {...user, 
-            relationships: 
-            {
-              ...user.relationships,
-              comments: {
-                data: [
-                ...user.relationships.comments.data, 
-                {id: commentId, type: "comment"}
-                ]
-              }
-            }
-          }
-        }
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            comments: {
+              data: [
+                ...user.relationships.comments.data,
+                { id: commentId, type: 'comment' },
+              ],
+            },
+          },
+        },
+      }
     case 'NEW_EVENT':
-      return { 
-        ...state, 
-        [userId]: 
-          {...user, 
-            relationships: 
-            {
-              ...user.relationships,
-              events: {
-                data: [
-                ...user.relationships.events.data, 
-                {id: eventId, type: "event"}
-                ]
-              }
-            }
-          }
-        }
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            events: {
+              data: [
+                ...user.relationships.events.data,
+                { id: eventId, type: 'event' },
+              ],
+            },
+          },
+        },
+      }
     case 'ATTEND_EVENT':
-      return { 
-        ...state, 
-        [userId]: 
-          {...user, 
-            relationships: 
-            {
-              ...user.relationships,
-              events: {
-                data: [
-                ...user.relationships.events.data, 
-                {id: eventId, type: "event"}
-                ]
-              }
-            }
-          }
-        }
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            events: {
+              data: [
+                ...user.relationships.events.data,
+                { id: eventId, type: 'event' },
+              ],
+            },
+          },
+        },
+      }
     default:
       return state
   }
 }
 
-
-
 function commentsReducer(state = defaultState.comments, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'FETCH_COMMENTS':
       return action.payload
     case 'NEW_COMMENT':
-      return {...state, ...action.payload}
-    default: 
+      return { ...state, ...action.payload }
+    default:
       return state
   }
 }
-
-
-
 
 function activitiesReducer(state = defaultState.activities, action) {
   switch (action.type) {
     case 'FETCH_ACTIVITIES':
       return action.payload
-    default: 
+    default:
       return state
   }
 }
-
-
-
 
 function activityReducer(state = defaultState.selectedActivity, action) {
   switch (action.type) {
@@ -251,13 +252,13 @@ function activityReducer(state = defaultState.selectedActivity, action) {
   }
 }
 
-
 const rootReducer = combineReducers({
   parks: parksReducer,
   activities: activitiesReducer,
   events: eventsReducer,
   comments: commentsReducer,
-  currentUser: authReducer,
+  currentUser: currentUserReducer,
+  loggedIn: loggedInReducer,
   users: usersReducer,
   selectedActivity: activityReducer,
 })

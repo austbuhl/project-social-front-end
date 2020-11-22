@@ -2,8 +2,10 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutHandler } from '../../redux/actions'
+import { selectCurrentUser } from '../../redux/selectors'
 
-const NavBar = ({ currentUser, logoutHandler }) => {
+const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
+  console.log(currentUser)
   return (
     <div className='ui ten item menu'>
       <NavLink className='item' exact to='/'>
@@ -15,7 +17,7 @@ const NavBar = ({ currentUser, logoutHandler }) => {
       <NavLink className='item' exact to='/events'>
         Events
       </NavLink>
-      {!currentUser && (
+      {!loggedIn && (
         <>
           <NavLink className='item' exact to='/login'>
             Login
@@ -25,9 +27,9 @@ const NavBar = ({ currentUser, logoutHandler }) => {
           </NavLink>
         </>
       )}
-      {currentUser && (
+      {loggedIn && (
         <>
-          <a className='item'>Logged in as {currentUser.username}</a>
+          <a className='item'>Logged in as {currentUser.attributes.username}</a>
           <a className='item' onClick={logoutHandler}>
             Logout
           </a>
@@ -39,7 +41,8 @@ const NavBar = ({ currentUser, logoutHandler }) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser,
+    currentUser: selectCurrentUser(state),
+    loggedIn: state.loggedIn,
   }
 }
 
