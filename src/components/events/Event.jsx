@@ -1,16 +1,17 @@
 import React from 'react'
 import ActivityIcon from '../activities/ActivityIcon'
 import { NavLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import {selectEventActivities} from '../../redux/selectors'
 import { Item, Button, Icon } from 'semantic-ui-react'
 
 const Event = ({ event }) => {
-  console.log(event);
-  let uniqActivities = event.event_activities
-    .map((activity) => activity.name)
-    .filter((value, index, self) => self.indexOf(value) === index)
+
+  const activities = useSelector(state => selectEventActivities(state)(event.id))
+  const activityNames = activities.map(activity => activity.attributes.name).filter((value, index, self) => self.indexOf(value) === index)
 
   const renderActivityIcons = () => {
-    return uniqActivities.map((activity, index) => (
+    return activityNames.map((activity, index) => (
       <ActivityIcon key={index} activity={activity} />
     ))
   }
@@ -18,9 +19,9 @@ const Event = ({ event }) => {
   return (
     <Item>
       <Item.Content>
-        <Item.Header>{event.name}</Item.Header>
-        <Item.Meta>{event.num_of_people}</Item.Meta>
-        <Item.Description>{event.description}</Item.Description>
+        <Item.Header>{event.attributes.name}</Item.Header>
+        <Item.Meta>{event.attributes.num_of_people}</Item.Meta>
+        <Item.Description>{event.attributes.description}</Item.Description>
         <Item.Extra>
           <NavLink to={`/events/${event.id}`}>
             <Button primary floated='right' animated>
