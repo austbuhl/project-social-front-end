@@ -59,7 +59,22 @@ const EventsList = ({
             <Filter />
           </Grid.Column>
           <Grid.Column width={10}>
-            <h1>Events List Here</h1>
+            <h1>
+              Events Near You
+              <Pagination
+                boundaryRange={0}
+                floated='right'
+                firstItem={null}
+                lastItem={null}
+                ellipsisItem={null}
+                pointing
+                secondary
+                activePage={currentPage}
+                siblingRange={1}
+                totalPages={totalPages}
+                onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+              />
+            </h1>
             <Item.Group divided relaxed>
               {renderEvents()}
             </Item.Group>
@@ -68,20 +83,24 @@ const EventsList = ({
       </Route>
 
       <Route path='/'>
-        <h1>Events List Here</h1>
+        <h1>
+          Events Near You
+          <Pagination
+            boundaryRange={0}
+            firstItem={null}
+            lastItem={null}
+            ellipsisItem={null}
+            pointing
+            secondary
+            activePage={currentPage}
+            siblingRange={1}
+            totalPages={totalPages}
+            onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+          />
+        </h1>
         <Item.Group divided relaxed>
           {renderEvents()}
         </Item.Group>
-        <Pagination
-          boundaryRange={0}
-          activePage={currentPage}
-          ellipsisItem={null}
-          // firstItem={null}
-          // lastItem={null}
-          siblingRange={1}
-          totalPages={totalPages}
-          onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
-        />
       </Route>
     </Switch>
   )
