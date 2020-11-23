@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import Activity from '../activities/Activity'
 import EventForm from '../events/EventForm'
 import Event from '../events/Event'
-import { Button } from 'semantic-ui-react'
+import { Button, Item, Grid } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import {selectParkActivities, selectParkEvents} from '../../redux/selectors'
+import { selectParkActivities, selectParkEvents } from '../../redux/selectors'
 
 const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
   const [showForm, setShowForm] = useState(false)
@@ -28,25 +28,30 @@ const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
   }
 
   return (
-    <div>
-      <h1>{park.attributes.name}</h1>
-      <h4>{park.attributes.location}</h4>
-      <a href={park.attributes.website} target='_blank'>
-        {park.attributes.website}
-      </a>
-      <h3>Upcoming Events</h3>
-      {renderEvents()}
-      <h3>Available Activities</h3>
-      {renderActivities()}
+    <Grid container padded centered>
+      <Grid.Column width={10}>
+        <h1>{park.attributes.name}</h1>
+        <h4>{park.attributes.location}</h4>
+        <a href={park.attributes.website} target='_blank'>
+          {park.attributes.website}
+        </a>
 
-      <Button animated='fade' secondary onClick={clickHandler}>
-        <Button.Content visible>Create an Event</Button.Content>
-        <Button.Content hidden>
-          {currentUser ? 'Show Form' : 'Login'}
-        </Button.Content>
-      </Button>
-      {showForm && <EventForm park={park} />}
-    </div>
+        <h3>Available Activities</h3>
+        {renderActivities()}
+        <h3>Upcoming Events</h3>
+        <Item.Group divided relaxed>
+          {renderEvents()}
+        </Item.Group>
+
+        <Button animated='fade' secondary onClick={clickHandler}>
+          <Button.Content visible>Create an Event</Button.Content>
+          <Button.Content hidden>
+            {currentUser ? 'Show Form' : 'Login'}
+          </Button.Content>
+        </Button>
+        {showForm && <EventForm park={park} />}
+      </Grid.Column>
+    </Grid>
   )
 }
 
@@ -54,7 +59,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.currentUser,
     parkActivities: selectParkActivities(state),
-    parkEvents: selectParkEvents(state)
+    parkEvents: selectParkEvents(state),
   }
 }
 

@@ -1,11 +1,18 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutHandler } from '../../redux/actions'
-import { selectCurrentUser } from '../../redux/selectors'
+import { logoutHandler } from '../redux/actions'
+import { selectCurrentUser } from '../redux/selectors'
+import { useHistory } from 'react-router-dom'
 
 const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
-  console.log(currentUser)
+  const history = useHistory()
+
+  const logout = () => {
+    logoutHandler()
+    history.push('/')
+  }
+
   return (
     <div className='ui ten item menu'>
       <NavLink className='item' exact to='/'>
@@ -29,8 +36,10 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
       )}
       {loggedIn && (
         <>
-          <a className='item'>Logged in as {currentUser.attributes.username}</a>
-          <a className='item' onClick={logoutHandler}>
+          <NavLink className='item' to='/profile'>
+            Logged in as {currentUser.attributes.username}
+          </NavLink>
+          <a className='item' onClick={logout}>
             Logout
           </a>
         </>

@@ -5,6 +5,24 @@ export const selectCurrentUser = (state) => {
   }
 }
 
+export const selectCurrentUserEvents = (state) => {
+  const user = selectCurrentUser(state)
+  if (user) {
+    const eventIds = user.relationships.events.data.map((event) => event.id)
+    return eventIds.map((eventId) => selectEvent(state)(eventId))
+  }
+}
+
+export const selectCurrentUserActivities = (state) => {
+  const user = selectCurrentUser(state)
+  if (user) {
+    const eventIds = user.relationships.events.data.map((event) => event.id)
+    return eventIds
+      .map((eventId) => selectEventActivities(state)(eventId))
+      .flat(1)
+  }
+}
+
 export const selectParks = (state) => Object.values(state.parks)
 export const selectActivities = (state) => Object.values(state.activities)
 
@@ -71,5 +89,13 @@ export const selectEventActivities = (state) => (eventId) => {
       (activity) => activity.id
     )
     return activityIds.map((activityId) => selectActivity(state, activityId))
+  }
+}
+
+export const selectEventPark = (state) => (eventId) => {
+  const event = selectEvent(state)(eventId)
+  if (event) {
+    const parkId = event.relationships.park.data.id
+    return selectPark(state)(parkId)
   }
 }

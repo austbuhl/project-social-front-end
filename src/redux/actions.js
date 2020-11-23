@@ -48,6 +48,7 @@ export function fetchUsers() {
       .then((users) => {
         dispatch({ type: 'FETCH_USERS', payload: normalize(users).user })
       })
+      .catch(console.log)
   }
 }
 

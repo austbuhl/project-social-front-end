@@ -3,9 +3,11 @@ import ActivityIcon from '../activities/ActivityIcon'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Item, Button, Icon } from 'semantic-ui-react'
-import { selectEventActivities } from '../../redux/selectors'
+import { selectEventActivities, selectEventPark } from '../../redux/selectors'
 
-const Event = ({ event, eventActivities }) => {
+const Event = ({ event, eventActivities, eventLocation }) => {
+  const park = eventLocation(event.id)
+
   const activityNames = eventActivities(event.id)
     .map((activity) => activity.attributes.name)
     .filter((value, index, self) => self.indexOf(value) === index)
@@ -20,7 +22,7 @@ const Event = ({ event, eventActivities }) => {
     <Item>
       <Item.Content>
         <Item.Header>{event.attributes.name}</Item.Header>
-        <Item.Meta>{event.attributes.num_of_people}</Item.Meta>
+        <Item.Meta>{park.attributes.name}</Item.Meta>
         <Item.Description>{event.attributes.description}</Item.Description>
         <Item.Extra>
           <NavLink to={`/events/${event.id}`}>
@@ -41,6 +43,7 @@ const Event = ({ event, eventActivities }) => {
 const mapStateToProps = (state) => {
   return {
     eventActivities: selectEventActivities(state),
+    eventLocation: selectEventPark(state),
   }
 }
 

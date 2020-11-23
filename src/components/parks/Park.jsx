@@ -3,11 +3,15 @@ import ActivityIcon from '../activities/ActivityIcon'
 import { NavLink } from 'react-router-dom'
 import { Item, Button, Icon } from 'semantic-ui-react'
 import { useSelector } from 'react-redux'
-import {selectParkActivities} from '../../redux/selectors'
+import { selectParkActivities } from '../../redux/selectors'
 
 const Park = ({ park }) => {
-  const activities = useSelector(state => selectParkActivities(state)(park.id))
-  const activityNames = activities.map(activity => activity.attributes.name).filter((value, index, self) => self.indexOf(value) === index)
+  const activities = useSelector((state) =>
+    selectParkActivities(state)(park.id)
+  )
+  const activityNames = activities
+    .map((activity) => activity.attributes.name)
+    .filter((value, index, self) => self.indexOf(value) === index)
 
   const renderActivityIcons = () => {
     return activityNames.map((activity, index) => (

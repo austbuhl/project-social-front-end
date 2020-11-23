@@ -1,14 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Event from './Event'
-import EventDetail from './EventDetail'
-import Filter from '../map/Filter'
+import Event from '../components/events/Event'
+import EventDetail from '../components/events/EventDetail'
+import Filter from '../components/map/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid, Item } from 'semantic-ui-react'
-import {selectEvents, selectEvent, selectEventActivities} from '../../redux/selectors'
+import {
+  selectEvents,
+  selectEvent,
+  selectEventActivities,
+} from '../redux/selectors'
 
-const EventsList = ({events, selectEvent, selectedActivity, eventActivities}) => {
-
+const EventsList = ({
+  events,
+  selectEvent,
+  selectedActivity,
+  eventActivities,
+}) => {
   const filteredEvents = selectedActivity
     ? events.filter((event) => {
         if (
@@ -31,7 +39,7 @@ const EventsList = ({events, selectEvent, selectedActivity, eventActivities}) =>
     <Switch>
       <Route
         path='/events/:id'
-        render={({match}) => {
+        render={({ match }) => {
           const event = selectEvent(parseInt(match.params.id))
           return <EventDetail event={event} />
         }}
@@ -39,8 +47,10 @@ const EventsList = ({events, selectEvent, selectedActivity, eventActivities}) =>
 
       <Route path='/events'>
         <Grid container padded centered>
-          <Filter />
-          <Grid.Column width={10} textAlign='center'>
+          <Grid.Column width={1}>
+            <Filter />
+          </Grid.Column>
+          <Grid.Column width={10}>
             <h1>Events List Here</h1>
             <Item.Group divided relaxed>
               {renderEvents()}
@@ -49,6 +59,12 @@ const EventsList = ({events, selectEvent, selectedActivity, eventActivities}) =>
         </Grid>
       </Route>
 
+      <Route path='/'>
+        <h1>Events List Here</h1>
+        <Item.Group divided relaxed>
+          {renderEvents()}
+        </Item.Group>
+      </Route>
     </Switch>
   )
 }
@@ -58,7 +74,7 @@ const mapStateToProps = (state) => {
     events: selectEvents(state),
     selectEvent: selectEvent(state),
     selectedActivity: state.selectedActivity,
-    eventActivities: selectEventActivities(state)
+    eventActivities: selectEventActivities(state),
   }
 }
 
