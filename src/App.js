@@ -38,26 +38,28 @@ function App({
   return (
     <div className='App'>
       <NavBar />
-      <Switch>
-        <Route path='/events'>
-          <EventsList />
-        </Route>
-        <Route path='/parks'>
-          <ParksList />
-        </Route>
-        <Route path='/login'>
-          <Login />
-        </Route>
-        <Route path='/signup'>
-          <Signup />
-        </Route>
-        <Route path='/profile'>
-          <Profile />
-        </Route>
-        <Route path='/'>
-          <Home />
-        </Route>
-      </Switch>
+      <div className='main'>
+        <Switch>
+          <Route path='/events'>
+            <EventsList />
+          </Route>
+          <Route path='/parks'>
+            <ParksList />
+          </Route>
+          <Route path='/login'>
+            <Login />
+          </Route>
+          <Route path='/signup'>
+            <Signup />
+          </Route>
+          <Route path='/profile'>
+            <Profile />
+          </Route>
+          <Route path='/'>
+            <Home />
+          </Route>
+        </Switch>
+      </div>
     </div>
   )
 }

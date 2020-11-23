@@ -41,3 +41,7 @@
   z-index: 5;
   position: absolute;
 }
+
+.main {
+  margin-top: 2em;
+}

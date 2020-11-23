@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import Event from '../components/events/Event'
 import EventDetail from '../components/events/EventDetail'
 import Filter from '../components/map/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { Grid, Item } from 'semantic-ui-react'
+import { Grid, Item, Pagination } from 'semantic-ui-react'
 import {
   selectEvents,
   selectEvent,
@@ -17,6 +17,9 @@ const EventsList = ({
   selectedActivity,
   eventActivities,
 }) => {
+  const [currentPage, setCurrentPage] = useState(1)
+  const eventsPerPage = 5
+
   const filteredEvents = selectedActivity
     ? events.filter((event) => {
         if (
@@ -29,12 +32,17 @@ const EventsList = ({
       })
     : events
 
-  const renderEvents = () => {
-    return filteredEvents.map((event) => {
-      return <Event key={event.id} event={event} />
-    })
-  }
+  let totalPages = Math.ceil(filteredEvents.length / eventsPerPage)
+  let indexOfLastEvent = currentPage * eventsPerPage
+  let indexOfFirstEvent = indexOfLastEvent - eventsPerPage
 
+  const renderEvents = () => {
+    return filteredEvents
+      .slice(indexOfFirstEvent, indexOfLastEvent)
+      .map((event) => {
+        return <Event key={event.id} event={event} />
+      })
+  }
   return (
     <Switch>
       <Route
@@ -64,6 +72,16 @@ const EventsList = ({
         <Item.Group divided relaxed>
           {renderEvents()}
         </Item.Group>
+        <Pagination
+          boundaryRange={0}
+          activePage={currentPage}
+          ellipsisItem={null}
+          // firstItem={null}
+          // lastItem={null}
+          siblingRange={1}
+          totalPages={totalPages}
+          onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+        />
       </Route>
     </Switch>
   )
