@@ -25,7 +25,6 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
     width: '40vw',
     height: '85vh',
   }
-
   const center = {
     lat: 40.73061,
     lng: -73.935242,
@@ -50,7 +49,6 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
 
   const onMapLoad = React.useCallback((map) => {
     mapRef.current = map
-    console.log(mapRef)
   }, [])
 
   useEffect(() => {

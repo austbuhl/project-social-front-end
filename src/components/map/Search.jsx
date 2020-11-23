@@ -27,7 +27,7 @@ const Search = ({ panTo }) => {
     requestOptions: {
       location: { lat: () => center.lat, lng: () => center.lng },
       // distance in meters
-      radius: 200 * 1000,
+      radius: 20 * 1000,
     },
   })
 
@@ -36,9 +36,9 @@ const Search = ({ panTo }) => {
       onSelect={async (address) => {
         setValue(address, false)
         clearSuggestions()
-
         try {
           const results = await getGeocode({ address })
+          console.log(results)
           const { lat, lng } = await getLatLng(results[0])
           panTo({ lat, lng })
         } catch (error) {

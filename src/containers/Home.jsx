@@ -6,7 +6,7 @@ import { Grid, Segment } from 'semantic-ui-react'
 
 const Home = () => {
   return (
-    <Grid container fluid>
+    <Grid container fluid padded>
       <Grid.Column width={1}>
         <Filter />
       </Grid.Column>

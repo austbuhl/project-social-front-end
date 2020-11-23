@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { logoutHandler } from '../redux/actions'
 import { selectCurrentUser } from '../redux/selectors'
 import { useHistory } from 'react-router-dom'
+import { Menu } from 'semantic-ui-react'
 
 const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
   const history = useHistory()
@@ -14,7 +15,8 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
   }
 
   return (
-    <div className='ui ten item menu'>
+    // <div className='ui ten item menu'>
+    <Menu widths={10} fixed='top'>
       <NavLink className='item' exact to='/'>
         Home
       </NavLink>
@@ -44,7 +46,8 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
           </a>
         </>
       )}
-    </div>
+      {/* </div> */}
+    </Menu>
   )
 }
 
