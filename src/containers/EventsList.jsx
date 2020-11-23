@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Event from '../components/events/Event'
 import EventDetail from '../components/events/EventDetail'
 import Filter from '../components/map/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { Grid, Item, Pagination } from 'semantic-ui-react'
+import { Grid, Item } from 'semantic-ui-react'
+import Paginate from '../components/home/Paginate'
 import {
   selectEvents,
   selectEvent,
@@ -19,6 +20,10 @@ const EventsList = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 5
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [selectedActivity])
 
   const filteredEvents = selectedActivity
     ? events.filter((event) => {
@@ -61,18 +66,11 @@ const EventsList = ({
           <Grid.Column width={10}>
             <h1>
               Events Near You
-              <Pagination
-                boundaryRange={0}
-                floated='right'
-                firstItem={null}
-                lastItem={null}
-                ellipsisItem={null}
-                pointing
-                secondary
-                activePage={currentPage}
-                siblingRange={1}
+              <Paginate
+                currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+                setCurrentPage={setCurrentPage}
+                floated='right'
               />
             </h1>
             <Item.Group divided relaxed>
@@ -85,17 +83,10 @@ const EventsList = ({
       <Route path='/'>
         <h1>
           Events Near You
-          <Pagination
-            boundaryRange={0}
-            firstItem={null}
-            lastItem={null}
-            ellipsisItem={null}
-            pointing
-            secondary
-            activePage={currentPage}
-            siblingRange={1}
+          <Paginate
+            currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+            setCurrentPage={setCurrentPage}
           />
         </h1>
         <Item.Group divided relaxed>

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Park from '../components/parks/Park'
 import ParkDetail from '../components/parks/ParkDetail'
 import Filter from '../components/map/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid, Item } from 'semantic-ui-react'
+import Paginate from '../components/home/Paginate'
 import {
   selectParks,
   selectPark,
@@ -12,6 +13,13 @@ import {
 } from '../redux/selectors'
 
 const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
+  const [currentPage, setCurrentPage] = useState(1)
+  const parksPerPage = 5
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [selectedActivity])
+
   const filteredParks = selectedActivity
     ? parks.filter((park) => {
         if (
@@ -24,8 +32,13 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
       })
     : parks
 
+  const totalPages = Math.ceil(filteredParks.length / parksPerPage)
+  const indexOfLastPark = currentPage * parksPerPage
+  const indexOfFirstPark = indexOfLastPark - parksPerPage
   const renderParks = () => {
-    return filteredParks.map((park) => <Park key={park.id} park={park} />)
+    return filteredParks
+      .slice(indexOfFirstPark, indexOfLastPark)
+      .map((park) => <Park key={park.id} park={park} />)
   }
 
   return (
@@ -44,7 +57,15 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
             <Filter />
           </Grid.Column>
           <Grid.Column width={10}>
-            <h1>Parks List Here</h1>
+            <h1>
+              Parks Near You
+              <Paginate
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setCurrentPage={setCurrentPage}
+                floated='right'
+              />
+            </h1>
             <Item.Group divided relaxed>
               {renderParks()}
             </Item.Group>
