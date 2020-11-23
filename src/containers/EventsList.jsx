@@ -37,9 +37,9 @@ const EventsList = ({
       })
     : events
 
-  let totalPages = Math.ceil(filteredEvents.length / eventsPerPage)
-  let indexOfLastEvent = currentPage * eventsPerPage
-  let indexOfFirstEvent = indexOfLastEvent - eventsPerPage
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage)
+  const indexOfLastEvent = currentPage * eventsPerPage
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage
 
   const renderEvents = () => {
     return filteredEvents
