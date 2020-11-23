@@ -4,7 +4,6 @@ import {
   useLoadScript,
   Marker,
   InfoWindow,
-  StreetViewPanorama,
 } from '@react-google-maps/api'
 import ActivityIcon from '../activities/ActivityIcon'
 import { connect } from 'react-redux'
@@ -13,7 +12,6 @@ import { Dimmer, Loader, Segment, Grid } from 'semantic-ui-react'
 import { selectParks, selectParkActivities } from '../../redux/selectors'
 import Search from './Search'
 import Locate from './Locate'
-// import { formatRelative } from 'date-fns'
 
 import '@reach/combobox/styles.css'
 

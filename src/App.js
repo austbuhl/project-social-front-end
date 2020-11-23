@@ -11,14 +11,13 @@ import {
 import { Switch, Route } from 'react-router-dom'
 import EventsList from './containers/EventsList'
 import ParksList from './containers/ParksList'
-import Map from './components/map/Map'
+
 import NavBar from './containers/NavBar'
 import Login from './components/user/Login'
 import Signup from './components/user/Signup'
 import Profile from './components/user/Profile'
-import Filter from './components/map/Filter'
+
 import Home from './containers/Home'
-import { Container, Grid } from 'semantic-ui-react'
 
 function App({
   fetchEvents,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect, useSelector } from 'react-redux'
-import { Form, Header, Button, Modal } from 'semantic-ui-react'
+import { Form, Button, Modal } from 'semantic-ui-react'
 import { createEvent } from '../../redux/actions'
 import { selectParkActivities } from '../../redux/selectors'
 

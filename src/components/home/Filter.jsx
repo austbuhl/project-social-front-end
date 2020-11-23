@@ -17,6 +17,7 @@ import {
   FaLeaf,
   FaRunning,
   FaHippo,
+  FaUndoAlt,
 } from 'react-icons/fa'
 import {
   GiCricketBat,
@@ -28,12 +29,17 @@ import {
 const Filter = ({ selectedActivity, setActivity, resetActivity }) => {
   const clickHandler = (e) => {
     let activity = e.target.closest('button').name
-    selectedActivity !== activity ? setActivity(activity) : resetActivity()
+    if (activity === 'Reset') {
+      resetActivity()
+    } else {
+      selectedActivity !== activity ? setActivity(activity) : resetActivity()
+    }
   }
 
   return (
     <div onClick={clickHandler}>
       <Button.Group icon floated='left' vertical size='large' basic>
+        <Button name='Reset' icon={<FaUndoAlt />} />
         <Button
           name='Art'
           active={selectedActivity === 'Art'}

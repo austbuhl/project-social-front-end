@@ -1,8 +1,10 @@
 import React from 'react'
+import { MdGpsFixed } from 'react-icons/md'
+import { Button } from 'semantic-ui-react'
 
 const Locate = ({ panTo }) => {
   return (
-    <button
+    <Button
       onClick={() => {
         navigator.geolocation.getCurrentPosition(
           (position) =>
@@ -13,9 +15,8 @@ const Locate = ({ panTo }) => {
           () => null
         )
       }}
-    >
-      GEOLOCATE
-    </button>
+      icon={<MdGpsFixed />}
+    ></Button>
   )
 }
 

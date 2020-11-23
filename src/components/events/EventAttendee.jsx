@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Image } from 'semantic-ui-react'
+import { List } from 'semantic-ui-react'
 const EventAttendee = ({ user }) => {
   return (
     <List.Item>

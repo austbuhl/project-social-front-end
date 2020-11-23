@@ -9,8 +9,7 @@ import { selectParkActivities, selectParkEvents } from '../../redux/selectors'
 import { StreetViewPanorama, GoogleMap } from '@react-google-maps/api'
 import Paginate from '../home/Paginate'
 
-const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
-  const [showForm, setShowForm] = useState(false)
+const ParkDetail = ({ park, loggedIn, parkActivities, parkEvents }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [open, setOpen] = useState(false)
   const history = useHistory()
@@ -22,7 +21,6 @@ const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
     width: '400px',
     height: '400px',
   }
-
   const renderActivities = () => {
     return activities.map((activity) => (
       <Activity key={activity.id} activity={activity} />
@@ -37,9 +35,7 @@ const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
       .map((event) => <Event key={event.id} event={event} />)
   }
   const clickHandler = () => {
-    currentUser
-      ? setShowForm(true)
-      : history.push('/login', history.location.pathname)
+    loggedIn ? setOpen(true) : history.push('/login', history.location.pathname)
   }
 
   return (
@@ -55,15 +51,16 @@ const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
             <h3>Available Activities</h3>
             {renderActivities()}
             <br />
+
             <Modal
               onClose={() => setOpen(false)}
-              onOpen={() => setOpen(true)}
+              onOpen={clickHandler}
               open={open}
               trigger={
                 <Button animated='fade' secondary>
                   <Button.Content visible>Create an Event</Button.Content>
                   <Button.Content hidden>
-                    {currentUser ? 'Show Form' : 'Login'}
+                    {loggedIn ? 'Show Form' : 'Login'}
                   </Button.Content>
                 </Button>
               }
@@ -111,7 +108,7 @@ const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.currentUser,
+    loggedIn: state.loggedIn,
     parkActivities: selectParkActivities(state),
     parkEvents: selectParkEvents(state),
   }
