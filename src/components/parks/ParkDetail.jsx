@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Activity from '../activities/Activity'
 import EventForm from '../events/EventForm'
 import Event from '../events/Event'
-import { Button, Item, Grid, Container } from 'semantic-ui-react'
+import { Button, Item, Grid, Container, Modal } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
 import { selectParkActivities, selectParkEvents } from '../../redux/selectors'
 import { StreetViewPanorama, GoogleMap } from '@react-google-maps/api'
@@ -11,10 +11,11 @@ import Paginate from '../home/Paginate'
 
 const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
   const [showForm, setShowForm] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [open, setOpen] = useState(false)
   const history = useHistory()
   const activities = parkActivities(park.id)
   const events = parkEvents(park.id)
-  const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 3
 
   const mapContainerStyle = {
@@ -53,6 +54,22 @@ const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
             </a>
             <h3>Available Activities</h3>
             {renderActivities()}
+            <br />
+            <Modal
+              onClose={() => setOpen(false)}
+              onOpen={() => setOpen(true)}
+              open={open}
+              trigger={
+                <Button animated='fade' secondary>
+                  <Button.Content visible>Create an Event</Button.Content>
+                  <Button.Content hidden>
+                    {currentUser ? 'Show Form' : 'Login'}
+                  </Button.Content>
+                </Button>
+              }
+            >
+              <EventForm park={park} />
+            </Modal>
           </Grid.Column>
           <Grid.Column width={6}>
             <GoogleMap mapContainerStyle={mapContainerStyle}>
@@ -67,27 +84,24 @@ const ParkDetail = ({ park, currentUser, parkActivities, parkEvents }) => {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row centered>
+          <Grid.Column width={5}>
+            <h3>Upcoming Events</h3>
+          </Grid.Column>
+
+          <Grid.Column width={5}>
+            <Paginate
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+              floated='right'
+            />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row centered>
           <Grid.Column width={10}>
-            <h3>
-              Upcoming Events
-              <Paginate
-                currentPage={currentPage}
-                totalPages={totalPages}
-                setCurrentPage={setCurrentPage}
-                floated='right'
-              />{' '}
-            </h3>
             <Item.Group divided relaxed>
               {renderEvents()}
             </Item.Group>
-
-            <Button animated='fade' secondary onClick={clickHandler}>
-              <Button.Content visible>Create an Event</Button.Content>
-              <Button.Content hidden>
-                {currentUser ? 'Show Form' : 'Login'}
-              </Button.Content>
-            </Button>
-            {showForm && <EventForm park={park} />}
           </Grid.Column>
         </Grid.Row>
       </Grid>

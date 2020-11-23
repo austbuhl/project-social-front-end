@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { connect, useSelector } from 'react-redux'
-import { Form, Header, Button } from 'semantic-ui-react'
+import { Form, Header, Button, Modal } from 'semantic-ui-react'
 import { createEvent } from '../../redux/actions'
-import {selectParkActivities} from '../../redux/selectors'
+import { selectParkActivities } from '../../redux/selectors'
 
 const EventForm = ({ park, createEvent }) => {
   const initialState = {
@@ -16,7 +16,9 @@ const EventForm = ({ park, createEvent }) => {
   }
 
   const [eventData, setEventData] = useState(initialState)
-  const activities = useSelector(state => selectParkActivities(state)(park.id))
+  const activities = useSelector((state) =>
+    selectParkActivities(state)(park.id)
+  )
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -31,84 +33,95 @@ const EventForm = ({ park, createEvent }) => {
   }))
 
   return (
-    <Form
-      onChange={(e) =>
-        setEventData((prevState) => ({
-          ...prevState,
-          [e.target.name]: e.target.value,
-        }))
-      }
-      onSubmit={submitHandler}
-    >
-      <Header>Create an Event</Header>
-      <Form.Field>
-        <Form.Group widths='equal'>
-          <Form.Input
-            label='Event Name'
-            name='name'
-            placeholder='Event Name'
-            value={eventData.name}
-          />
-          <Form.Input
-            readOnly
-            label='Location'
-            name='park'
-            placeholder='Location'
-            value={park.attributes.name}
-          />
-          <Form.Dropdown
-            fluid
-            onChange={(e, { value }) =>
-              setEventData((prevState) => ({
-                ...prevState,
-                activities: value,
-              }))
-            }
-            multiple
-            selection
-            name='activities'
-            label='Select Activities'
-            options={options}
-            values={eventData.activities}
-            placeholder='Select your Activity'
-          />
-        </Form.Group>
-        <Form.TextArea
-          label='Description'
-          name='description'
-          placeholder='Event Description'
-          value={eventData.description}
-        />
-        <Form.Group widths='equal'>
-          <Form.Input
-            type='number'
-            label='Number of People'
-            name='num_of_people'
-            placeholder='Number of People'
-            value={eventData.num_of_people}
-          />
-          <Form.Input
-            type='date'
-            label='Date'
-            name='date'
-            value={eventData.date}
-          />
-          <Form.Input
-            type='time'
-            label='Time'
-            name='time'
-            value={eventData.time}
-          />
-        </Form.Group>
-      </Form.Field>
+    <>
+      <Modal.Header>Create an Event</Modal.Header>
+      <Modal.Content>
+        <Form
+          onChange={(e) =>
+            setEventData((prevState) => ({
+              ...prevState,
+              [e.target.name]: e.target.value,
+            }))
+          }
+          onSubmit={submitHandler}
+        >
+          <Form.Field>
+            <Form.Group widths='equal'>
+              <Form.Input
+                required
+                label='Event Name'
+                name='name'
+                placeholder='Event Name'
+                value={eventData.name}
+              />
+              <Form.Input
+                readOnly
+                label='Location'
+                name='park'
+                placeholder='Location'
+                value={park.attributes.name}
+              />
+              <Form.Dropdown
+                fluid
+                onChange={(e, { value }) =>
+                  setEventData((prevState) => ({
+                    ...prevState,
+                    activities: value,
+                  }))
+                }
+                multiple
+                selection
+                name='activities'
+                label='Select Activities'
+                options={options}
+                values={eventData.activities}
+                placeholder='Select your Activity'
+              />
+            </Form.Group>
+            <Form.TextArea
+              required
+              label='Description'
+              name='description'
+              placeholder='Event Description'
+              value={eventData.description}
+            />
+            <Form.Group widths='equal'>
+              <Form.Input
+                required
+                type='number'
+                label='Number of People'
+                name='num_of_people'
+                placeholder='Number of People'
+                value={eventData.num_of_people}
+              />
+              <Form.Input
+                required
+                type='date'
+                label='Date'
+                name='date'
+                value={eventData.date}
+              />
+              <Form.Input
+                required
+                type='time'
+                label='Time'
+                name='time'
+                value={eventData.time}
+              />
+            </Form.Group>
+          </Form.Field>
 
-      <Button
-        content='Create Event'
-        labelPosition='left'
-        icon='calendar check outline'
-        primary
-      />
-    </Form>
+          <Button
+            content='Create Event'
+            labelPosition='left'
+            icon='calendar check outline'
+            primary
+            style={{ width: '350px', marginLeft: '235px' }}
+            // fluid
+          />
+        </Form>
+      </Modal.Content>
+    </>
   )
 }
 
