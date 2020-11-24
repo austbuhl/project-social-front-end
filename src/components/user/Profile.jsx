@@ -52,8 +52,8 @@ const Profile = ({ currentUser, events, activities }) => {
     <Grid container padded centered>
       <Grid.Row centered>
         <Grid.Column width={10}>
-          <h1>Profile Page</h1>
-          <h3>{currentUser.attributes.username}</h3>
+          <h1>Your Profile</h1>
+          <h2>{currentUser.attributes.username}</h2>
           <h3>Your Favorite Activities</h3>
           {renderFavActivities()}
         </Grid.Column>

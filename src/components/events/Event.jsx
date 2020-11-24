@@ -7,8 +7,9 @@ import { selectEventActivities, selectEventPark } from '../../redux/selectors'
 
 const Event = ({ event, eventActivities, eventLocation }) => {
   const park = eventLocation(event.id)
+  const activities = eventActivities(event.id)
 
-  const activityNames = eventActivities(event.id)
+  const activityNames = activities
     .map((activity) => activity.attributes.name)
     .filter((value, index, self) => self.indexOf(value) === index)
 
@@ -17,12 +18,14 @@ const Event = ({ event, eventActivities, eventLocation }) => {
       <ActivityIcon key={index} activity={activity} />
     ))
   }
-
+  if (!park) {
+    console.log(event)
+  }
   return (
     <Item>
       <Item.Content>
         <Item.Header>{event.attributes.name}</Item.Header>
-        <Item.Meta>{park.attributes.name}</Item.Meta>
+        <Item.Meta>{park ? park.attributes.name : null}</Item.Meta>
         <Item.Description>{event.attributes.description}</Item.Description>
         <Item.Extra>
           <NavLink to={`/events/${event.id}`}>
