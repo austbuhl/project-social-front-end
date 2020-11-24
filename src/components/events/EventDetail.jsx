@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import moment from 'moment'
 import CommentsList from '../comments/CommentsList'
 import CommentForm from '../comments/CommentForm'
 import RSVPButton from './RSVPButton'
@@ -25,6 +26,9 @@ const EventDetail = ({
   const attendees = eventUsers(event.id)
   const comments = eventComments(event.id)
   const activities = eventActivities(event.id)
+  const time = moment.utc(event.attributes.time).format('LT')
+  const date = moment.utc(event.attributes.date).format('ddd, MMM Do YYYY')
+  console.log(date)
 
   const renderAttendees = () => {
     return attendees.map((user) => <EventAttendee key={user.id} user={user} />)
@@ -48,11 +52,26 @@ const EventDetail = ({
         <NavLink to={`/parks/${park.id}`}>
           <h3>Location: {park.attributes.name}</h3>
         </NavLink>
-        <h4>Details: {event.attributes.description}</h4>
+        <br />
+        <div>
+          <strong>Date:</strong> {date}
+        </div>
+        <div>
+          <strong>Time:</strong> {time}
+        </div>
+        <h4>Event Description: {event.attributes.description}</h4>
         {renderActivityIcons()}
-        <p>People Needed: {event.attributes.numOfPeople} </p>
-        <p>Currently Going: {event.relationships.users.data.length} </p>
-        <List animated={false} verticalAlign='middle'>
+
+        <br />
+        <br />
+        <div>
+          <strong>People Needed:</strong> {event.attributes.numOfPeople}{' '}
+        </div>
+        <div>
+          <strong>Currently Going:</strong>{' '}
+          {event.relationships.users.data.length}{' '}
+        </div>
+        <List selection verticalAlign='middle' divided>
           {renderAttendees()}
         </List>
         <RSVPButton eventId={event.id} />

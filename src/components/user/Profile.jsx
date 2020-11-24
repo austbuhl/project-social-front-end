@@ -53,15 +53,15 @@ const Profile = ({ user, userEvents, userActivities }) => {
     <Grid container padded centered>
       <Grid.Row centered>
         <Grid.Column width={10}>
-          <h1>Your Profile</h1>
+          <h1>Profile</h1>
           <h2>{user.attributes.username}</h2>
-          <h3>Your Favorite Activities</h3>
+          <h3>Favorite Activities</h3>
           {renderFavActivities()}
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column width={5}>
-          <h3>Your Events</h3>
+          <h3>Upcoming Events</h3>
         </Grid.Column>
         <Grid.Column width={5}>
           <Paginate

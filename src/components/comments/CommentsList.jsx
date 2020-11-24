@@ -16,12 +16,9 @@ const CommentsList = ({ comments }) => {
   const indexOfLastComment = firstComment + 3
 
   const renderComments = () => {
-    return (
-      sortedComments
-        .slice(firstComment, indexOfLastComment)
-        // .slice(commentsToShow)
-        .map((comment) => <CommentDetail key={comment.id} comment={comment} />)
-    )
+    return sortedComments
+      .slice(firstComment, indexOfLastComment)
+      .map((comment) => <CommentDetail key={comment.id} comment={comment} />)
   }
 
   return (

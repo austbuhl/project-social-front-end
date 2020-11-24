@@ -67,3 +67,7 @@
   display: flex;
   justify-content: center;
 }
+
+svg {
+  margin: 0 0.1em;
+}
