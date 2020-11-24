@@ -37,21 +37,7 @@ function eventsReducer(state = defaultState.events, action) {
         },
       }
     case 'ATTEND_EVENT':
-      return {
-        ...state,
-        [eventId]: {
-          ...event,
-          relationships: {
-            ...event.relationships,
-            users: {
-              data: [
-                ...event.relationships.users.data,
-                { id: userId, type: 'user' },
-              ],
-            },
-          },
-        },
-      }
+      return { ...state, ...action.payload }
 
     default:
       return state
@@ -105,8 +91,8 @@ function usersReducer(state = defaultState.users, action) {
             ...user.relationships,
             events: {
               data: [
-                ...user.relationships.events.data,
                 { id: eventId, type: 'event' },
+                ...user.relationships.events.data,
               ],
             },
           },
@@ -161,6 +147,7 @@ function loggedInReducer(state = defaultState.loggedIn, action) {
 function currentUserReducer(state = defaultState.currentUser, action) {
   const { userId, eventId, commentId } = action
   const user = userId ? state[userId] : {}
+
   switch (action.type) {
     case 'LOGIN_USER':
       return action.payload
@@ -177,8 +164,8 @@ function currentUserReducer(state = defaultState.currentUser, action) {
             ...user.relationships,
             comments: {
               data: [
-                ...user.relationships.comments.data,
                 { id: commentId, type: 'comment' },
+                ...user.relationships.comments.data,
               ],
             },
           },

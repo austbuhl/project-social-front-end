@@ -18,9 +18,7 @@ const Event = ({ event, eventActivities, eventLocation }) => {
       <ActivityIcon key={index} activity={activity} />
     ))
   }
-  if (!park) {
-    console.log(event)
-  }
+
   return (
     <Item>
       <Item.Content>
@@ -29,7 +27,7 @@ const Event = ({ event, eventActivities, eventLocation }) => {
         <Item.Description>{event.attributes.description}</Item.Description>
         <Item.Extra>
           <NavLink to={`/events/${event.id}`}>
-            <Button primary floated='right' animated>
+            <Button primary floated='right' animated size='small'>
               <Button.Content visible>More Info</Button.Content>
               <Button.Content hidden>
                 <Icon name='arrow right' />

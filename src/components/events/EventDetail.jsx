@@ -40,7 +40,7 @@ const EventDetail = ({
     ))
   }
 
-  console.log(event)
+  console.log(attendees)
   return (
     <Grid container padded centered>
       <Grid.Column width={10}>

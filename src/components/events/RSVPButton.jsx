@@ -16,7 +16,6 @@ const RSVPButton = ({ eventId, loggedIn, attendEvent }) => {
 
   return <Button content='RSVP' onClick={clickHandler} />
 }
-
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn,
