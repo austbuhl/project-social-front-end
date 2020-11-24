@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { loginHandler } from '../../redux/actions'
-import { Form, Button } from 'semantic-ui-react'
+import { Form, Button, Segment, Grid } from 'semantic-ui-react'
 import { useHistory, NavLink } from 'react-router-dom'
 import SuccessMessage from './SuccessMessage'
 
@@ -40,31 +40,34 @@ const Login = ({ loginHandler }) => {
       [e.target.name]: e.target.value,
     }))
   }
-  console.log(redirectTime)
   return (
-    <Form onSubmit={submitHandler}>
-      <Form.Input
-        label='Username'
-        name='username'
-        placeholder='Enter Username'
-        value={userInfo.username}
-        onChange={changeHandler}
-      />
+    <Segment>
+      <Form onSubmit={submitHandler}>
+        <Form.Input
+          label='Username'
+          name='username'
+          placeholder='Enter Username'
+          value={userInfo.username}
+          onChange={changeHandler}
+        />
 
-      <Form.Input
-        type='password'
-        label='Password'
-        name='password'
-        placeholder='Enter Password'
-        value={userInfo.password}
-        onChange={changeHandler}
-      />
-      {successMsg && (
-        <SuccessMessage header={'Login Succesful'} seconds={redirectTime} />
-      )}
-      <Button content='Login' labelPosition='left' icon='user' primary />
-      <NavLink to='/signup'>Don't have an account?</NavLink>
-    </Form>
+        <Form.Input
+          type='password'
+          label='Password'
+          name='password'
+          placeholder='Enter Password'
+          value={userInfo.password}
+          onChange={changeHandler}
+        />
+        {successMsg && (
+          <SuccessMessage header={'Login Succesful'} seconds={redirectTime} />
+        )}
+        <Button content='Login' labelPosition='left' icon='user' primary />
+        <div>
+          <NavLink to='/signup'>Don't have an account?</NavLink>
+        </div>
+      </Form>
+    </Segment>
   )
 }
 

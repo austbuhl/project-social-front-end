@@ -82,18 +82,26 @@ const EventsList = ({
       </Route>
 
       <Route path='/'>
-        <h1>
-          Events Near You
-          <Paginate
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setCurrentPage={setCurrentPage}
-          />
-        </h1>
-        <h4>Active Filter: {selectedActivity || 'All'}</h4>
-        <Item.Group divided relaxed>
-          {renderEvents()}
-        </Item.Group>
+        <Grid centered divided>
+          <Grid.Row>
+            <h2>Events Near You</h2>
+          </Grid.Row>
+          <Grid.Row>
+            <Paginate
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+            />
+          </Grid.Row>
+          <h4 style={{ marginTop: 0 }}>
+            Active Filter: {selectedActivity || 'All'}
+          </h4>
+          <Grid.Row>
+            <Item.Group divided relaxed>
+              {renderEvents()}
+            </Item.Group>
+          </Grid.Row>
+        </Grid>
       </Route>
     </Switch>
   )

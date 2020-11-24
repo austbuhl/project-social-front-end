@@ -7,7 +7,6 @@ const Locate = ({ panTo }) => {
     <Button
       className='locate'
       secondary
-      inverted
       size='large'
       onClick={() => {
         navigator.geolocation.getCurrentPosition(
