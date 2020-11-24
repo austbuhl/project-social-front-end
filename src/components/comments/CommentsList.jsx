@@ -13,8 +13,6 @@ const CommentsList = ({ comments }) => {
     setFirstComment(initialComment)
   }, [comments])
 
-  console.log(firstComment)
-  console.log(comments)
   const indexOfLastComment = firstComment + 3
 
   const renderComments = () => {

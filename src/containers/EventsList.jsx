@@ -73,6 +73,7 @@ const EventsList = ({
                 floated='right'
               />
             </h1>
+            <h4>Active Filter: {selectedActivity || 'All'}</h4>
             <Item.Group divided relaxed>
               {renderEvents()}
             </Item.Group>
@@ -89,6 +90,7 @@ const EventsList = ({
             setCurrentPage={setCurrentPage}
           />
         </h1>
+        <h4>Active Filter: {selectedActivity || 'All'}</h4>
         <Item.Group divided relaxed>
           {renderEvents()}
         </Item.Group>

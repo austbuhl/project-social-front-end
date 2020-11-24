@@ -37,11 +37,33 @@
   }
 }
 
-.active-filter {
-  z-index: 5;
+.search {
   position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  z-index: 10;
+}
+
+.search input {
+  padding: 0.25rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.locate {
+  position: absolute;
+  top: 2rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  z-index: 10;
 }
 
 .main {
   margin-top: 2em;
+  display: flex;
+  justify-content: center;
 }

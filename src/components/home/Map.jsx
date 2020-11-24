@@ -20,8 +20,8 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
   const [loading, setLoading] = useState(true)
 
   const mapContainerStyle = {
-    width: '40vw',
-    height: '85vh',
+    width: '100%',
+    height: '750px',
   }
   const center = {
     lat: 40.73061,
@@ -109,9 +109,6 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
         options={options}
       >
         <Grid.Column width={10}>
-          <h4 className='active-filter'>
-            Active Filter: {selectedActivity || 'All'}
-          </h4>
           <Dimmer active={loading}>
             <Loader />
             {renderParks()}

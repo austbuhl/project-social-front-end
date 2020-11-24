@@ -66,6 +66,7 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
                 floated='right'
               />
             </h1>
+            <h4>Active Filter: {selectedActivity || 'All'}</h4>
             <Item.Group divided relaxed>
               {renderParks()}
             </Item.Group>
