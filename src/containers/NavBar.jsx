@@ -39,7 +39,7 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
         )}
         {loggedIn && (
           <>
-            <NavLink className='item' to='/profile'>
+            <NavLink className='item' to={`/users/${currentUser.id}/profile`}>
               Logged in as {currentUser.attributes.username}
             </NavLink>
             <a className='item' onClick={logout}>

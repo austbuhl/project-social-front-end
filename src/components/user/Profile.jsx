@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import {
-  selectCurrentUser,
-  selectCurrentUserEvents,
-  selectCurrentUserActivities,
-} from '../../redux/selectors'
+import { selectUserEvents, selectUserActivities } from '../../redux/selectors'
 import Event from '../events/Event'
 import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
 import { Grid, Item, Label } from 'semantic-ui-react'
 
-const Profile = ({ currentUser, events, activities }) => {
+const Profile = ({ user, userEvents, userActivities }) => {
+  console.log(user)
+
+  const activities = userActivities(user.id)
+  const events = userEvents(user.id)
+
   const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 3
   const totalPages = Math.ceil(events.length / eventsPerPage)
@@ -53,7 +54,7 @@ const Profile = ({ currentUser, events, activities }) => {
       <Grid.Row centered>
         <Grid.Column width={10}>
           <h1>Your Profile</h1>
-          <h2>{currentUser.attributes.username}</h2>
+          <h2>{user.attributes.username}</h2>
           <h3>Your Favorite Activities</h3>
           {renderFavActivities()}
         </Grid.Column>
@@ -84,9 +85,8 @@ const Profile = ({ currentUser, events, activities }) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: selectCurrentUser(state),
-    events: selectCurrentUserEvents(state),
-    activities: selectCurrentUserActivities(state),
+    userEvents: selectUserEvents(state),
+    userActivities: selectUserActivities(state),
   }
 }
 

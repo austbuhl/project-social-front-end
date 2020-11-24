@@ -11,12 +11,11 @@ import {
 import { Switch, Route } from 'react-router-dom'
 import EventsList from './containers/EventsList'
 import ParksList from './containers/ParksList'
-
 import NavBar from './containers/NavBar'
 import Login from './components/user/Login'
 import Signup from './components/user/Signup'
 import Profile from './components/user/Profile'
-
+import { selectUser } from './redux/selectors'
 import Home from './containers/Home'
 
 function App({
@@ -25,6 +24,7 @@ function App({
   fetchComments,
   fetchUsers,
   authorizeUser,
+  selectUser,
 }) {
   useEffect(() => {
     fetchParks()
@@ -51,9 +51,13 @@ function App({
           <Route path='/signup'>
             <Signup />
           </Route>
-          <Route path='/profile'>
-            <Profile />
-          </Route>
+          <Route
+            path='/users/:id/profile'
+            render={({ match }) => {
+              const user = selectUser(parseInt(match.params.id))
+              return <Profile user={user} />
+            }}
+          ></Route>
           <Route path='/'>
             <Home />
           </Route>
@@ -61,6 +65,12 @@ function App({
       </div>
     </div>
   )
+}
+
+const mapStateToProps = (state) => {
+  return {
+    selectUser: selectUser(state),
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -73,4 +83,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

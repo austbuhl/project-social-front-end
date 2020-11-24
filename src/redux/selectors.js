@@ -13,8 +13,26 @@ export const selectCurrentUserEvents = (state) => {
   }
 }
 
+export const selectUserEvents = (state) => (userId) => {
+  const user = selectUser(state)(userId)
+  if (user) {
+    const eventIds = user.relationships.events.data.map((event) => event.id)
+    return eventIds.map((eventId) => selectEvent(state)(eventId))
+  }
+}
+
 export const selectCurrentUserActivities = (state) => {
   const user = selectCurrentUser(state)
+  if (user) {
+    const eventIds = user.relationships.events.data.map((event) => event.id)
+    return eventIds
+      .map((eventId) => selectEventActivities(state)(eventId))
+      .flat(1)
+  }
+}
+
+export const selectUserActivities = (state) => (userId) => {
+  const user = selectUser(state)(userId)
   if (user) {
     const eventIds = user.relationships.events.data.map((event) => event.id)
     return eventIds
@@ -54,13 +72,13 @@ export const selectUsers = (state) => Object.values(state.users)
 
 export const selectEvent = (state) => (eventId) => state.events[eventId]
 export const selectComment = (state, commentId) => state.comments[commentId]
-export const selectUser = (state, userId) => state.users[userId]
+export const selectUser = (state) => (userId) => state.users[userId]
 
 export const selectCommentAuthor = (state) => (commentId) => {
   const comment = selectComment(state, commentId)
   if (comment) {
     const userId = comment.relationships.user.data.id
-    return selectUser(state, userId)
+    return selectUser(state)(userId)
   }
 }
 
@@ -78,7 +96,7 @@ export const selectEventUsers = (state) => (eventId) => {
   const event = selectEvent(state)(eventId)
   if (event) {
     const userIds = event.relationships.users.data.map((user) => user.id)
-    return userIds.map((userId) => selectUser(state, userId))
+    return userIds.map((userId) => selectUser(state)(userId))
   }
 }
 
