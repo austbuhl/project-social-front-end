@@ -17,6 +17,10 @@ const ParkDetail = ({ park, loggedIn, parkActivities, parkEvents }) => {
   const events = parkEvents(park.id)
   const eventsPerPage = 3
 
+  const totalPages = Math.ceil(events.length / eventsPerPage)
+  const indexOfLastEvent = currentPage * eventsPerPage
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage
+
   const mapContainerStyle = {
     width: '400px',
     height: '400px',
@@ -26,9 +30,7 @@ const ParkDetail = ({ park, loggedIn, parkActivities, parkEvents }) => {
       <Activity key={activity.id} activity={activity} />
     ))
   }
-  const totalPages = Math.ceil(events.length / eventsPerPage)
-  const indexOfLastEvent = currentPage * eventsPerPage
-  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage
+
   const renderEvents = () => {
     return events
       .slice(indexOfFirstEvent, indexOfLastEvent)

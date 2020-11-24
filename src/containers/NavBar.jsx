@@ -17,7 +17,7 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
   return (
     // <div className='ui ten item menu'>
     <Sticky>
-      <Menu widths={10}>
+      <Menu widths={10} inverted>
         <NavLink className='item ' exact to='/'>
           Home
         </NavLink>

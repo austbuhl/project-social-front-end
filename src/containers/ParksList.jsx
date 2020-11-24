@@ -14,7 +14,7 @@ import {
 
 const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
   const [currentPage, setCurrentPage] = useState(1)
-  const parksPerPage = 5
+  const parksPerPage = 8
 
   useEffect(() => {
     setCurrentPage(1)

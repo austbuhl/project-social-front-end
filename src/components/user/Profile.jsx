@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import {
   selectCurrentUser,
@@ -6,12 +6,21 @@ import {
   selectCurrentUserActivities,
 } from '../../redux/selectors'
 import Event from '../events/Event'
+import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
-import { Label } from 'semantic-ui-react'
+import { Grid, Item, Label } from 'semantic-ui-react'
 
 const Profile = ({ currentUser, events, activities }) => {
+  const [currentPage, setCurrentPage] = useState(1)
+  const eventsPerPage = 3
+  const totalPages = Math.ceil(events.length / eventsPerPage)
+  const indexOfLastEvent = currentPage * eventsPerPage
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage
+
   const renderEvents = () => {
-    return events.map((event) => <Event key={event.id} event={event} />)
+    return events
+      .slice(indexOfFirstEvent, indexOfLastEvent)
+      .map((event) => <Event key={event.id} event={event} />)
   }
 
   const activityNames = activities.map((activity) => activity.attributes.name)
@@ -40,14 +49,36 @@ const Profile = ({ currentUser, events, activities }) => {
   }
 
   return (
-    <div>
-      <h1>Profile Page</h1>
-      <h3>{currentUser.attributes.username}</h3>
-      <h3>Your Favorite Activities</h3>
-      {renderFavActivities()}
-      <h3>Your Events</h3>
-      {renderEvents()}
-    </div>
+    <Grid container padded centered>
+      <Grid.Row centered>
+        <Grid.Column width={10}>
+          <h1>Profile Page</h1>
+          <h3>{currentUser.attributes.username}</h3>
+          <h3>Your Favorite Activities</h3>
+          {renderFavActivities()}
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column width={5}>
+          <h3>Your Events</h3>
+        </Grid.Column>
+        <Grid.Column width={5}>
+          <Paginate
+            currentPage={currentPage}
+            totalPages={totalPages}
+            setCurrentPage={setCurrentPage}
+            floated='right'
+          />
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row centered>
+        <Grid.Column width={10}>
+          <Item.Group divided relaxed>
+            {renderEvents()}
+          </Item.Group>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   )
 }
 
