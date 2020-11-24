@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { selectUserEvents, selectUserActivities } from '../../redux/selectors'
+import { addFriend } from '../../redux/actions'
 import Event from '../events/Event'
 import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
 import { Grid, Item, Label } from 'semantic-ui-react'
 
-const Profile = ({ user, userEvents, userActivities }) => {
+const Profile = ({ user, userEvents, userActivities, addFriend }) => {
   console.log(user)
 
   const activities = userActivities(user.id)
@@ -59,6 +60,7 @@ const Profile = ({ user, userEvents, userActivities }) => {
           {renderFavActivities()}
         </Grid.Column>
       </Grid.Row>
+      <button onClick={() => addFriend(user.id)}>Add Friend</button>
       <Grid.Row>
         <Grid.Column width={5}>
           <h3>Upcoming Events</h3>
@@ -90,4 +92,10 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Profile)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addFriend: (friendId) => dispatch(addFriend(friendId)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

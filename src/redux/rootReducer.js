@@ -6,6 +6,7 @@ const defaultState = {
   events: {},
   comments: {},
   users: {},
+  friends: {},
   currentUser: {},
   loggedIn: false,
   selectedActivity: null,
@@ -45,8 +46,9 @@ function eventsReducer(state = defaultState.events, action) {
 }
 
 function usersReducer(state = defaultState.users, action) {
-  const { eventId, commentId, userId } = action
+  const { eventId, commentId, userId, friendId } = action
   const user = state[userId]
+  const friend = state[friendId]
   switch (action.type) {
     case 'FETCH_USERS':
       return action.payload
@@ -98,7 +100,34 @@ function usersReducer(state = defaultState.users, action) {
           },
         },
       }
-
+    case 'NEW_FRIENDS':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            friends: {
+              data: [
+                { id: friendId, type: 'friend' },
+                ...user.relationships.friends.data,
+              ],
+            },
+          },
+        },
+        [friendId]: {
+          ...friend,
+          relationships: {
+            ...friend.relationships,
+            friends: {
+              data: [
+                { id: userId, type: 'friend' },
+                ...friend.relationships.friends.data,
+              ],
+            },
+          },
+        },
+      }
     default:
       return state
   }
@@ -145,7 +174,7 @@ function loggedInReducer(state = defaultState.loggedIn, action) {
 }
 
 function currentUserReducer(state = defaultState.currentUser, action) {
-  const { userId, eventId, commentId } = action
+  const { userId, eventId, commentId, friendId } = action
   const user = userId ? state[userId] : {}
 
   switch (action.type) {
@@ -178,15 +207,32 @@ function currentUserReducer(state = defaultState.currentUser, action) {
           ...user,
           relationships: {
             ...user.relationships,
-            events: {
+            friends: {
               data: [
-                ...user.relationships.events.data,
-                { id: eventId, type: 'event' },
+                { id: userId, type: 'friend' },
+                ...user.relationships.friends.data,
               ],
             },
           },
         },
       }
+    case 'NEW_FRIENDS':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            friends: {
+              data: [
+                ...user.relationships.friends.data,
+                { id: friendId, type: 'friend' },
+              ],
+            },
+          },
+        },
+      }
+
     case 'ATTEND_EVENT':
       return {
         ...state,
@@ -203,6 +249,17 @@ function currentUserReducer(state = defaultState.currentUser, action) {
           },
         },
       }
+    default:
+      return state
+  }
+}
+
+function friendsReducer(state = defaultState.friends, action) {
+  switch (action.type) {
+    case 'FETCH_FRIENDS':
+      return action.payload
+    case 'NEW_FRIENDS':
+      return { ...state, ...action.payload }
     default:
       return state
   }
@@ -247,6 +304,7 @@ const rootReducer = combineReducers({
   currentUser: currentUserReducer,
   loggedIn: loggedInReducer,
   users: usersReducer,
+  friends: friendsReducer,
   selectedActivity: activityReducer,
 })
 

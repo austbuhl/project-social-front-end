@@ -52,6 +52,48 @@ export function fetchUsers() {
   }
 }
 
+export function fetchFriends() {
+  return function (dispatch) {
+    fetch('http://localhost:5000/api/v1/users/friends')
+      .then((resp) => resp.json())
+      .then((friends) => {
+        dispatch({
+          type: 'FETCH_FRIENDS',
+          payload: normalize(friends).friendship,
+        })
+      })
+      .catch(console.log)
+  }
+}
+
+export function addFriend(friendId) {
+  return function (dispatch) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetch('http://localhost:5000/api/v1/users/friends', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          accepts: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ friend_id: friendId }),
+      })
+        .then((resp) => resp.json())
+        .then((friends) => {
+          const userId = friends.data[0].attributes.user_id
+          const friendId = friends.data[0].attributes.friend_id
+          dispatch({
+            type: 'NEW_FRIENDS',
+            payload: normalize(friends).friendship,
+            userId: userId,
+            friendId: friendId,
+          })
+        })
+    }
+  }
+}
+
 export function loginHandler(userObj) {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/login', {

@@ -6,6 +6,7 @@ import {
   fetchParks,
   authorizeUser,
   fetchComments,
+  fetchFriends,
   fetchUsers,
 } from './redux/actions'
 import { Switch, Route } from 'react-router-dom'
@@ -23,6 +24,7 @@ function App({
   fetchParks,
   fetchComments,
   fetchUsers,
+  fetchFriends,
   authorizeUser,
   selectUser,
 }) {
@@ -31,6 +33,7 @@ function App({
     authorizeUser()
     fetchEvents()
     fetchUsers()
+    fetchFriends()
     fetchComments()
   }, [])
 
@@ -79,6 +82,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchParks: () => dispatch(fetchParks()),
     fetchComments: () => dispatch(fetchComments()),
     fetchUsers: () => dispatch(fetchUsers()),
+    fetchFriends: () => dispatch(fetchFriends()),
     authorizeUser: () => dispatch(authorizeUser()),
   }
 }
