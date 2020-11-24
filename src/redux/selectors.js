@@ -31,6 +31,21 @@ export const selectCurrentUserActivities = (state) => {
   }
 }
 
+export const selectUserFriends = (state) => (userId) => {
+  const user = selectUser(state)(userId)
+  if (user) {
+    const friendshipIds = user.relationships.friendships.data.map(
+      (friendship) => friendship.id
+    )
+    return friendshipIds.map((friendshipId) =>
+      selectFriend(state)(friendshipId)
+    )
+  }
+}
+
+export const selectFriend = (state) => (friendshipId) =>
+  state.friendships[friendshipId]
+
 export const selectUserActivities = (state) => (userId) => {
   const user = selectUser(state)(userId)
   if (user) {

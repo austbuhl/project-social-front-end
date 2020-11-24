@@ -84,7 +84,35 @@ export function addFriend(friendId) {
           const userId = friends.data[0].attributes.user_id
           const friendId = friends.data[0].attributes.friend_id
           dispatch({
-            type: 'NEW_FRIENDS',
+            type: 'ADD_FRIEND',
+            payload: normalize(friends).friendship,
+            userId: userId,
+            friendId: friendId,
+          })
+        })
+    }
+  }
+}
+
+export function acceptRequest(friendId) {
+  return function (dispatch) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetch('http://localhost:5000/api/v1/users/friends', {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json',
+          accepts: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ friend_id: friendId }),
+      })
+        .then((resp) => resp.json())
+        .then((friends) => {
+          const userId = friends.data[0].attributes.user_id
+          const friendId = friends.data[0].attributes.friend_id
+          dispatch({
+            type: 'ACCEPT_REQUEST',
             payload: normalize(friends).friendship,
             userId: userId,
             friendId: friendId,

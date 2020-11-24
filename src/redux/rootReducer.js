@@ -6,7 +6,7 @@ const defaultState = {
   events: {},
   comments: {},
   users: {},
-  friends: {},
+  friendships: {},
   currentUser: {},
   loggedIn: false,
   selectedActivity: null,
@@ -49,6 +49,7 @@ function usersReducer(state = defaultState.users, action) {
   const { eventId, commentId, userId, friendId } = action
   const user = state[userId]
   const friend = state[friendId]
+
   switch (action.type) {
     case 'FETCH_USERS':
       return action.payload
@@ -100,17 +101,17 @@ function usersReducer(state = defaultState.users, action) {
           },
         },
       }
-    case 'NEW_FRIENDS':
+    case 'ADD_FRIEND':
       return {
         ...state,
         [userId]: {
           ...user,
           relationships: {
             ...user.relationships,
-            friends: {
+            friendships: {
               data: [
-                { id: friendId, type: 'friend' },
-                ...user.relationships.friends.data,
+                { id: Object.keys(action.payload)[0], type: 'friend' },
+                ...user.relationships.friendships.data,
               ],
             },
           },
@@ -119,10 +120,10 @@ function usersReducer(state = defaultState.users, action) {
           ...friend,
           relationships: {
             ...friend.relationships,
-            friends: {
+            friendships: {
               data: [
-                { id: userId, type: 'friend' },
-                ...friend.relationships.friends.data,
+                { id: Object.keys(action.payload)[1], type: 'friend' },
+                ...friend.relationships.friendships.data,
               ],
             },
           },
@@ -216,17 +217,17 @@ function currentUserReducer(state = defaultState.currentUser, action) {
           },
         },
       }
-    case 'NEW_FRIENDS':
+    case 'ADD_FRIEND':
       return {
         ...state,
         [userId]: {
           ...user,
           relationships: {
             ...user.relationships,
-            friends: {
+            friendships: {
               data: [
-                ...user.relationships.friends.data,
-                { id: friendId, type: 'friend' },
+                { id: Object.keys(action.payload)[0], type: 'friend' },
+                ...user.relationships.friendships.data,
               ],
             },
           },
@@ -254,12 +255,17 @@ function currentUserReducer(state = defaultState.currentUser, action) {
   }
 }
 
-function friendsReducer(state = defaultState.friends, action) {
+function friendsReducer(state = defaultState.friendships, action) {
   switch (action.type) {
     case 'FETCH_FRIENDS':
       return action.payload
-    case 'NEW_FRIENDS':
+    case 'ADD_FRIEND':
       return { ...state, ...action.payload }
+    case 'ACCEPT_REQUEST':
+      return {
+        ...state,
+        ...action.payload,
+      }
     default:
       return state
   }
@@ -304,7 +310,7 @@ const rootReducer = combineReducers({
   currentUser: currentUserReducer,
   loggedIn: loggedInReducer,
   users: usersReducer,
-  friends: friendsReducer,
+  friendships: friendsReducer,
   selectedActivity: activityReducer,
 })
 

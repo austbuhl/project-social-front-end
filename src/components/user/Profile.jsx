@@ -1,18 +1,28 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { selectUserEvents, selectUserActivities } from '../../redux/selectors'
-import { addFriend } from '../../redux/actions'
+import {
+  selectUserEvents,
+  selectUserActivities,
+  selectUserFriends,
+} from '../../redux/selectors'
+import { addFriend, acceptRequest } from '../../redux/actions'
 import Event from '../events/Event'
 import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
-import { Grid, Item, Label } from 'semantic-ui-react'
+import { Grid, Item, Label, List, Button } from 'semantic-ui-react'
 
-const Profile = ({ user, userEvents, userActivities, addFriend }) => {
-  console.log(user)
-
+const Profile = ({
+  user,
+  userEvents,
+  userActivities,
+  addFriend,
+  userFriends,
+  acceptRequest,
+}) => {
   const activities = userActivities(user.id)
   const events = userEvents(user.id)
-
+  const friends = userFriends(user.id)
+  console.log(friends)
   const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 3
   const totalPages = Math.ceil(events.length / eventsPerPage)
@@ -50,6 +60,19 @@ const Profile = ({ user, userEvents, userActivities, addFriend }) => {
     ))
   }
 
+  const renderFriendsList = () => {
+    return friends.map((friend) => (
+      <List.Item key={friend.id}>
+        <List.Content>{friend.attributes.friendName}</List.Content>
+        <List.Content floated='right'>
+          <Button onClick={() => acceptRequest(friend.attributes.friendId)}>
+            {friend.attributes.status}
+          </Button>
+        </List.Content>
+      </List.Item>
+    ))
+  }
+
   return (
     <Grid container padded centered>
       <Grid.Row centered>
@@ -60,7 +83,14 @@ const Profile = ({ user, userEvents, userActivities, addFriend }) => {
           {renderFavActivities()}
         </Grid.Column>
       </Grid.Row>
-      <button onClick={() => addFriend(user.id)}>Add Friend</button>
+      <Button onClick={() => addFriend(user.id)}>Add Friend</Button>
+      <Grid.Row centered>
+        <Grid.Column width={10}>
+          <List divided verticalAlign='middle'>
+            {renderFriendsList()}
+          </List>
+        </Grid.Column>
+      </Grid.Row>
       <Grid.Row>
         <Grid.Column width={5}>
           <h3>Upcoming Events</h3>
@@ -89,12 +119,14 @@ const mapStateToProps = (state) => {
   return {
     userEvents: selectUserEvents(state),
     userActivities: selectUserActivities(state),
+    userFriends: selectUserFriends(state),
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     addFriend: (friendId) => dispatch(addFriend(friendId)),
+    acceptRequest: (friendId) => dispatch(acceptRequest(friendId)),
   }
 }
 
