@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 import CommentDetail from './CommentDetail'
 import { Comment, Header, Button } from 'semantic-ui-react'
 
@@ -6,7 +7,6 @@ const CommentsList = ({ comments }) => {
   const commentsToShow = comments.length < 3 ? comments.length : 3
   const sortedComments = comments.sort((a, b) => a.id - b.id)
   const initialComment = comments.length - commentsToShow
-
   const [firstComment, setFirstComment] = useState(initialComment)
 
   useEffect(() => {

@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import normalize from 'json-api-normalizer'
+import consumer from '../../cable'
 import moment from 'moment'
 import CommentsList from '../comments/CommentsList'
 import CommentForm from '../comments/CommentForm'
@@ -12,15 +14,18 @@ import {
   selectEventComments,
   selectEventActivities,
   selectEventPark,
+  selectCurrentUser,
 } from '../../redux/selectors'
 import { Grid, List } from 'semantic-ui-react'
 
 const EventDetail = ({
+  currentUser,
   event,
   eventUsers,
   eventComments,
   eventActivities,
   eventLocation,
+  commentReceived,
 }) => {
   const park = eventLocation(event.id)
   const attendees = eventUsers(event.id)
@@ -28,7 +33,22 @@ const EventDetail = ({
   const activities = eventActivities(event.id)
   const time = moment.utc(event.attributes.time).format('LT')
   const date = moment.utc(event.attributes.date).format('ddd, MMM Do YYYY')
-  console.log(date)
+
+  useEffect(() => {
+    const subscription = consumer.subscriptions.create(
+      {
+        channel: 'FeedChannel',
+        event: event.id,
+      },
+      {
+        received: (comment) =>
+          commentReceived(comment, event.id, currentUser.id),
+        connected: () => console.log('connected'),
+        disconnected: () => console.log('disconnected'),
+      }
+    )
+    return () => subscription.unsubscribe()
+  }, [event.id])
 
   const renderAttendees = () => {
     return attendees.map((user) => <EventAttendee key={user.id} user={user} />)
@@ -44,7 +64,6 @@ const EventDetail = ({
     ))
   }
 
-  console.log(attendees)
   return (
     <Grid container padded centered>
       <Grid.Column width={10}>
@@ -84,6 +103,7 @@ const EventDetail = ({
 
 const mapStateToProps = (state) => {
   return {
+    currentUser: selectCurrentUser(state),
     eventUsers: selectEventUsers(state),
     eventComments: selectEventComments(state),
     eventActivities: selectEventActivities(state),
@@ -91,4 +111,19 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(EventDetail)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    commentReceived: (comment, eventId, userId) => {
+      const commentId = comment.data.id
+      dispatch({
+        type: 'NEW_COMMENT',
+        payload: normalize(comment).comment,
+        commentId: commentId,
+        eventId: eventId,
+        userId: userId,
+      })
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EventDetail)
