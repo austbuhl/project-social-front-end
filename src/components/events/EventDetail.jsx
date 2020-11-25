@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import normalize from 'json-api-normalizer'
+import { newCommentReceived } from '../../redux/actions'
 import consumer from '../../cable'
 import moment from 'moment'
 import CommentsList from '../comments/CommentsList'
@@ -25,7 +25,7 @@ const EventDetail = ({
   eventComments,
   eventActivities,
   eventLocation,
-  commentReceived,
+  newCommentReceived,
 }) => {
   const park = eventLocation(event.id)
   const attendees = eventUsers(event.id)
@@ -42,7 +42,7 @@ const EventDetail = ({
       },
       {
         received: (comment) =>
-          commentReceived(comment, event.id, currentUser.id),
+          newCommentReceived(comment, event.id, currentUser.id),
         connected: () => console.log('connected'),
         disconnected: () => console.log('disconnected'),
       }
@@ -113,16 +113,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    commentReceived: (comment, eventId, userId) => {
-      const commentId = comment.data.id
-      dispatch({
-        type: 'NEW_COMMENT',
-        payload: normalize(comment).comment,
-        commentId: commentId,
-        eventId: eventId,
-        userId: userId,
-      })
-    },
+    newCommentReceived: (comment, eventId, userId) =>
+      dispatch(newCommentReceived(comment, eventId, userId)),
   }
 }
 

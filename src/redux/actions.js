@@ -180,21 +180,32 @@ export function createComment(commentObj) {
         },
         body: JSON.stringify(commentObj),
       })
-        .then((resp) => resp.json())
-        .then((comment) => {
-          const commentId = comment.data.id
-          const eventId = comment.data.relationships.event.data.id
-          const userId = Object.keys(getState().currentUser)[0]
-          dispatch({
-            type: 'NEW_COMMENT',
-            payload: normalize(comment).comment,
-            commentId: commentId,
-            eventId: eventId,
-            userId: userId,
-          })
-        })
-        .catch(console.log)
+      // .then((resp) => resp.json())
+      // .then((comment) => {
+      //   const commentId = comment.data.id
+      //   const eventId = comment.data.relationships.event.data.id
+      //   const userId = Object.keys(getState().currentUser)[0]
+      //   dispatch({
+      //     type: 'NEW_COMMENT',
+      //     payload: normalize(comment).comment,
+      //     commentId: commentId,
+      //     eventId: eventId,
+      //     userId: userId,
+      //   })
+      // })
+      // .catch(console.log)
     }
+  }
+}
+
+export function newCommentReceived(comment, eventId, userId) {
+  const commentId = comment.data.id
+  return {
+    type: 'NEW_COMMENT',
+    payload: normalize(comment).comment,
+    commentId: commentId,
+    eventId: eventId,
+    userId: userId,
   }
 }
 
