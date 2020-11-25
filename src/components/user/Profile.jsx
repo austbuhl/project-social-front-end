@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import {
   selectUserEvents,
   selectUserActivities,
@@ -17,8 +18,6 @@ const Profile = ({
   userActivities,
   addFriend,
   userFriends,
-  deleteFriend,
-  acceptRequest,
 }) => {
   const activities = userActivities(user.id)
   const events = userEvents(user.id)
@@ -60,22 +59,6 @@ const Profile = ({
     ))
   }
 
-  const renderFriendsList = () => {
-    return friends.map((friend) => (
-      <List.Item key={friend.id}>
-        <List.Content>{friend.attributes.friendName}</List.Content>
-        <List.Content floated='right'>
-          <Button onClick={() => acceptRequest(friend.attributes.friendId)}>
-            {friend.attributes.status}
-          </Button>
-          <Button onClick={() => deleteFriend(friend.attributes.friendId)}>
-            Delete Friend
-          </Button>
-        </List.Content>
-      </List.Item>
-    ))
-  }
-
   return (
     <Grid container padded centered>
       <Grid.Row centered>
@@ -86,12 +69,12 @@ const Profile = ({
           {renderFavActivities()}
         </Grid.Column>
       </Grid.Row>
-      <Button onClick={() => addFriend(user.id)}>Add Friend</Button>
       <Grid.Row centered>
         <Grid.Column width={10}>
-          <List divided verticalAlign='middle'>
-            {renderFriendsList()}
-          </List>
+          <NavLink to={`/users/${user.id}/friends`}>View Friends List</NavLink>
+          <Button floated='right' onClick={() => addFriend(user.id)}>
+            Add Friend
+          </Button>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
@@ -129,9 +112,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addFriend: (friendId) => dispatch(addFriend(friendId)),
-    acceptRequest: (friendId) => dispatch(acceptRequest(friendId)),
-    deleteFriend: (friendId) => dispatch(deleteFriend(friendId)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(mapStateToProps)(Profile)
