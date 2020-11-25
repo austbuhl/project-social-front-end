@@ -122,6 +122,32 @@ export function acceptRequest(friendId) {
   }
 }
 
+export function deleteFriend(friendId) {
+  return function (dispatch) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetch(`http://localhost:5000/api/v1/users/friends/${friendId}`, {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json',
+          accepts: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((resp) => resp.json())
+        .then((deleted) => {
+          dispatch({
+            type: 'DELETE_FRIEND',
+            first: deleted.first.id,
+            second: deleted.second.id,
+            userId: deleted.userId,
+            friendId: parseInt(deleted.friendId),
+          })
+        })
+    }
+  }
+}
+
 export function loginHandler(userObj) {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/login', {

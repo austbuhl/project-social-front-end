@@ -5,7 +5,7 @@ import {
   selectUserActivities,
   selectUserFriends,
 } from '../../redux/selectors'
-import { addFriend, acceptRequest } from '../../redux/actions'
+import { addFriend, acceptRequest, deleteFriend } from '../../redux/actions'
 import Event from '../events/Event'
 import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
@@ -17,12 +17,12 @@ const Profile = ({
   userActivities,
   addFriend,
   userFriends,
+  deleteFriend,
   acceptRequest,
 }) => {
   const activities = userActivities(user.id)
   const events = userEvents(user.id)
   const friends = userFriends(user.id)
-  console.log(friends)
   const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 3
   const totalPages = Math.ceil(events.length / eventsPerPage)
@@ -67,6 +67,9 @@ const Profile = ({
         <List.Content floated='right'>
           <Button onClick={() => acceptRequest(friend.attributes.friendId)}>
             {friend.attributes.status}
+          </Button>
+          <Button onClick={() => deleteFriend(friend.attributes.friendId)}>
+            Delete Friend
           </Button>
         </List.Content>
       </List.Item>
@@ -127,6 +130,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addFriend: (friendId) => dispatch(addFriend(friendId)),
     acceptRequest: (friendId) => dispatch(acceptRequest(friendId)),
+    deleteFriend: (friendId) => dispatch(deleteFriend(friendId)),
   }
 }
 

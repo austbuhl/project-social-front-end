@@ -129,6 +129,36 @@ function usersReducer(state = defaultState.users, action) {
           },
         },
       }
+    case 'DELETE_FRIEND':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            friendships: {
+              data: [
+                ...user.relationships.friendships.data.filter(
+                  (friendship) => parseInt(friendship.id) !== action.first
+                ),
+              ],
+            },
+          },
+        },
+        [friendId]: {
+          ...friend,
+          relationships: {
+            ...friend.relationships,
+            friendships: {
+              data: [
+                ...friend.relationships.friendships.data.filter(
+                  (friendship) => parseInt(friendship.id) !== action.second
+                ),
+              ],
+            },
+          },
+        },
+      }
     default:
       return state
   }
@@ -175,7 +205,7 @@ function loggedInReducer(state = defaultState.loggedIn, action) {
 }
 
 function currentUserReducer(state = defaultState.currentUser, action) {
-  const { userId, eventId, commentId, friendId } = action
+  const { userId, eventId, commentId } = action
   const user = userId ? state[userId] : {}
 
   switch (action.type) {
@@ -233,6 +263,23 @@ function currentUserReducer(state = defaultState.currentUser, action) {
           },
         },
       }
+    case 'DELETE_FRIEND':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            friendships: {
+              data: [
+                ...user.relationships.friendships.data.filter(
+                  (friendship) => parseInt(friendship.id) !== action.first
+                ),
+              ],
+            },
+          },
+        },
+      }
 
     case 'ATTEND_EVENT':
       return {
@@ -266,6 +313,11 @@ function friendsReducer(state = defaultState.friendships, action) {
         ...state,
         ...action.payload,
       }
+    case 'DELETE_FRIEND':
+      const updatedState = { ...state }
+      delete updatedState[action.first]
+      delete updatedState[action.second]
+      return updatedState
     default:
       return state
   }
