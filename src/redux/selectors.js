@@ -4,7 +4,6 @@ export const selectCurrentUser = (state) => {
     return state.currentUser[userId]
   }
 }
-
 export const selectCurrentUserEvents = (state) => {
   const user = selectCurrentUser(state)
   if (user) {

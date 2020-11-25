@@ -5,8 +5,9 @@ import {
   selectUserEvents,
   selectUserActivities,
   selectUserFriends,
+  selectCurrentUser,
 } from '../../redux/selectors'
-import { addFriend, acceptRequest, deleteFriend } from '../../redux/actions'
+import { addFriend } from '../../redux/actions'
 import Event from '../events/Event'
 import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
@@ -14,6 +15,7 @@ import { Grid, Item, Label, List, Button } from 'semantic-ui-react'
 
 const Profile = ({
   user,
+  currentUser,
   userEvents,
   userActivities,
   addFriend,
@@ -22,6 +24,9 @@ const Profile = ({
   const activities = userActivities(user.id)
   const events = userEvents(user.id)
   const friends = userFriends(user.id)
+  const friended = friends.find(
+    (friend) => friend.attributes.friendId === currentUser.attributes.id
+  )
   const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 3
   const totalPages = Math.ceil(events.length / eventsPerPage)
@@ -59,6 +64,18 @@ const Profile = ({
     ))
   }
 
+  const mutualFriends = () => {
+    const currentUserFriends = userFriends(currentUser.id)
+    return friends.filter((friend) =>
+      currentUserFriends.find(
+        (current) => current.attributes.friendId === friend.attributes.friendId
+      )
+    )
+  }
+
+  console.log(mutualFriends())
+  console.log(friended)
+
   return (
     <Grid container padded centered>
       <Grid.Row centered>
@@ -71,10 +88,15 @@ const Profile = ({
       </Grid.Row>
       <Grid.Row centered>
         <Grid.Column width={10}>
-          <NavLink to={`/users/${user.id}/friends`}>View Friends List</NavLink>
-          <Button floated='right' onClick={() => addFriend(user.id)}>
-            Add Friend
-          </Button>
+          <NavLink to={`/users/${user.id}/friends`}>
+            <p>Friends: {friends.length}</p>
+          </NavLink>
+          <p>Mutual Friends: {mutualFriends().length + (friended ? 1 : 0)}</p>
+          {currentUser.id !== user.id && (
+            <Button floated='right' onClick={() => addFriend(user.id)}>
+              Add Friend
+            </Button>
+          )}
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
@@ -103,6 +125,7 @@ const Profile = ({
 
 const mapStateToProps = (state) => {
   return {
+    currentUser: selectCurrentUser(state),
     userEvents: selectUserEvents(state),
     userActivities: selectUserActivities(state),
     userFriends: selectUserFriends(state),
@@ -115,4 +138,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)
