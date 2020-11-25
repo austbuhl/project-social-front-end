@@ -72,9 +72,7 @@ const Profile = ({
       )
     )
   }
-
-  console.log(friended)
-  console.log(currentUser.id !== user.id)
+  console.log(!friended)
   return (
     <Grid container padded centered>
       <Grid.Row centered>
@@ -91,12 +89,11 @@ const Profile = ({
             <p>Friends: {friends.length}</p>
           </NavLink>
           <p>Mutual Friends: {mutualFriends().length + (friended ? 1 : 0)}</p>
-          {currentUser.id !== user.id ||
-            (friended && (
-              <Button floated='right' onClick={() => addFriend(user.id)}>
-                Add Friend
-              </Button>
-            ))}
+          {currentUser.id !== user.id && !friended && (
+            <Button floated='right' onClick={() => addFriend(user.id)}>
+              Add Friend
+            </Button>
+          )}
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>

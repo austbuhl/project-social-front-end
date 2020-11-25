@@ -6,17 +6,21 @@ import { List, Button } from 'semantic-ui-react'
 
 const FriendsList = ({ user, userFriends, deleteFriend, acceptRequest }) => {
   const friends = userFriends(user.id)
-
+  console.log(friends)
   const renderFriendsList = () => {
     return friends.map((friend) => (
       <List.Item key={friend.id}>
         <List.Content>{friend.attributes.friendName}</List.Content>
         <List.Content floated='right'>
           <Button onClick={() => acceptRequest(friend.attributes.friendId)}>
-            {friend.attributes.status}
+            <Button.Content>{friend.attributes.status}</Button.Content>
           </Button>
           <Button onClick={() => deleteFriend(friend.attributes.friendId)}>
-            Delete Friend
+            <Button.Content>
+              {friend.attributes.status === 'pending'
+                ? 'Decline Request'
+                : 'Delete Friend'}
+            </Button.Content>
           </Button>
         </List.Content>
       </List.Item>
