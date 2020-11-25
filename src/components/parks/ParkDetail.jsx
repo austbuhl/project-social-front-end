@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import Activity from '../activities/Activity'
+import ActivityList from '../activities/ActivityList'
 import EventForm from '../events/EventForm'
 import Event from '../events/Event'
 import { Button, Item, Grid, Container, Modal } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import { selectParkActivities, selectParkEvents } from '../../redux/selectors'
+import { selectParkEvents } from '../../redux/selectors'
 import { StreetViewPanorama, GoogleMap } from '@react-google-maps/api'
 import Paginate from '../home/Paginate'
 
-const ParkDetail = ({ park, loggedIn, parkActivities, parkEvents }) => {
+const ParkDetail = ({ park, loggedIn, parkEvents }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [open, setOpen] = useState(false)
   const history = useHistory()
-  const activities = parkActivities(park.id)
   const events = parkEvents(park.id)
   const eventsPerPage = 3
 
@@ -24,11 +23,6 @@ const ParkDetail = ({ park, loggedIn, parkActivities, parkEvents }) => {
   const mapContainerStyle = {
     width: '400px',
     height: '400px',
-  }
-  const renderActivities = () => {
-    return activities.map((activity) => (
-      <Activity key={activity.id} activity={activity} />
-    ))
   }
 
   const renderEvents = () => {
@@ -51,7 +45,7 @@ const ParkDetail = ({ park, loggedIn, parkActivities, parkEvents }) => {
               {park.attributes.website}
             </a>
             <h3>Available Activities</h3>
-            {renderActivities()}
+            <ActivityList park={park} />
             <br />
 
             <Modal
@@ -111,7 +105,6 @@ const ParkDetail = ({ park, loggedIn, parkActivities, parkEvents }) => {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn,
-    parkActivities: selectParkActivities(state),
     parkEvents: selectParkEvents(state),
   }
 }
