@@ -49,6 +49,10 @@
 
 .search input {
   padding: 0.25rem;
+  padding-left: 0.5rem;
+  margin-left: 0.25rem;
+  border-radius: 20px;
+  outline: none;
   font-size: 1rem;
   width: 100%;
 }
