@@ -116,7 +116,7 @@ export const selectEventUsers = (state) => (eventId) => {
 
 export const selectEventActivities = (state) => (eventId) => {
   const event = selectEvent(state)(eventId)
-  if (event) {
+  if (event && state.activitiesLoaded) {
     const activityIds = event.relationships.activities.data.map(
       (activity) => activity.id
     )
@@ -126,7 +126,7 @@ export const selectEventActivities = (state) => (eventId) => {
 
 export const selectEventPark = (state) => (eventId) => {
   const event = selectEvent(state)(eventId)
-  if (event) {
+  if (event && state.activitiesLoaded) {
     const parkId = event.relationships.park.data.id
     return selectPark(state)(parkId)
   }

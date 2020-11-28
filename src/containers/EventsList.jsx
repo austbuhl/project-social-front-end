@@ -17,6 +17,7 @@ const EventsList = ({
   selectEvent,
   selectedActivity,
   eventActivities,
+  activitiesLoaded,
 }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 5
@@ -45,7 +46,8 @@ const EventsList = ({
     return filteredEvents
       .slice(indexOfFirstEvent, indexOfLastEvent)
       .map((event) => {
-        return <Event key={event.id} event={event} />
+        const activities = activitiesLoaded ? eventActivities(event.id) : null
+        return <Event key={event.id} event={event} activities={activities} />
       })
   }
   return (
@@ -113,6 +115,7 @@ const mapStateToProps = (state) => {
     selectEvent: selectEvent(state),
     selectedActivity: state.selectedActivity,
     eventActivities: selectEventActivities(state),
+    activitiesLoaded: state.activitiesLoaded,
   }
 }
 

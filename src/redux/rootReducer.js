@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 
 const defaultState = {
   parks: {},
+  activitiesLoaded: false,
   activities: {},
   events: {},
   comments: {},
@@ -191,6 +192,18 @@ function parksReducer(state = defaultState.parks, action) {
   }
 }
 
+function activitiesLoadedReducer(
+  state = defaultState.activitiesLoaded,
+  action
+) {
+  switch (action.type) {
+    case 'FETCH_ACTIVITIES':
+      return true
+    default:
+      return state
+  }
+}
+
 function loggedInReducer(state = defaultState.loggedIn, action) {
   switch (action.type) {
     case 'LOGIN_USER':
@@ -364,6 +377,7 @@ const rootReducer = combineReducers({
   users: usersReducer,
   friendships: friendsReducer,
   selectedActivity: activityReducer,
+  activitiesLoaded: activitiesLoadedReducer,
 })
 
 export default rootReducer

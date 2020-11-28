@@ -1,18 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import moment from 'moment'
 import ActivityIcon from '../activities/ActivityIcon'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Item, Button, Icon } from 'semantic-ui-react'
 import { selectEventActivities, selectEventPark } from '../../redux/selectors'
 
-const Event = ({ event, eventActivities, eventLocation }) => {
+const Event = ({ event, eventLocation, activities }) => {
   const park = eventLocation(event.id)
-  const activities = eventActivities(event.id)
+  const date = moment.utc(event.attributes.date).format('ddd, MMM Do, YYYY')
 
   const activityNames = activities
-    .map((activity) => activity.attributes.name)
-    .filter((value, index, self) => self.indexOf(value) === index)
-
+    ? activities
+        .map((activity) => activity.attributes.name)
+        .filter((value, index, self) => self.indexOf(value) === index)
+    : []
   const renderActivityIcons = () => {
     return activityNames.map((activity, index) => (
       <ActivityIcon key={index} activity={activity} />
@@ -23,7 +25,9 @@ const Event = ({ event, eventActivities, eventLocation }) => {
     <Item>
       <Item.Content>
         <Item.Header>{event.attributes.name}</Item.Header>
-        <Item.Meta>{park ? park.attributes.name : null}</Item.Meta>
+        <Item.Meta>
+          {park ? `${park.attributes.name} - ${date}` : null}
+        </Item.Meta>
         <Item.Description>{event.attributes.description}</Item.Description>
         <Item.Extra>
           <NavLink to={`/events/${event.id}`}>
@@ -34,7 +38,7 @@ const Event = ({ event, eventActivities, eventLocation }) => {
               </Button.Content>
             </Button>
           </NavLink>
-          {renderActivityIcons()}
+          {activities ? renderActivityIcons() : null}
         </Item.Extra>
       </Item.Content>
     </Item>

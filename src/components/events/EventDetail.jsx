@@ -32,7 +32,7 @@ const EventDetail = ({
   const comments = eventComments(event.id)
   const activities = eventActivities(event.id)
   const time = moment.utc(event.attributes.time).format('LT')
-  const date = moment.utc(event.attributes.date).format('ddd, MMM Do YYYY')
+  const date = moment.utc(event.attributes.date).format('ddd, MMM Do, YYYY')
 
   useEffect(() => {
     const subscription = consumer.subscriptions.create(
