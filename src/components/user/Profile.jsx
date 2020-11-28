@@ -27,6 +27,7 @@ const Profile = ({
   const friended = friends.find(
     (friend) => friend.attributes.friendId === currentUser.attributes.id
   )
+
   const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 3
   const totalPages = Math.ceil(events.length / eventsPerPage)
@@ -72,7 +73,7 @@ const Profile = ({
       )
     )
   }
-  console.log(!friended)
+
   return (
     <Grid container padded centered>
       <Grid.Row centered>

@@ -6,7 +6,9 @@ import { Accordion } from 'semantic-ui-react'
 
 const ActivityList = ({ park, parkActivities }) => {
   const activities = parkActivities(park.id)
-  const [active, setActive] = useState(activities[0].attributes.name)
+  const [active, setActive] = useState(
+    activities.length > 0 ? activities[0].attributes.name : null
+  )
 
   const clickHandler = (activityName) => {
     console.log(activityName)
