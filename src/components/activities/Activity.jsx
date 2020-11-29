@@ -1,6 +1,7 @@
 import React from 'react'
 import ActivityIcon from './ActivityIcon'
 import { Accordion, Icon } from 'semantic-ui-react'
+import ReactHtmlParser from 'react-html-parser'
 
 const Activity = ({ title, activities, active, clickHandler }) => {
   const renderAddlDetail = (title, addlDetail) => {
@@ -27,12 +28,7 @@ const Activity = ({ title, activities, active, clickHandler }) => {
           </p>
         )
       case 'Beach':
-        return (
-          <p>
-            <strong>Description: </strong>
-            {addlDetail}
-          </p>
-        )
+        return ReactHtmlParser(addlDetail)
       case 'Bocce':
         return null
       case 'Cricket':
@@ -96,12 +92,7 @@ const Activity = ({ title, activities, active, clickHandler }) => {
           </p>
         )
       case 'Nature Preserve':
-        return (
-          <p>
-            <strong>Habitat Type: </strong>
-            {addlDetail}
-          </p>
-        )
+        return ReactHtmlParser(addlDetail)
       case 'Playground':
         return (
           <p>

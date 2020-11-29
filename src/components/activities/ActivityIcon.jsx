@@ -16,6 +16,7 @@ import {
   FaRunning,
   FaHippo,
   FaChild,
+  FaCanadianMapleLeaf,
 } from 'react-icons/fa'
 import {
   GiCricketBat,
@@ -40,7 +41,8 @@ const ActivityIcon = ({ activity }) => {
     'Indoor Pool': <FaSwimmingPool />,
     Kayaking: <GiCanoe />,
     Monument: <FaMonument />,
-    'Nature Center': <FaLeaf />,
+    'Nature Center': <FaCanadianMapleLeaf />,
+    'Nature Preserve': <FaLeaf />,
     'Outdoor Pool': <FaSwimmer />,
     Playground: <FaChild />,
     'Running Track': <FaRunning />,

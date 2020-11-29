@@ -12,11 +12,14 @@ import {
   FaHorse,
   FaSkating,
   FaSwimmer,
+  FaSwimmingPool,
   FaTablets,
   FaMonument,
   FaLeaf,
   FaRunning,
   FaHippo,
+  FaChild,
+  FaCanadianMapleLeaf,
   FaUndoAlt,
 } from 'react-icons/fa'
 import {
@@ -98,7 +101,7 @@ const Filter = ({ selectedActivity, setActivity, resetActivity }) => {
         <Button
           name='Indoor Pool'
           active={selectedActivity === 'Indoor Pool'}
-          icon={<FaSwimmer />}
+          icon={<FaSwimmingPool />}
         />
         <Button
           name='Kayaking'
@@ -113,7 +116,22 @@ const Filter = ({ selectedActivity, setActivity, resetActivity }) => {
         <Button
           name='Nature Center'
           active={selectedActivity === 'Nature Center'}
+          icon={<FaCanadianMapleLeaf />}
+        />
+        <Button
+          name='Nature Preserve'
+          active={selectedActivity === 'Nature Preserve'}
           icon={<FaLeaf />}
+        />
+        <Button
+          name='Outdoor Pool'
+          active={selectedActivity === 'Outdoor Pool'}
+          icon={<FaSwimmer />}
+        />
+        <Button
+          name='Playground'
+          active={selectedActivity === 'Playground'}
+          icon={<FaChild />}
         />
         <Button
           name='Running Track'
