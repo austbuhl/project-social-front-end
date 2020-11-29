@@ -40,7 +40,8 @@ function eventsReducer(state = defaultState.events, action) {
       }
     case 'ATTEND_EVENT':
       return { ...state, ...action.payload }
-
+    case 'CANCEL_RSVP':
+      return { ...state, ...action.payload }
     default:
       return state
   }
@@ -102,6 +103,24 @@ function usersReducer(state = defaultState.users, action) {
           },
         },
       }
+    case 'CANCEL_RSVP':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            events: {
+              data: [
+                ...user.relationships.events.data.filter(
+                  (event) => event.id !== eventId
+                ),
+              ],
+            },
+          },
+        },
+      }
+
     case 'ADD_FRIEND':
       return {
         ...state,
@@ -305,6 +324,23 @@ function currentUserReducer(state = defaultState.currentUser, action) {
               data: [
                 ...user.relationships.events.data,
                 { id: eventId, type: 'event' },
+              ],
+            },
+          },
+        },
+      }
+    case 'CANCEL_RSVP':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            events: {
+              data: [
+                ...user.relationships.events.data.filter(
+                  (event) => event.id !== eventId
+                ),
               ],
             },
           },

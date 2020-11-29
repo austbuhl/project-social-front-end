@@ -269,6 +269,33 @@ export function attendEvent(userEvent) {
   }
 }
 
+export function cancelRSVP(eventId) {
+  return function (dispatch, getState) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      fetch(`http://localhost:5000/api/v1/events/${eventId}/cancel`, {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json',
+          accepts: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((resp) => resp.json())
+        .then((event) => {
+          const eventId = event.data.id
+          const userId = Object.keys(getState().currentUser)[0]
+          dispatch({
+            type: 'CANCEL_RSVP',
+            payload: normalize(event).event,
+            eventId: eventId,
+            userId: userId,
+          })
+        })
+    }
+  }
+}
+
 export function logoutHandler() {
   return function (dispatch) {
     localStorage.removeItem('token')

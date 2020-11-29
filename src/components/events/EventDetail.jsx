@@ -16,7 +16,7 @@ import {
   selectEventPark,
   selectCurrentUser,
 } from '../../redux/selectors'
-import { Grid, List } from 'semantic-ui-react'
+import { Grid, List, Card } from 'semantic-ui-react'
 
 const EventDetail = ({
   currentUser,
@@ -90,9 +90,10 @@ const EventDetail = ({
           <strong>Currently Going:</strong>{' '}
           {event.relationships.users.data.length}{' '}
         </div>
-        <List selection verticalAlign='middle' divided>
-          {renderAttendees()}
-        </List>
+        <Card.Group itemsPerRow={3}>{renderAttendees()}</Card.Group>
+
+        {/* <List selection verticalAlign='middle' divided>
+        </List> */}
         <RSVPButton eventId={event.id} />
         <CommentsList comments={comments} />
         <CommentForm eventId={event.id} />

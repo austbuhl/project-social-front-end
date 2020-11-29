@@ -36,17 +36,6 @@ const ActivityList = ({ park, parkActivities }) => {
     })
   }
 
-  // const renderActivities = () => {
-  // return activities.map((activity) => (
-  //   <Activity
-  //     key={activity.id}
-  //     activity={activity}
-  //     active={activity.id === active}
-  //     clickHandler={clickHandler}
-  //   />
-  // ))
-  // }
-
   return <Accordion>{renderActivities()}</Accordion>
 }
 
