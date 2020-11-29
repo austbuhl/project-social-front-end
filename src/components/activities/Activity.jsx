@@ -84,6 +84,13 @@ const Activity = ({ title, activities, active, clickHandler }) => {
             {addlDetail}
           </p>
         )
+      case 'Monument':
+        detail = addlDetail.split(' - ')
+        return (
+          <a href={detail[1]} alt={detail[0]}>
+            {addlDetail}
+          </a>
+        )
       case 'Nature Center':
         return (
           <p>
