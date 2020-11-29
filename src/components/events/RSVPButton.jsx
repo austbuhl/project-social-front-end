@@ -14,7 +14,7 @@ const RSVPButton = ({
 }) => {
   const history = useHistory()
   const [alreadyAttending, setAlreadyAttending] = useState(
-    currentUserEvents.find((event) => event.id === eventId)
+    loggedIn ? currentUserEvents.find((event) => event.id === eventId) : false
   )
 
   const clickHandler = () => {
@@ -29,16 +29,9 @@ const RSVPButton = ({
     }
   }
   return (
-    <>
-      <Button secondary onClick={clickHandler}>
-        <Button.Content>{alreadyAttending ? 'Cancel' : 'RSVP'}</Button.Content>
-      </Button>
-      {/* {alreadyAttending && (
-        <Message negative>
-          <Message.Header>You're already attending!</Message.Header>
-        </Message>
-      )} */}
-    </>
+    <Button floated='right' secondary onClick={clickHandler}>
+      <Button.Content>{alreadyAttending ? 'Cancel' : 'RSVP'}</Button.Content>
+    </Button>
   )
 }
 const mapStateToProps = (state) => {
@@ -50,7 +43,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    attendEvent: (userEvent) => dispatch(attendEvent(userEvent)),
+    attendEvent: (eventId) => dispatch(attendEvent(eventId)),
     cancelRSVP: (eventId) => dispatch(cancelRSVP(eventId)),
   }
 }

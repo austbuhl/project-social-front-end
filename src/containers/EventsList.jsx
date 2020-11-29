@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { sortByDistance } from 'sort-by-distance'
 import Event from '../components/events/Event'
 import EventDetail from '../components/events/EventDetail'
 import Filter from '../components/home/Filter'

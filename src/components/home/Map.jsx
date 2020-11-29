@@ -15,7 +15,7 @@ import Locate from './Locate'
 
 import '@reach/combobox/styles.css'
 
-const Map = ({ parks, selectedActivity, parkActivities }) => {
+const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
   const [selectedPark, setSelectedPark] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -93,6 +93,12 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
     ))
   }
 
+  const dragHandler = () => {
+    // const currentLat = mapRef.current.center.lat()
+    // const currentLong = mapRef.current.center.lng()
+    // mapDragHandler(currentLat, currentLong)
+  }
+
   if (loadError) return 'Error'
   if (!isLoaded) return 'Loading...'
   return (
@@ -106,6 +112,7 @@ const Map = ({ parks, selectedActivity, parkActivities }) => {
         zoom={13}
         center={center}
         onLoad={onMapLoad}
+        onDrag={dragHandler}
         options={options}
       >
         <Grid.Column width={10}>

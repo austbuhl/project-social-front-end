@@ -1,28 +1,74 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Button, Form } from 'semantic-ui-react'
-import { createComment } from '../../redux/actions'
+import { Button, Form, Header, Icon, Modal } from 'semantic-ui-react'
+import { createComment, attendEvent } from '../../redux/actions'
 import { useHistory } from 'react-router-dom'
+// import RSVPModal from '../events/RSVPModal'
+import { selectCurrentUserEvents } from '../../redux/selectors'
 
-const CommentForm = ({ eventId, createComment, loggedIn }) => {
+const CommentForm = ({
+  eventId,
+  createComment,
+  loggedIn,
+  currentUserEvents,
+  attendEvent,
+}) => {
   const [commentText, setCommentText] = useState('')
+  const [open, setOpen] = useState(false)
+  const [alreadyAttending, setAlreadyAttending] = useState(
+    loggedIn ? currentUserEvents.find((event) => event.id === eventId) : false
+  )
   const history = useHistory()
 
+  console.log(alreadyAttending)
   const submitHandler = (e) => {
-    if (loggedIn) {
+    if (loggedIn && alreadyAttending) {
       e.preventDefault()
       createComment({
         event_id: eventId,
         text: commentText,
       })
       setCommentText('')
+    } else if (loggedIn) {
+      setOpen(true)
     } else {
       history.push('/login', history.location.pathname)
     }
   }
 
+  const clickHandler = () => {
+    attendEvent({ event_id: eventId })
+    setAlreadyAttending(true)
+    setOpen(false)
+  }
+
   return (
     <Form reply onSubmit={submitHandler}>
+      <Modal
+        basic
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        open={open}
+        size='small'
+        // trigger={}
+      >
+        <Header icon>
+          <Icon name='calendar alternate' />
+          Please RSVP
+        </Header>
+        <Modal.Content>
+          <p>In order to comment you must first RSVP to this event.</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button basic color='red' inverted onClick={() => setOpen(false)}>
+            <Icon name='remove' /> No
+          </Button>
+          <Button color='green' inverted onClick={clickHandler}>
+            <Icon name='checkmark' /> Yes
+          </Button>
+        </Modal.Actions>
+      </Modal>
+
       <Form.TextArea
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
@@ -35,12 +81,14 @@ const CommentForm = ({ eventId, createComment, loggedIn }) => {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn,
+    currentUserEvents: selectCurrentUserEvents(state),
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     createComment: (commentObj) => dispatch(createComment(commentObj)),
+    attendEvent: (eventId) => dispatch(attendEvent(eventId)),
   }
 }
 

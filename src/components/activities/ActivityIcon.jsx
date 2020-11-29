@@ -9,11 +9,13 @@ import {
   FaHorse,
   FaSkating,
   FaSwimmer,
+  FaSwimmingPool,
   FaTablets,
   FaMonument,
   FaLeaf,
   FaRunning,
   FaHippo,
+  FaChild,
 } from 'react-icons/fa'
 import {
   GiCricketBat,
@@ -23,7 +25,6 @@ import {
 } from 'react-icons/gi'
 
 const ActivityIcon = ({ activity }) => {
-
   const icons = {
     Art: <FaPalette />,
     Barbecue: <GiBarbecue />,
@@ -36,18 +37,18 @@ const ActivityIcon = ({ activity }) => {
     Hiking: <FaHiking />,
     'Horseback Riding': <FaHorse />,
     'Ice Skating': <FaSkating />,
-    'Indoor Pool': <FaSwimmer />,
-    // 'Outdoor Pool': ,
+    'Indoor Pool': <FaSwimmingPool />,
     Kayaking: <GiCanoe />,
     Monument: <FaMonument />,
     'Nature Center': <FaLeaf />,
+    'Outdoor Pool': <FaSwimmer />,
+    Playground: <FaChild />,
     'Running Track': <FaRunning />,
     Tennis: <GiTennisCourt />,
     Zoo: <FaHippo />,
   }
 
   return icons[activity] || null
-  
 }
 
 export default ActivityIcon

@@ -83,6 +83,7 @@ const EventDetail = ({
 
         <br />
         <br />
+        <RSVPButton eventId={event.id} />
         <div>
           <strong>People Needed:</strong> {event.attributes.numOfPeople}{' '}
         </div>
@@ -90,11 +91,8 @@ const EventDetail = ({
           <strong>Currently Going:</strong>{' '}
           {event.relationships.users.data.length}{' '}
         </div>
-        <Card.Group itemsPerRow={3}>{renderAttendees()}</Card.Group>
+        <Card.Group itemsPerRow={2}>{renderAttendees()}</Card.Group>
 
-        {/* <List selection verticalAlign='middle' divided>
-        </List> */}
-        <RSVPButton eventId={event.id} />
         <CommentsList comments={comments} />
         <CommentForm eventId={event.id} />
       </Grid.Column>
