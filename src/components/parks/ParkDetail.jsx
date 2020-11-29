@@ -5,11 +5,11 @@ import EventForm from '../events/EventForm'
 import Event from '../events/Event'
 import { Button, Item, Grid, Container, Modal } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import { selectParkEvents } from '../../redux/selectors'
+import { selectParkEvents, selectEventActivities } from '../../redux/selectors'
 import { StreetViewPanorama, GoogleMap } from '@react-google-maps/api'
 import Paginate from '../home/Paginate'
 
-const ParkDetail = ({ park, loggedIn, parkEvents }) => {
+const ParkDetail = ({ park, loggedIn, parkEvents, eventActivities }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [open, setOpen] = useState(false)
   const history = useHistory()
@@ -26,9 +26,10 @@ const ParkDetail = ({ park, loggedIn, parkEvents }) => {
   }
 
   const renderEvents = () => {
-    return events
-      .slice(indexOfFirstEvent, indexOfLastEvent)
-      .map((event) => <Event key={event.id} event={event} />)
+    return events.slice(indexOfFirstEvent, indexOfLastEvent).map((event) => {
+      const activities = eventActivities(event.id)
+      return <Event key={event.id} event={event} activities={activities} />
+    })
   }
   const clickHandler = () => {
     loggedIn ? setOpen(true) : history.push('/login', history.location.pathname)
@@ -106,6 +107,7 @@ const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn,
     parkEvents: selectParkEvents(state),
+    eventActivities: selectEventActivities(state),
   }
 }
 
