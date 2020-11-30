@@ -12,7 +12,7 @@ import { addFriend } from '../../redux/actions'
 import Event from '../events/Event'
 import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
-import { Grid, Item, Label, List, Button } from 'semantic-ui-react'
+import { Grid, Item, Label, Button } from 'semantic-ui-react'
 
 const Profile = ({
   user,
@@ -73,13 +73,12 @@ const Profile = ({
     const currentUserFriends = userFriends(currentUser.id)
     return friends.filter((friend) =>
       currentUserFriends.find(
-        (current) => current.attributes.friendId === friend.attributes.friendId
+        (current) =>
+          current.attributes.friendId === friend.attributes.friendId ||
+          currentUser.attributes.id === friend.attributes.friendId
       )
     )
   }
-
-  console.log(yourProfile || friended)
-  // console.log(friended)
 
   return (
     <Grid container padded centered>
@@ -101,9 +100,7 @@ const Profile = ({
 
           {!yourProfile && (
             <NavLink to={`/users/${user.id}/mutual`}>
-              <p>
-                Mutual Friends: {mutualFriends().length + (friended ? 1 : 0)}
-              </p>
+              <p>Mutual Friends: {mutualFriends().length}</p>
             </NavLink>
           )}
           {currentUser.id !== user.id && !friended && (

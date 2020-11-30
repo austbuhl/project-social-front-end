@@ -34,7 +34,9 @@ const UsersContainer = ({ selectUser, currentUser, selectUserFriends }) => {
         render={({ match }) => {
           const user = selectUser(parseInt(match.params.id))
           const mutual = mutualFriends(user)
-          return <FriendsList user={user} friends={mutual} />
+          return (
+            <FriendsList user={user} friends={mutual} yourProfile={false} />
+          )
         }}
       />
       <Route
@@ -42,7 +44,9 @@ const UsersContainer = ({ selectUser, currentUser, selectUserFriends }) => {
         render={({ match }) => {
           const user = selectUser(parseInt(match.params.id))
           const friends = selectUserFriends(user.id)
-          return <FriendsList user={user} friends={friends} />
+          return (
+            <FriendsList user={user} friends={friends} yourProfile={true} />
+          )
         }}
       />
     </Switch>
