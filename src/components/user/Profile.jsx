@@ -6,6 +6,7 @@ import {
   selectUserActivities,
   selectUserFriends,
   selectCurrentUser,
+  selectEventActivities,
 } from '../../redux/selectors'
 import { addFriend } from '../../redux/actions'
 import Event from '../events/Event'
@@ -18,13 +19,14 @@ const Profile = ({
   currentUser,
   userEvents,
   userActivities,
+  eventActivities,
   addFriend,
   userFriends,
 }) => {
   const activities = userActivities(user.id)
   const events = userEvents(user.id)
   const friends = userFriends(user.id)
-  const friended = friends.find(
+  const friended = !!friends.find(
     (friend) => friend.attributes.friendId === currentUser.attributes.id
   )
 
@@ -35,9 +37,10 @@ const Profile = ({
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage
 
   const renderEvents = () => {
-    return events
-      .slice(indexOfFirstEvent, indexOfLastEvent)
-      .map((event) => <Event key={event.id} event={event} />)
+    return events.slice(indexOfFirstEvent, indexOfLastEvent).map((event) => {
+      const activities = eventActivities(event.id)
+      return <Event key={event.id} event={event} activities={activities} />
+    })
   }
 
   const activityNames = activities.map((activity) => activity.attributes.name)
@@ -74,6 +77,8 @@ const Profile = ({
     )
   }
 
+  console.log(friended)
+
   return (
     <Grid container padded centered>
       <Grid.Row centered>
@@ -97,26 +102,30 @@ const Profile = ({
           )}
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row>
-        <Grid.Column width={5}>
-          <h3>Upcoming Events</h3>
-        </Grid.Column>
-        <Grid.Column width={5}>
-          <Paginate
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setCurrentPage={setCurrentPage}
-            floated='right'
-          />
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row centered>
-        <Grid.Column width={10}>
-          <Item.Group divided relaxed>
-            {renderEvents()}
-          </Item.Group>
-        </Grid.Column>
-      </Grid.Row>
+      {friended && (
+        <>
+          <Grid.Row>
+            <Grid.Column width={5}>
+              <h3>Upcoming Events</h3>
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <Paginate
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setCurrentPage={setCurrentPage}
+                floated='right'
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row centered>
+            <Grid.Column width={10}>
+              <Item.Group divided relaxed>
+                {renderEvents()}
+              </Item.Group>
+            </Grid.Column>
+          </Grid.Row>
+        </>
+      )}
     </Grid>
   )
 }
@@ -127,6 +136,7 @@ const mapStateToProps = (state) => {
     userEvents: selectUserEvents(state),
     userActivities: selectUserActivities(state),
     userFriends: selectUserFriends(state),
+    eventActivities: selectEventActivities(state),
   }
 }
 
