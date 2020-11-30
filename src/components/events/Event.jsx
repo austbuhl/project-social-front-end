@@ -9,6 +9,14 @@ import { selectEventActivities, selectEventPark } from '../../redux/selectors'
 const Event = ({ event, eventLocation, activities }) => {
   const park = eventLocation(event.id)
   const date = moment.utc(event.attributes.date).format('ddd, MMM Do, YYYY')
+  const boroughs = {
+    X: 'Bronx',
+    B: 'Brooklyn',
+    M: 'Manhattan',
+    Q: 'Queens',
+    R: 'Staten Island',
+  }
+  const borough = park ? boroughs[park.attributes.nycParkId[0]] : null
 
   const activityNames = activities
     ? activities
@@ -26,8 +34,9 @@ const Event = ({ event, eventLocation, activities }) => {
       <Item.Content>
         <Item.Header>{event.attributes.name}</Item.Header>
         <Item.Meta>
-          {park ? `${park.attributes.name} - ${date}` : null}
+          {park ? `${park.attributes.name} - ${borough}` : null}
         </Item.Meta>
+        <Item.Meta>{date}</Item.Meta>
         <Item.Description>{event.attributes.description}</Item.Description>
         <Item.Extra>
           <NavLink to={`/events/${event.id}`}>
