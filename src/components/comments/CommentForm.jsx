@@ -10,19 +10,15 @@ const CommentForm = ({
   eventId,
   createComment,
   loggedIn,
-  currentUserEvents,
+  attending,
   attendEvent,
 }) => {
   const [commentText, setCommentText] = useState('')
   const [open, setOpen] = useState(false)
-  const [alreadyAttending, setAlreadyAttending] = useState(
-    loggedIn ? currentUserEvents.find((event) => event.id === eventId) : false
-  )
   const history = useHistory()
 
-  console.log(alreadyAttending)
   const submitHandler = (e) => {
-    if (loggedIn && alreadyAttending) {
+    if (loggedIn && attending) {
       e.preventDefault()
       createComment({
         event_id: eventId,
@@ -38,7 +34,6 @@ const CommentForm = ({
 
   const clickHandler = () => {
     attendEvent({ event_id: eventId })
-    setAlreadyAttending(true)
     setOpen(false)
   }
 
@@ -78,13 +73,6 @@ const CommentForm = ({
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.loggedIn,
-    currentUserEvents: selectCurrentUserEvents(state),
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     createComment: (commentObj) => dispatch(createComment(commentObj)),
@@ -92,4 +80,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentForm)
+export default connect(null, mapDispatchToProps)(CommentForm)

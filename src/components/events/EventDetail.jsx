@@ -15,11 +15,14 @@ import {
   selectEventActivities,
   selectEventPark,
   selectCurrentUser,
+  selectCurrentUserEvents,
 } from '../../redux/selectors'
 import { Grid, Item, Button } from 'semantic-ui-react'
 
 const EventDetail = ({
   currentUser,
+  loggedIn,
+  currentUserEvents,
   event,
   eventUsers,
   eventComments,
@@ -34,6 +37,17 @@ const EventDetail = ({
   const time = moment.utc(event.attributes.time).format('LT')
   const date = moment.utc(event.attributes.date).format('ddd, MMM Do, YYYY')
   const [viewAttendees, setViewAttendees] = useState(false)
+  const [attending, setAttending] = useState(
+    loggedIn
+      ? !!currentUserEvents.find((currentEvent) => currentEvent.id === event.id)
+      : false
+  )
+
+  useEffect(() => {
+    setAttending(
+      !!currentUserEvents.find((currentEvent) => currentEvent.id === event.id)
+    )
+  }, [currentUserEvents])
 
   useEffect(() => {
     const subscription = consumer.subscriptions.create(
@@ -80,7 +94,11 @@ const EventDetail = ({
           <strong>Time:</strong> {time}
         </div>
         <h4>Event Description: {event.attributes.description}</h4>
-        <RSVPButton eventId={event.id} />
+        <RSVPButton
+          eventId={event.id}
+          attending={attending}
+          loggedIn={loggedIn}
+        />
         {renderActivityIcons()}
 
         <br />
@@ -105,7 +123,11 @@ const EventDetail = ({
         {viewAttendees && <Item.Group divided>{renderAttendees()}</Item.Group>}
 
         <CommentsList comments={comments} />
-        <CommentForm eventId={event.id} />
+        <CommentForm
+          eventId={event.id}
+          attending={attending}
+          loggedIn={loggedIn}
+        />
       </Grid.Column>
     </Grid>
   )
@@ -113,6 +135,8 @@ const EventDetail = ({
 
 const mapStateToProps = (state) => {
   return {
+    loggedIn: state.loggedIn,
+    currentUserEvents: selectCurrentUserEvents(state),
     currentUser: selectCurrentUser(state),
     eventUsers: selectEventUsers(state),
     eventComments: selectEventComments(state),
