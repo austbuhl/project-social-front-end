@@ -6,6 +6,7 @@ import Filter from '../components/home/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid, Item } from 'semantic-ui-react'
 import Paginate from '../components/home/Paginate'
+import FilterByBorough from '../components/home/FilterByBorough'
 import {
   selectParks,
   selectPark,
@@ -14,11 +15,16 @@ import {
 
 const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
   const [currentPage, setCurrentPage] = useState(1)
+  const [filterValue, setFilterValue] = useState(null)
   const parksPerPage = 8
 
   useEffect(() => {
     setCurrentPage(1)
   }, [selectedActivity])
+
+  const boroughFilterHandler = (e, value) => {
+    setFilterValue(value)
+  }
 
   const filteredParks = selectedActivity
     ? parks.filter((park) => {
@@ -32,11 +38,18 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
       })
     : parks
 
-  const totalPages = Math.ceil(filteredParks.length / parksPerPage)
+  const filteredBorough =
+    filterValue && filterValue !== 'All'
+      ? filteredParks.filter(
+          (park) => park.attributes.nycParkId[0] === filterValue
+        )
+      : filteredParks
+
+  const totalPages = Math.ceil(filteredBorough.length / parksPerPage)
   const indexOfLastPark = currentPage * parksPerPage
   const indexOfFirstPark = indexOfLastPark - parksPerPage
   const renderParks = () => {
-    return filteredParks
+    return filteredBorough
       .slice(indexOfFirstPark, indexOfLastPark)
       .map((park) => <Park key={park.id} park={park} />)
   }
@@ -66,7 +79,19 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
                 floated='right'
               />
             </h1>
-            <h4>Active Filter: {selectedActivity || 'All'}</h4>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+              }}
+            >
+              <h4>Active Filter: {selectedActivity || 'All'}</h4>
+              <FilterByBorough
+                filterHandler={boroughFilterHandler}
+                filterValue={filterValue}
+              />
+            </div>
             <Item.Group divided relaxed>
               {renderParks()}
             </Item.Group>

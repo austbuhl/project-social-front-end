@@ -20,10 +20,12 @@ const FriendsList = ({
         .friendships.data.length
       const youFriended =
         friend.attributes.frienderId === currentUser.attributes.id
+
+      const { friendName, friendId, status } = friend.attributes
       return (
         <Item key={friend.id}>
           <Item.Content>
-            <Item.Header>{friend.attributes.friendName}</Item.Header>
+            <Item.Header>{friendName}</Item.Header>
             <Item.Meta>
               <Icon name='user' />
               {`${friendsCount} ${
@@ -31,24 +33,24 @@ const FriendsList = ({
               }`}
             </Item.Meta>
             <Item.Extra>
-              <p>{friend.attributes.status}</p>
+              <p>{status}</p>
               {yourProfile && youFriended && (
                 <Button
-                  onClick={() => deleteFriend(friend.attributes.friendId)}
+                  secondary
+                  size='tiny'
+                  onClick={() => deleteFriend(friendId)}
                 >
-                  {friend.attributes.status === 'pending'
-                    ? 'Cancel Request'
-                    : 'Delete Friend'}
+                  {status === 'pending' ? 'Cancel Request' : 'Delete Friend'}
                 </Button>
               )}
 
-              {yourProfile && !youFriended && (
+              {yourProfile && !youFriended && status === 'pending' && (
                 <Button.Group>
                   <Button
                     positive
                     icon='check'
                     style={{ marginRight: '3px' }}
-                    onClick={() => acceptRequest(friend.attributes.friendId)}
+                    onClick={() => acceptRequest(friendId)}
                   />
 
                   <Button.Or />
@@ -56,9 +58,19 @@ const FriendsList = ({
                     negative
                     icon='cancel'
                     style={{ marginLeft: '3px' }}
-                    onClick={() => deleteFriend(friend.attributes.friendId)}
+                    onClick={() => deleteFriend(friendId)}
                   />
                 </Button.Group>
+              )}
+
+              {yourProfile && status === 'accepted' && (
+                <Button
+                  secondary
+                  size='tiny'
+                  onClick={() => deleteFriend(friendId)}
+                >
+                  Delete Friend
+                </Button>
               )}
               <NavLink to={`/users/${friend.attributes.friendId}/profile`}>
                 <Button primary floated='right' animated size='small'>
