@@ -15,7 +15,7 @@ const FilterByBorough = ({ filterHandler, filterValue }) => {
     <Form>
       <Form.Dropdown
         inline
-        placeholder='Filter by Borough'
+        placeholder='All'
         selection
         label='Filter by Borough'
         options={options}

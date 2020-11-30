@@ -6,6 +6,15 @@ import { useSelector } from 'react-redux'
 import { selectParkActivities } from '../../redux/selectors'
 
 const Park = ({ park }) => {
+  const boroughs = {
+    X: 'Bronx',
+    B: 'Brooklyn',
+    M: 'Manhattan',
+    Q: 'Queens',
+    R: 'Staten Island',
+  }
+  const borough = park ? boroughs[park.attributes.nycParkId[0]] : null
+
   const activities = useSelector((state) =>
     selectParkActivities(state)(park.id)
   )
@@ -23,7 +32,7 @@ const Park = ({ park }) => {
     <Item>
       <Item.Content>
         <Item.Header>{park.attributes.name}</Item.Header>
-        <Item.Meta>{park.attributes.num_of_people}</Item.Meta>
+        <Item.Meta>{borough}</Item.Meta>
         <Item.Description>{park.attributes.description}</Item.Description>
         <Item.Extra>
           <NavLink to={`/parks/${park.id}`}>

@@ -30,15 +30,18 @@ const Event = ({ event, eventLocation, activities }) => {
   }
 
   return (
-    <Item>
+    <Item style={{ padding: 'none' }}>
       <Item.Content>
         <Item.Header>{event.attributes.name}</Item.Header>
         <Item.Meta>
           {park ? `${park.attributes.name} - ${borough}` : null}
         </Item.Meta>
         <Item.Meta>{date}</Item.Meta>
+
         <Item.Description>{event.attributes.description}</Item.Description>
+
         <Item.Extra>
+          {activities ? renderActivityIcons() : null}{' '}
           <NavLink to={`/events/${event.id}`}>
             <Button primary floated='right' animated size='small'>
               <Button.Content visible>More Info</Button.Content>
@@ -47,7 +50,6 @@ const Event = ({ event, eventLocation, activities }) => {
               </Button.Content>
             </Button>
           </NavLink>
-          {activities ? renderActivityIcons() : null}
         </Item.Extra>
       </Item.Content>
     </Item>

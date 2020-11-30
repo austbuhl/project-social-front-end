@@ -24,6 +24,14 @@ const ParkDetail = ({ park, loggedIn, parkEvents, eventActivities }) => {
     width: '400px',
     height: '400px',
   }
+  const boroughs = {
+    X: 'Bronx',
+    B: 'Brooklyn',
+    M: 'Manhattan',
+    Q: 'Queens',
+    R: 'Staten Island',
+  }
+  const borough = park ? boroughs[park.attributes.nycParkId[0]] : null
 
   const renderEvents = () => {
     return events.slice(indexOfFirstEvent, indexOfLastEvent).map((event) => {
@@ -41,7 +49,13 @@ const ParkDetail = ({ park, loggedIn, parkEvents, eventActivities }) => {
         <Grid.Row centered>
           <Grid.Column width={6}>
             <h1>{park.attributes.name}</h1>
-            <h4>{park.attributes.location}</h4>
+            <p>
+              <strong>Location: </strong>
+              {park.attributes.location}
+            </p>
+            <p>
+              <strong>Borough: </strong> {borough}
+            </p>
             <a href={park.attributes.website} target='_blank'>
               {park.attributes.website}
             </a>

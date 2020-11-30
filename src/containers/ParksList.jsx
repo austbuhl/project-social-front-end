@@ -92,9 +92,7 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
                 filterValue={filterValue}
               />
             </div>
-            <Item.Group divided relaxed>
-              {renderParks()}
-            </Item.Group>
+            <Item.Group divided>{renderParks()}</Item.Group>
           </Grid.Column>
         </Grid>
       </Route>

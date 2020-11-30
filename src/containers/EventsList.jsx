@@ -109,9 +109,7 @@ const EventsList = ({
                 filterValue={filterValue}
               />
             </div>
-            <Item.Group divided relaxed>
-              {renderEvents()}
-            </Item.Group>
+            <Item.Group divided>{renderEvents()}</Item.Group>
           </Grid.Column>
         </Grid>
       </Route>
@@ -132,9 +130,7 @@ const EventsList = ({
             Active Filter: {selectedActivity || 'All'}
           </h4>
           <Grid.Row>
-            <Item.Group divided relaxed>
-              {renderEvents()}
-            </Item.Group>
+            <Item.Group divided>{renderEvents()}</Item.Group>
           </Grid.Row>
         </Grid>
       </Route>
