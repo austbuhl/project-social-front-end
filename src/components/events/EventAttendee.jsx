@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { List, Card, Icon, Image, Button } from 'semantic-ui-react'
+import { Item, Button, Icon } from 'semantic-ui-react'
 const EventAttendee = ({ user }) => {
   const loggedIn = useSelector((state) => state.loggedIn)
   const history = useHistory()
@@ -15,32 +15,32 @@ const EventAttendee = ({ user }) => {
   const friendsCount = user.relationships.friendships.data.length
 
   return (
-    <Card>
-      <Card.Content>
-        <Image
-          floated='right'
-          size='mini'
-          src='/images/avatar/large/steve.jpg'
-        />
-        <Card.Header>{user.attributes.username}</Card.Header>
-        // find a mutual friend
-        <Card.Meta>Friends of Elliot</Card.Meta>
-        <Card.Meta>
+    <Item>
+      <Item.Content>
+        <Item.Header>{user.attributes.username}</Item.Header>
+        <Item.Meta>
           <Icon name='user' />
-          {`${friendsCount} ${friendsCount > 1 ? 'Friends' : 'Friend'}`}
-        </Card.Meta>
-      </Card.Content>
-      <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='green' onClick={clickHandler}>
-            View Profile
+          {`${friendsCount} ${
+            friendsCount > 1 || friendsCount === 0 ? 'Friends' : 'Friend'
+          }`}
+        </Item.Meta>
+
+        <Item.Extra>
+          <Button
+            primary
+            floated='right'
+            animated
+            size='small'
+            onClick={clickHandler}
+          >
+            <Button.Content visible>View Profile</Button.Content>
+            <Button.Content hidden>
+              <Icon name='arrow right' />
+            </Button.Content>
           </Button>
-          <Button basic color='red'>
-            Send Message
-          </Button>
-        </div>
-      </Card.Content>
-    </Card>
+        </Item.Extra>
+      </Item.Content>
+    </Item>
   )
 }
 export default EventAttendee

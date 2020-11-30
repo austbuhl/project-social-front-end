@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { newCommentReceived } from '../../redux/actions'
@@ -16,7 +16,7 @@ import {
   selectEventPark,
   selectCurrentUser,
 } from '../../redux/selectors'
-import { Grid, List, Card } from 'semantic-ui-react'
+import { Grid, Item, Button } from 'semantic-ui-react'
 
 const EventDetail = ({
   currentUser,
@@ -33,6 +33,7 @@ const EventDetail = ({
   const activities = eventActivities(event.id)
   const time = moment.utc(event.attributes.time).format('LT')
   const date = moment.utc(event.attributes.date).format('ddd, MMM Do, YYYY')
+  const [viewAttendees, setViewAttendees] = useState(false)
 
   useEffect(() => {
     const subscription = consumer.subscriptions.create(
@@ -79,19 +80,29 @@ const EventDetail = ({
           <strong>Time:</strong> {time}
         </div>
         <h4>Event Description: {event.attributes.description}</h4>
+        <RSVPButton eventId={event.id} />
         {renderActivityIcons()}
 
         <br />
         <br />
-        <RSVPButton eventId={event.id} />
+
         <div>
-          <strong>People Needed:</strong> {event.attributes.numOfPeople}{' '}
+          <strong>People Needed: </strong>
+          {event.attributes.numOfPeople}
         </div>
         <div>
-          <strong>Currently Going:</strong>{' '}
-          {event.relationships.users.data.length}{' '}
+          <strong>Currently Going: </strong>
+          {event.relationships.users.data.length}
+          <Button
+            floated='right'
+            circular
+            secondary
+            icon={viewAttendees ? 'angle double up' : 'angle double down'}
+            onClick={() => setViewAttendees((prevState) => !prevState)}
+          />
         </div>
-        <Card.Group itemsPerRow={2}>{renderAttendees()}</Card.Group>
+        <br />
+        {viewAttendees && <Item.Group divided>{renderAttendees()}</Item.Group>}
 
         <CommentsList comments={comments} />
         <CommentForm eventId={event.id} />
