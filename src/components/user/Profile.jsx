@@ -13,7 +13,7 @@ import UserRadarChart from './UserRadarChart'
 import Event from '../events/Event'
 import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
-import { Grid, Item, Label, Button } from 'semantic-ui-react'
+import { Grid, Item, Label, Button, Card, Icon, Image } from 'semantic-ui-react'
 
 const Profile = ({
   user,
@@ -56,17 +56,6 @@ const Profile = ({
     return allNames
   }, {})
 
-  // const currentUserCountedNames = currentUserActivities
-  //   .map((activity) => activity.attributes.name)
-  //   .reduce(function (allNames, name) {
-  //     if (name in allNames) {
-  //       allNames[name]++
-  //     } else {
-  //       allNames[name] = 1
-  //     }
-  //     return allNames
-  //   }, {})
-
   const renderFavActivities = () => {
     const uniqActivityNames = activityNames.filter(
       (value, index, self) => self.indexOf(value) === index
@@ -93,12 +82,48 @@ const Profile = ({
     )
   }
 
+  const imgs = [
+    'https://react.semantic-ui.com/images/avatar/large/stevie.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/veronika.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/jenny.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/matt.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/elliot.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/joe.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/steve.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/christian.jpg',
+  ]
+
+  const randomImg = imgs[Math.floor(Math.random() * imgs.length)]
+
   return (
     <Grid container padded centered>
       <Grid.Row centered>
-        <Grid.Column width={10}>
-          <h1>Profile</h1>
-          <h2>{user.attributes.username}</h2>
+        <Grid.Column width={4}>
+          <h1>Profile Page</h1>
+          <Card>
+            <Image src={randomImg} wrapped />
+            <Card.Content>
+              <Card.Header>{user.attributes.username}</Card.Header>
+              <Card.Meta>Joined in 2020</Card.Meta>
+            </Card.Content>
+            <Card.Content extra>
+              {yourProfile && (
+                <NavLink to={`/users/${user.id}/friends`}>
+                  <Icon name='user' />
+                  Friends: {friends.length}
+                </NavLink>
+              )}
+
+              {!yourProfile && (
+                <NavLink to={`/users/${user.id}/mutual`}>
+                  <Icon name='user' />
+                  Mutual Friends: {mutualFriends().length}
+                </NavLink>
+              )}
+            </Card.Content>
+          </Card>
+        </Grid.Column>
+        <Grid.Column width={5} textAlign='center' verticalAlign='middle'>
           <h3>Favorite Activities</h3>
           {renderFavActivities()}
           {!yourProfile && (
@@ -111,17 +136,6 @@ const Profile = ({
       </Grid.Row>
       <Grid.Row centered>
         <Grid.Column width={10}>
-          {yourProfile && (
-            <NavLink to={`/users/${user.id}/friends`}>
-              <p>Friends: {friends.length}</p>
-            </NavLink>
-          )}
-
-          {!yourProfile && (
-            <NavLink to={`/users/${user.id}/mutual`}>
-              <p>Mutual Friends: {mutualFriends().length}</p>
-            </NavLink>
-          )}
           {!yourProfile && !friended && (
             <Button floated='right' onClick={() => addFriend(user.id)}>
               Add Friend

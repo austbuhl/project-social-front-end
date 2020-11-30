@@ -110,12 +110,12 @@ const FriendsList = ({
                 </Button>
               )}
               <NavLink to={`/users/${friendId}/profile`}>
-                <Button.Content primary floated='right' animated size='tiny'>
+                <Button primary floated='right' animated size='tiny'>
                   <Button.Content visible>View Profile</Button.Content>
                   <Button.Content hidden>
                     <Icon name='arrow right' />
                   </Button.Content>
-                </Button.Content>
+                </Button>
               </NavLink>
             </Item.Content>
           </Item.Content>

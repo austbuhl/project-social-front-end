@@ -104,7 +104,7 @@ const UserRadarChart = ({ currentUserActivities, userActivities }) => {
   ]
 
   return (
-    <RadarChart outerRadius={90} width={730} height={250} data={createData()}>
+    <RadarChart outerRadius={90} width={350} height={250} data={createData()}>
       <PolarGrid />
       <PolarAngleAxis dataKey='name' />
       <PolarRadiusAxis angle={30} domain={['auto', 'auto']} />
