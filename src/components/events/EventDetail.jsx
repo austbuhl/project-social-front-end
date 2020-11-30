@@ -45,7 +45,11 @@ const EventDetail = ({
 
   useEffect(() => {
     setAttending(
-      !!currentUserEvents.find((currentEvent) => currentEvent.id === event.id)
+      loggedIn
+        ? !!currentUserEvents.find(
+            (currentEvent) => currentEvent.id === event.id
+          )
+        : false
     )
   }, [currentUserEvents])
 

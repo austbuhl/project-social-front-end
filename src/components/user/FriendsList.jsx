@@ -1,12 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addFriend, acceptRequest, deleteFriend } from '../../redux/actions'
-import { selectUserFriends } from '../../redux/selectors'
+import { acceptRequest, deleteFriend } from '../../redux/actions'
+
 import { List, Button } from 'semantic-ui-react'
 
-const FriendsList = ({ user, userFriends, deleteFriend, acceptRequest }) => {
-  const friends = userFriends(user.id)
-  console.log(friends)
+const FriendsList = ({ user, friends, deleteFriend, acceptRequest }) => {
   const renderFriendsList = () => {
     return friends.map((friend) => (
       <List.Item key={friend.id}>
@@ -37,11 +35,11 @@ const FriendsList = ({ user, userFriends, deleteFriend, acceptRequest }) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    userFriends: selectUserFriends(state),
-  }
-}
+// const mapStateToProps = (state) => {
+//   return {
+//     userFriends: selectUserFriends(state),
+//   }
+// }
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -51,4 +49,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendsList)
+export default connect(null, mapDispatchToProps)(FriendsList)

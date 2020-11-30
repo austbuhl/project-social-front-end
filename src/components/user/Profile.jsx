@@ -29,6 +29,7 @@ const Profile = ({
   const friended = !!friends.find(
     (friend) => friend.attributes.friendId === currentUser.attributes.id
   )
+  const yourProfile = user.id === currentUser.id
 
   const [currentPage, setCurrentPage] = useState(1)
   const eventsPerPage = 3
@@ -77,6 +78,9 @@ const Profile = ({
     )
   }
 
+  console.log(yourProfile || friended)
+  // console.log(friended)
+
   return (
     <Grid container padded centered>
       <Grid.Row centered>
@@ -89,10 +93,19 @@ const Profile = ({
       </Grid.Row>
       <Grid.Row centered>
         <Grid.Column width={10}>
-          <NavLink to={`/users/${user.id}/friends`}>
-            <p>Friends: {friends.length}</p>
-          </NavLink>
-          <p>Mutual Friends: {mutualFriends().length + (friended ? 1 : 0)}</p>
+          {yourProfile && (
+            <NavLink to={`/users/${user.id}/friends`}>
+              <p>Friends: {friends.length}</p>
+            </NavLink>
+          )}
+
+          {!yourProfile && (
+            <NavLink to={`/users/${user.id}/mutual`}>
+              <p>
+                Mutual Friends: {mutualFriends().length + (friended ? 1 : 0)}
+              </p>
+            </NavLink>
+          )}
           {currentUser.id !== user.id && !friended && (
             <Button floated='right' onClick={() => addFriend(user.id)}>
               Add Friend
@@ -100,31 +113,30 @@ const Profile = ({
           )}
         </Grid.Column>
       </Grid.Row>
-      {friended ||
-        (user.id === currentUser.id && (
-          <>
-            <Grid.Row>
-              <Grid.Column width={5}>
-                <h3>Upcoming Events</h3>
-              </Grid.Column>
-              <Grid.Column width={5}>
-                <Paginate
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  setCurrentPage={setCurrentPage}
-                  floated='right'
-                />
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row centered>
-              <Grid.Column width={10}>
-                <Item.Group divided relaxed>
-                  {renderEvents()}
-                </Item.Group>
-              </Grid.Column>
-            </Grid.Row>
-          </>
-        ))}
+      {(yourProfile || friended) && (
+        <>
+          <Grid.Row>
+            <Grid.Column width={5}>
+              <h3>Upcoming Events</h3>
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <Paginate
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setCurrentPage={setCurrentPage}
+                floated='right'
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row centered>
+            <Grid.Column width={10}>
+              <Item.Group divided relaxed>
+                {renderEvents()}
+              </Item.Group>
+            </Grid.Column>
+          </Grid.Row>
+        </>
+      )}
     </Grid>
   )
 }

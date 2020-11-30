@@ -149,6 +149,34 @@ function usersReducer(state = defaultState.users, action) {
           },
         },
       }
+    case 'ACCEPT_REQUEST':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            friendships: {
+              data: [
+                { id: Object.keys(action.payload)[0], type: 'friend' },
+                ...user.relationships.friendships.data,
+              ],
+            },
+          },
+        },
+        [friendId]: {
+          ...friend,
+          relationships: {
+            ...friend.relationships,
+            friendships: {
+              data: [
+                { id: Object.keys(action.payload)[1], type: 'friend' },
+                ...friend.relationships.friendships.data,
+              ],
+            },
+          },
+        },
+      }
     case 'DELETE_FRIEND':
       return {
         ...state,
@@ -307,6 +335,22 @@ function currentUserReducer(state = defaultState.currentUser, action) {
                 ...user.relationships.friendships.data.filter(
                   (friendship) => parseInt(friendship.id) !== action.first
                 ),
+              ],
+            },
+          },
+        },
+      }
+    case 'ACCEPT_REQUEST':
+      return {
+        ...state,
+        [userId]: {
+          ...user,
+          relationships: {
+            ...user.relationships,
+            friendships: {
+              data: [
+                { id: Object.keys(action.payload)[0], type: 'friend' },
+                ...user.relationships.friendships.data,
               ],
             },
           },
