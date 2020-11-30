@@ -47,7 +47,6 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
             </a>
           </>
         )}
-        {/* </div> */}
       </Menu>
     </Sticky>
   )

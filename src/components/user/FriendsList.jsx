@@ -14,7 +14,16 @@ const FriendsList = ({
   selectUser,
 }) => {
   const [activeItem, setActiveItem] = useState('Received')
-
+  const imgs = [
+    'https://react.semantic-ui.com/images/avatar/large/stevie.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/veronika.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/jenny.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/matt.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/elliot.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/joe.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/steve.jpg',
+    'https://react.semantic-ui.com/images/avatar/large/christian.jpg',
+  ]
   const sentRequests = friends.filter(
     (friend) =>
       friend.attributes.frienderId === currentUser.attributes.id &&
@@ -48,11 +57,12 @@ const FriendsList = ({
         .friendships.data.length
       const youFriended =
         friend.attributes.frienderId === currentUser.attributes.id
-
+      const randomImg = imgs[Math.floor(Math.random() * imgs.length)]
       const { friendName, friendId, status } = friend.attributes
       return (
         <Item key={friend.id}>
-          <Item.Content>
+          <Item.Image size='tiny' src={randomImg} circular />
+          <Item.Content verticalAlign='middle'>
             <Item.Header>{friendName}</Item.Header>
             <Item.Meta>
               <Icon name='user' />
@@ -60,20 +70,11 @@ const FriendsList = ({
                 friendsCount > 1 || friendsCount === 0 ? 'Friends' : 'Friend'
               }`}
             </Item.Meta>
-            <Item.Extra>
-              <p>{status}</p>
-              {youFriended && (
-                <Button
-                  secondary
-                  size='tiny'
-                  onClick={() => deleteFriend(friendId)}
-                >
-                  {status === 'pending' ? 'Cancel Request' : 'Delete Friend'}
-                </Button>
-              )}
 
+            <Item.Content verticalAlign='bottom '>
+              <p>{status}</p>
               {!youFriended && status === 'pending' && (
-                <Button.Group>
+                <Button.Group size='tiny'>
                   <Button
                     positive
                     icon='check'
@@ -90,7 +91,15 @@ const FriendsList = ({
                   />
                 </Button.Group>
               )}
-
+              {youFriended && (
+                <Button
+                  secondary
+                  size='tiny'
+                  onClick={() => deleteFriend(friendId)}
+                >
+                  {status === 'pending' ? 'Cancel Request' : 'Delete Friend'}
+                </Button>
+              )}
               {status === 'accepted' && (
                 <Button
                   secondary
@@ -101,14 +110,14 @@ const FriendsList = ({
                 </Button>
               )}
               <NavLink to={`/users/${friendId}/profile`}>
-                <Button primary floated='right' animated size='small'>
+                <Button.Content primary floated='right' animated size='tiny'>
                   <Button.Content visible>View Profile</Button.Content>
                   <Button.Content hidden>
                     <Icon name='arrow right' />
                   </Button.Content>
-                </Button>
+                </Button.Content>
               </NavLink>
-            </Item.Extra>
+            </Item.Content>
           </Item.Content>
         </Item>
       )
