@@ -7,25 +7,37 @@ import Filter from '../components/home/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { Grid, Item } from 'semantic-ui-react'
 import Paginate from '../components/home/Paginate'
+import FilterByBorough from '../components/home/FilterByBorough'
 import {
   selectEvents,
   selectEvent,
+  selectEventPark,
   selectEventActivities,
 } from '../redux/selectors'
 
 const EventsList = ({
   events,
   selectEvent,
+  selectEventPark,
   selectedActivity,
   eventActivities,
   activitiesLoaded,
 }) => {
   const [currentPage, setCurrentPage] = useState(1)
+  const [filterValue, setFilterValue] = useState(null)
   const eventsPerPage = 5
 
   useEffect(() => {
     setCurrentPage(1)
   }, [selectedActivity])
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [filterValue])
+
+  const boroughFilterHandler = (e, value) => {
+    setFilterValue(value)
+  }
 
   const filteredEvents = selectedActivity
     ? events.filter((event) => {
@@ -39,12 +51,20 @@ const EventsList = ({
       })
     : events
 
-  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage)
+  const filteredBorough =
+    filterValue && filterValue !== 'All'
+      ? filteredEvents.filter((event) => {
+          const park = selectEventPark(event.id)
+          return park.attributes.nycParkId[0] === filterValue
+        })
+      : filteredEvents
+
+  const totalPages = Math.ceil(filteredBorough.length / eventsPerPage)
   const indexOfLastEvent = currentPage * eventsPerPage
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage
 
   const renderEvents = () => {
-    return filteredEvents
+    return filteredBorough
       .slice(indexOfFirstEvent, indexOfLastEvent)
       .map((event) => {
         const activities = activitiesLoaded ? eventActivities(event.id) : null
@@ -76,7 +96,19 @@ const EventsList = ({
                 floated='right'
               />
             </h1>
-            <h4>Active Filter: {selectedActivity || 'All'}</h4>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+              }}
+            >
+              <h4>Active Filter: {selectedActivity || 'All'}</h4>
+              <FilterByBorough
+                filterHandler={boroughFilterHandler}
+                filterValue={filterValue}
+              />
+            </div>
             <Item.Group divided relaxed>
               {renderEvents()}
             </Item.Group>
@@ -114,6 +146,7 @@ const mapStateToProps = (state) => {
   return {
     events: selectEvents(state),
     selectEvent: selectEvent(state),
+    selectEventPark: selectEventPark(state),
     selectedActivity: state.selectedActivity,
     eventActivities: selectEventActivities(state),
     activitiesLoaded: state.activitiesLoaded,
