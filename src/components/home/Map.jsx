@@ -45,6 +45,7 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
   const panTo = React.useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng })
     mapRef.current.setZoom(14)
+    mapDragHandler(lat, lng)
   }, [])
 
   const onMapLoad = React.useCallback((map) => {
