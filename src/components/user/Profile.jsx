@@ -77,8 +77,6 @@ const Profile = ({
     )
   }
 
-  console.log(friended)
-
   return (
     <Grid container padded centered>
       <Grid.Row centered>
@@ -102,30 +100,31 @@ const Profile = ({
           )}
         </Grid.Column>
       </Grid.Row>
-      {friended && (
-        <>
-          <Grid.Row>
-            <Grid.Column width={5}>
-              <h3>Upcoming Events</h3>
-            </Grid.Column>
-            <Grid.Column width={5}>
-              <Paginate
-                currentPage={currentPage}
-                totalPages={totalPages}
-                setCurrentPage={setCurrentPage}
-                floated='right'
-              />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row centered>
-            <Grid.Column width={10}>
-              <Item.Group divided relaxed>
-                {renderEvents()}
-              </Item.Group>
-            </Grid.Column>
-          </Grid.Row>
-        </>
-      )}
+      {friended ||
+        (user.id === currentUser.id && (
+          <>
+            <Grid.Row>
+              <Grid.Column width={5}>
+                <h3>Upcoming Events</h3>
+              </Grid.Column>
+              <Grid.Column width={5}>
+                <Paginate
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  setCurrentPage={setCurrentPage}
+                  floated='right'
+                />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row centered>
+              <Grid.Column width={10}>
+                <Item.Group divided relaxed>
+                  {renderEvents()}
+                </Item.Group>
+              </Grid.Column>
+            </Grid.Row>
+          </>
+        ))}
     </Grid>
   )
 }
