@@ -21,7 +21,8 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
 
   const mapContainerStyle = {
     width: '100%',
-    height: '750px',
+    height: '85vh',
+    // height: '850px',
   }
   const center = {
     lat: 40.73061,
@@ -101,6 +102,7 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
 
   if (loadError) return 'Error'
   if (!isLoaded) return 'Loading...'
+  console.log(center)
   return (
     <Segment>
       <Locate panTo={panTo} />
@@ -126,6 +128,7 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
                   lng: parseFloat(selectedPark.attributes.longitude),
                 }}
                 onCloseClick={() => setSelectedPark(null)}
+                // options={{ disableAutoPan: true }}
               >
                 <div>
                   <h4>{selectedPark.attributes.name}</h4>

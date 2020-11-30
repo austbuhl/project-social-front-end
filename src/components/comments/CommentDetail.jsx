@@ -7,12 +7,12 @@ import { selectCommentAuthor } from '../../redux/selectors'
 const CommentDetail = ({ comment }) => {
   const date = new Date(comment.attributes.createdAt)
   const author = useSelector((state) => selectCommentAuthor(state)(comment.id))
-
+  const loggedIn = useSelector((state) => state.loggedIn)
   return (
     <Comment>
       <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
       <Comment.Content>
-        <NavLink to={`/users/${author.id}/profile`}>
+        <NavLink to={loggedIn ? `/users/${author.id}/profile` : '/login'}>
           <Comment.Author as='a'>{author.attributes.username}</Comment.Author>
         </NavLink>
         <Comment.Metadata>
