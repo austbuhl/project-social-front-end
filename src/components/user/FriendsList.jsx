@@ -2,52 +2,77 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { acceptRequest, deleteFriend } from '../../redux/actions'
-
-import { Button, Item, Icon, Grid } from 'semantic-ui-react'
+import { selectUser, selectCurrentUser } from '../../redux/selectors'
+import { Button, Item, Icon, Grid, Label } from 'semantic-ui-react'
 
 const FriendsList = ({
-  user,
+  // user,
+  currentUser,
   yourProfile,
   friends,
   deleteFriend,
   acceptRequest,
+  selectUser,
 }) => {
   const renderFriendsList = () => {
-    return friends.map((friend) => (
-      <Item key={friend.id}>
-        <Item.Content>
-          <Item.Header>{friend.attributes.friendName}</Item.Header>
-          <Item.Extra>
-            <NavLink to={`/users/${friend.attributes.friendId}/profile`}>
-              <Button primary floated='right' animated size='small'>
-                <Button.Content visible>View Profile</Button.Content>
-                <Button.Content hidden>
-                  <Icon name='arrow right' />
-                </Button.Content>
-              </Button>
-            </NavLink>
-            {yourProfile && (
-              <>
-                <Button
-                  onClick={() => acceptRequest(friend.attributes.friendId)}
-                >
-                  <Button.Content>{friend.attributes.status}</Button.Content>
-                </Button>
+    return friends.map((friend) => {
+      const friendsCount = selectUser(friend.attributes.friendId).relationships
+        .friendships.data.length
+      const youFriended =
+        friend.attributes.frienderId === currentUser.attributes.id
+      return (
+        <Item key={friend.id}>
+          <Item.Content>
+            <Item.Header>{friend.attributes.friendName}</Item.Header>
+            <Item.Meta>
+              <Icon name='user' />
+              {`${friendsCount} ${
+                friendsCount > 1 || friendsCount === 0 ? 'Friends' : 'Friend'
+              }`}
+            </Item.Meta>
+            <Item.Extra>
+              <p>{friend.attributes.status}</p>
+              {yourProfile && youFriended && (
                 <Button
                   onClick={() => deleteFriend(friend.attributes.friendId)}
                 >
-                  <Button.Content>
-                    {friend.attributes.status === 'pending'
-                      ? 'Decline Request'
-                      : 'Delete Friend'}
+                  {friend.attributes.status === 'pending'
+                    ? 'Cancel Request'
+                    : 'Delete Friend'}
+                </Button>
+              )}
+
+              {yourProfile && !youFriended && (
+                <Button.Group>
+                  <Button
+                    positive
+                    icon='check'
+                    style={{ marginRight: '3px' }}
+                    onClick={() => acceptRequest(friend.attributes.friendId)}
+                  />
+
+                  <Button.Or />
+                  <Button
+                    negative
+                    icon='cancel'
+                    style={{ marginLeft: '3px' }}
+                    onClick={() => deleteFriend(friend.attributes.friendId)}
+                  />
+                </Button.Group>
+              )}
+              <NavLink to={`/users/${friend.attributes.friendId}/profile`}>
+                <Button primary floated='right' animated size='small'>
+                  <Button.Content visible>View Profile</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name='arrow right' />
                   </Button.Content>
                 </Button>
-              </>
-            )}
-          </Item.Extra>
-        </Item.Content>
-      </Item>
-    ))
+              </NavLink>
+            </Item.Extra>
+          </Item.Content>
+        </Item>
+      )
+    })
   }
 
   return (
@@ -66,6 +91,13 @@ const FriendsList = ({
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    currentUser: selectCurrentUser(state),
+    selectUser: selectUser(state),
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     acceptRequest: (friendId) => dispatch(acceptRequest(friendId)),
@@ -73,4 +105,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(FriendsList)
+export default connect(mapStateToProps, mapDispatchToProps)(FriendsList)

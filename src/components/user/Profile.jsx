@@ -9,6 +9,7 @@ import {
   selectEventActivities,
 } from '../../redux/selectors'
 import { addFriend } from '../../redux/actions'
+import UserRadarChart from './UserRadarChart'
 import Event from '../events/Event'
 import Paginate from '../home/Paginate'
 import ActivityIcon from '../activities/ActivityIcon'
@@ -24,6 +25,7 @@ const Profile = ({
   userFriends,
 }) => {
   const activities = userActivities(user.id)
+  const currentUserActivities = userActivities(currentUser.id)
   const events = userEvents(user.id)
   const friends = userFriends(user.id)
   const friended = !!friends.find(
@@ -53,6 +55,17 @@ const Profile = ({
     }
     return allNames
   }, {})
+
+  // const currentUserCountedNames = currentUserActivities
+  //   .map((activity) => activity.attributes.name)
+  //   .reduce(function (allNames, name) {
+  //     if (name in allNames) {
+  //       allNames[name]++
+  //     } else {
+  //       allNames[name] = 1
+  //     }
+  //     return allNames
+  //   }, {})
 
   const renderFavActivities = () => {
     const uniqActivityNames = activityNames.filter(
@@ -88,6 +101,12 @@ const Profile = ({
           <h2>{user.attributes.username}</h2>
           <h3>Favorite Activities</h3>
           {renderFavActivities()}
+          {!yourProfile && (
+            <UserRadarChart
+              currentUserActivities={currentUserActivities}
+              userActivities={activities}
+            />
+          )}
         </Grid.Column>
       </Grid.Row>
       <Grid.Row centered>
@@ -103,7 +122,7 @@ const Profile = ({
               <p>Mutual Friends: {mutualFriends().length}</p>
             </NavLink>
           )}
-          {currentUser.id !== user.id && !friended && (
+          {!yourProfile && !friended && (
             <Button floated='right' onClick={() => addFriend(user.id)}>
               Add Friend
             </Button>
