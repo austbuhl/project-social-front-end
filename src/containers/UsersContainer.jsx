@@ -8,6 +8,7 @@ import {
   selectUser,
   selectUserFriends,
 } from '../redux/selectors'
+import MutualFriends from '../components/user/MutualFriends'
 const UsersContainer = ({ selectUser, currentUser, selectUserFriends }) => {
   const mutualFriends = (user) => {
     const currentUserFriends = selectUserFriends(currentUser.id)
@@ -35,7 +36,8 @@ const UsersContainer = ({ selectUser, currentUser, selectUserFriends }) => {
           const user = selectUser(parseInt(match.params.id))
           const mutual = mutualFriends(user)
           return (
-            <FriendsList user={user} friends={mutual} yourProfile={false} />
+            <MutualFriends friends={mutual} />
+            // <FriendsList user={user} friends={mutual} yourProfile={false} />
           )
         }}
       />
@@ -44,9 +46,7 @@ const UsersContainer = ({ selectUser, currentUser, selectUserFriends }) => {
         render={({ match }) => {
           const user = selectUser(parseInt(match.params.id))
           const friends = selectUserFriends(user.id)
-          return (
-            <FriendsList user={user} friends={friends} yourProfile={true} />
-          )
+          return <FriendsList friends={friends} />
         }}
       />
     </Switch>
