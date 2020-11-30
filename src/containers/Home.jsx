@@ -22,7 +22,7 @@ const Home = () => {
         <Map mapDragHandler={mapDragHandler} />
       </Grid.Column>
       <Grid.Column width={5}>
-        <EventsList />
+        <EventsList mapLat={mapLat} mapLong={mapLong} />
       </Grid.Column>
     </Grid>
   )

@@ -9,13 +9,13 @@ import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
-
 import reportWebVitals from './reportWebVitals'
 
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 )
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

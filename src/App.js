@@ -36,18 +36,6 @@ function App({
     fetchComments()
   }, [])
 
-  useEffect(() => {})
-
-  const loadData = () => {
-    // Promise.all([fetchParks(), fetchEvents()])
-    // fetchEvents()
-    // await authorizeUser()
-    // await fetchEvents()
-    // await fetchUsers()
-    // await fetchFriends()
-    // await fetchComments()
-  }
-
   return (
     <div className='App'>
       <NavBar />

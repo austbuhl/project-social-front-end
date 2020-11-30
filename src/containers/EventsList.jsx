@@ -22,6 +22,8 @@ const EventsList = ({
   selectedActivity,
   eventActivities,
   activitiesLoaded,
+  mapLat,
+  mapLong,
 }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [filterValue, setFilterValue] = useState(null)
@@ -59,12 +61,49 @@ const EventsList = ({
         })
       : filteredEvents
 
-  const totalPages = Math.ceil(filteredBorough.length / eventsPerPage)
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const radlat1 = (Math.PI * lat1) / 180
+    const radlat2 = (Math.PI * lat2) / 180
+    const radlon1 = (Math.PI * lon1) / 180
+    const radlon2 = (Math.PI * lon2) / 180
+    const theta = lon1 - lon2
+    const radtheta = (Math.PI * theta) / 180
+    let dist =
+      Math.sin(radlat1) * Math.sin(radlat2) +
+      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
+    dist = Math.acos(dist)
+    dist = (dist * 180) / Math.PI
+    dist = dist * 60 * 1.1515
+    dist = dist * 1.609344
+
+    return dist
+  }
+
+  const eventsPlusDistance = activitiesLoaded
+    ? filteredBorough.map((event) => {
+        const park = selectEventPark(event.id)
+        const parkLat = park.attributes.latitude
+        const parkLong = park.attributes.longitude
+        const distance = calculateDistance(parkLat, parkLong, mapLat, mapLong)
+        return {
+          ...event,
+          distance,
+        }
+      })
+    : null
+
+  const eventsSortedByDistance = eventsPlusDistance
+    ? eventsPlusDistance.sort((a, b) => a.distance - b.distance)
+    : []
+  console.log(eventsSortedByDistance)
+  const totalPages = Math.ceil(eventsSortedByDistance.length / eventsPerPage)
+  // const totalPages = Math.ceil(filteredBorough.length / eventsPerPage)
   const indexOfLastEvent = currentPage * eventsPerPage
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage
 
   const renderEvents = () => {
-    return filteredBorough
+    // return filteredBorough
+    return eventsSortedByDistance
       .slice(indexOfFirstEvent, indexOfLastEvent)
       .map((event) => {
         const activities = activitiesLoaded ? eventActivities(event.id) : null

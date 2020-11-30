@@ -24,10 +24,11 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
     height: '85vh',
     // height: '850px',
   }
-  const center = {
+  const intitalCenter = {
     lat: 40.73061,
     lng: -73.935242,
   }
+  const [center, setCenter] = useState(intitalCenter)
 
   const options = {
     disableDefaultUI: true,
@@ -95,14 +96,14 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
   }
 
   const dragHandler = () => {
-    // const currentLat = mapRef.current.center.lat()
-    // const currentLong = mapRef.current.center.lng()
-    // mapDragHandler(currentLat, currentLong)
+    const currentLat = mapRef.current ? mapRef.current.center.lat() : null
+    const currentLong = mapRef.current ? mapRef.current.center.lng() : null
+    mapDragHandler(currentLat, currentLong)
   }
 
   if (loadError) return 'Error'
   if (!isLoaded) return 'Loading...'
-  console.log(center)
+
   return (
     <Segment>
       <Locate panTo={panTo} />
@@ -110,11 +111,12 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
 
       <GoogleMap
         id='map'
+        // ref={mapRef}
         mapContainerStyle={mapContainerStyle}
         zoom={13}
         center={center}
         onLoad={onMapLoad}
-        onDrag={dragHandler}
+        onDragEnd={dragHandler}
         options={options}
       >
         <Grid.Column width={10}>
