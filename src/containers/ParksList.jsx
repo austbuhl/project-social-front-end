@@ -4,7 +4,7 @@ import Park from '../components/parks/Park'
 import ParkDetail from '../components/parks/ParkDetail'
 import Filter from '../components/home/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { Grid, Item } from 'semantic-ui-react'
+import { Grid, Item, Input, Icon } from 'semantic-ui-react'
 import Paginate from '../components/home/Paginate'
 import FilterByBorough from '../components/home/FilterByBorough'
 import {
@@ -16,6 +16,7 @@ import {
 const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [filterValue, setFilterValue] = useState(null)
+  const [searchValue, setSearchValue] = useState('')
   const parksPerPage = 8
 
   useEffect(() => {
@@ -26,17 +27,20 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
     setFilterValue(value)
   }
 
-  const filteredParks = selectedActivity
-    ? parks.filter((park) => {
-        if (
-          parkActivities(park.id).some(
-            (activity) => activity.attributes.name === selectedActivity
-          )
-        ) {
-          return park
-        }
-      })
-    : parks
+  const filteredParks =
+    selectedActivity.length > 0
+      ? parks.filter((park) => {
+          if (
+            selectedActivity.every((selected) =>
+              parkActivities(park.id).find(
+                (activity) => activity.attributes.name === selected
+              )
+            )
+          ) {
+            return park
+          }
+        })
+      : parks
 
   const filteredBorough =
     filterValue && filterValue !== 'All'
@@ -54,6 +58,7 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
       .map((park) => <Park key={park.id} park={park} />)
   }
 
+  console.log(searchValue)
   return (
     <Switch>
       <Route
@@ -86,7 +91,12 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
                 alignItems: 'baseline',
               }}
             >
-              <h4>Active Filter: {selectedActivity || 'All'}</h4>
+              <h4>
+                Active Filter:{' '}
+                {selectedActivity.length > 0
+                  ? selectedActivity.sort().join(', ')
+                  : 'All'}
+              </h4>
               <FilterByBorough
                 filterHandler={boroughFilterHandler}
                 filterValue={filterValue}

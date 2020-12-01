@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { sortByDistance } from 'sort-by-distance'
 import Event from '../components/events/Event'
 import EventDetail from '../components/events/EventDetail'
 import Filter from '../components/home/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { Grid, Item } from 'semantic-ui-react'
+import { Grid, Item, Input } from 'semantic-ui-react'
 import Paginate from '../components/home/Paginate'
 import FilterByBorough from '../components/home/FilterByBorough'
 import {
@@ -41,17 +40,23 @@ const EventsList = ({
     setFilterValue(value)
   }
 
-  const filteredEvents = selectedActivity
-    ? events.filter((event) => {
-        if (
-          eventActivities(event.id).some(
-            (activity) => activity.attributes.name === selectedActivity
-          )
-        ) {
-          return event
-        }
-      })
-    : events
+  const filteredEvents =
+    selectedActivity.length > 0
+      ? events.filter((event) => {
+          if (
+            selectedActivity.every((selected) =>
+              eventActivities(event.id).find(
+                (activity) => activity.attributes.name === selected
+              )
+            )
+            // eventActivities(event.id).some(
+            //   (activity) => activity.attributes.name === selectedActivity
+            // )
+          ) {
+            return event
+          }
+        })
+      : events
 
   const filteredBorough =
     filterValue && filterValue !== 'All'
@@ -140,7 +145,13 @@ const EventsList = ({
                 alignItems: 'baseline',
               }}
             >
-              <h4>Active Filter: {selectedActivity || 'All'}</h4>
+              <h4>
+                Active Filter:{' '}
+                {selectedActivity.length > 0
+                  ? selectedActivity.sort().join(', ')
+                  : 'All'}
+              </h4>
+
               <FilterByBorough
                 filterHandler={boroughFilterHandler}
                 filterValue={filterValue}
@@ -164,7 +175,10 @@ const EventsList = ({
             />
           </Grid.Row>
           <h4 style={{ marginTop: 0 }}>
-            Active Filter: {selectedActivity || 'All'}
+            Active Filter:{' '}
+            {selectedActivity.length > 0
+              ? selectedActivity.sort().join(', ')
+              : 'All'}
           </h4>
           <Grid.Row>
             <Item.Group divided>{renderEvents()}</Item.Group>

@@ -343,6 +343,10 @@ export function setActivity(activity) {
   return { type: 'SET_ACTIVITY', payload: activity }
 }
 
+export function removeActivity(activity) {
+  return { type: 'REMOVE_ACTIVITY', payload: activity }
+}
+
 export function resetActivity() {
   return { type: 'RESET_ACTIVITY' }
 }

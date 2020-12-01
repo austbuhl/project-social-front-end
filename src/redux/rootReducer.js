@@ -10,7 +10,7 @@ const defaultState = {
   friendships: {},
   currentUser: {},
   loggedIn: false,
-  selectedActivity: null,
+  selectedActivity: [],
 }
 
 function eventsReducer(state = defaultState.events, action) {
@@ -439,9 +439,11 @@ function activitiesReducer(state = defaultState.activities, action) {
 function activityReducer(state = defaultState.selectedActivity, action) {
   switch (action.type) {
     case 'SET_ACTIVITY':
-      return action.payload
+      return [...state, action.payload]
+    case 'REMOVE_ACTIVITY':
+      return state.filter((activity) => activity !== action.payload)
     case 'RESET_ACTIVITY':
-      return null
+      return []
     default:
       return state
   }
