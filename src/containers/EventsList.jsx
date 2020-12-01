@@ -3,10 +3,11 @@ import { connect } from 'react-redux'
 import Event from '../components/events/Event'
 import EventDetail from '../components/events/EventDetail'
 import Filter from '../components/home/Filter'
-import { Switch, Route, withRouter } from 'react-router-dom'
-import { Grid, Item, Input, Icon } from 'semantic-ui-react'
+import { Switch, Route, withRouter, useHistory } from 'react-router-dom'
+import { Grid, Item, Input, Icon, Modal, Button } from 'semantic-ui-react'
 import Paginate from '../components/home/Paginate'
 import FilterByBorough from '../components/home/FilterByBorough'
+import EventForm from '../components/events/EventForm'
 import {
   selectEvents,
   selectEvent,
@@ -15,6 +16,7 @@ import {
 } from '../redux/selectors'
 
 const EventsList = ({
+  loggedIn,
   events,
   selectEvent,
   selectEventPark,
@@ -27,6 +29,8 @@ const EventsList = ({
   const [currentPage, setCurrentPage] = useState(1)
   const [filterValue, setFilterValue] = useState(null)
   const [searchValue, setSearchValue] = useState('')
+  const [open, setOpen] = useState(false)
+  const history = useHistory()
   const eventsPerPage = 5
 
   useEffect(() => {
@@ -39,6 +43,9 @@ const EventsList = ({
 
   const boroughFilterHandler = (e, value) => {
     setFilterValue(value)
+  }
+  const clickHandler = () => {
+    loggedIn ? setOpen(true) : history.push('/login', history.location.pathname)
   }
 
   const filteredEvents =
@@ -175,7 +182,37 @@ const EventsList = ({
                 filterValue={filterValue}
               />
             </div>
-            <Item.Group divided>{renderEvents()}</Item.Group>
+            <Item.Group divided>
+              {eventsSortedByDistance.length > 0 ? (
+                renderEvents()
+              ) : (
+                <Item style={{ padding: 'none' }}>
+                  <Item.Content>
+                    <Item.Header>No Events</Item.Header>
+                    <Item.Meta>Be the first to create one!</Item.Meta>
+                  </Item.Content>
+                  <Item.Extra>
+                    <Modal
+                      onClose={() => setOpen(false)}
+                      onOpen={clickHandler}
+                      open={open}
+                      trigger={
+                        <Button animated='fade' secondary floated='right'>
+                          <Button.Content visible>
+                            Create an Event
+                          </Button.Content>
+                          <Button.Content hidden>
+                            {loggedIn ? 'Show Form' : 'Login'}
+                          </Button.Content>
+                        </Button>
+                      }
+                    >
+                      <EventForm />
+                    </Modal>
+                  </Item.Extra>
+                </Item>
+              )}
+            </Item.Group>
           </Grid.Column>
         </Grid>
       </Route>
@@ -209,6 +246,7 @@ const EventsList = ({
 
 const mapStateToProps = (state) => {
   return {
+    loggedIn: state.loggedIn,
     events: selectEvents(state),
     selectEvent: selectEvent(state),
     selectEventPark: selectEventPark(state),

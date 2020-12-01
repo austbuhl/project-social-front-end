@@ -1,24 +1,27 @@
 import React, { useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import { Form, Button, Modal } from 'semantic-ui-react'
 import { createEvent } from '../../redux/actions'
 import { selectParkActivities } from '../../redux/selectors'
 
-const EventForm = ({ park, createEvent }) => {
+const EventForm = ({ park, createEvent, selectParkActivities }) => {
   const initialState = {
     name: '',
     description: '',
     num_of_people: '',
     date: '',
     time: '',
-    park_id: park.id,
+    park_id: park ? park.id : null,
     activities: [],
   }
 
   const [eventData, setEventData] = useState(initialState)
-  const activities = useSelector((state) =>
-    selectParkActivities(state)(park.id)
-  )
+  // const parks =
+
+  const activities = park ? selectParkActivities(park.id) : []
+  // const activities = useSelector((state) =>
+  //   selectParkActivities(state)(park.id)
+  // )
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -59,7 +62,7 @@ const EventForm = ({ park, createEvent }) => {
                 label='Location'
                 name='park'
                 placeholder='Location'
-                value={park.attributes.name}
+                value={park ? park.attributes.name : null}
               />
               <Form.Dropdown
                 fluid
@@ -125,10 +128,16 @@ const EventForm = ({ park, createEvent }) => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    selectParkActivities: selectParkActivities(state),
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     createEvent: (eventObj) => dispatch(createEvent(eventObj)),
   }
 }
 
-export default connect(null, mapDispatchToProps)(EventForm)
+export default connect(mapStateToProps, mapDispatchToProps)(EventForm)
