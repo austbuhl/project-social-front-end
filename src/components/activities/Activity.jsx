@@ -136,7 +136,6 @@ const Activity = ({ title, activities, active, clickHandler }) => {
       return (
         <Accordion.Content active={active}>
           {renderAddlDetail(title, activity.attributes.addlDetail)}
-          {/* <p>{activity.attributes.addlDetail}</p> */}
         </Accordion.Content>
       )
     })
@@ -156,7 +155,6 @@ const Activity = ({ title, activities, active, clickHandler }) => {
   return (
     <>
       <Accordion.Title active={active} onClick={localClickHandler}>
-        {/* <Icon name='dropdown' /> */}
         {renderActivityIcon()}
         {title}
       </Accordion.Title>
