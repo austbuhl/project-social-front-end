@@ -91,7 +91,9 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
             >
               <h4>
                 Active Filter:{' '}
-                {selectedActivity.length > 0 ? selectedActivity : 'All'}
+                {selectedActivity.length > 0
+                  ? selectedActivity.sort().join(', ')
+                  : 'All'}
               </h4>
               <FilterByBorough
                 filterHandler={boroughFilterHandler}

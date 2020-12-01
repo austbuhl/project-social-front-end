@@ -147,8 +147,10 @@ const EventsList = ({
               }}
             >
               <h4>
-                Active Filter:
-                {selectedActivity.length > 0 ? selectedActivity : 'All'}
+                Active Filter:{' '}
+                {selectedActivity.length > 0
+                  ? selectedActivity.sort().join(', ')
+                  : 'All'}
               </h4>
               <FilterByBorough
                 filterHandler={boroughFilterHandler}
@@ -173,8 +175,10 @@ const EventsList = ({
             />
           </Grid.Row>
           <h4 style={{ marginTop: 0 }}>
-            Active Filter:
-            {selectedActivity.length > 0 ? selectedActivity : 'All'}
+            Active Filter:{' '}
+            {selectedActivity.length > 0
+              ? selectedActivity.sort().join(', ')
+              : 'All'}
           </h4>
           <Grid.Row>
             <Item.Group divided>{renderEvents()}</Item.Group>
