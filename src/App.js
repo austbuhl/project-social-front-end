@@ -27,7 +27,6 @@ function App({
   authorizeUser,
 }) {
   useEffect(() => {
-    // loadData()
     fetchEvents()
     fetchParks()
     authorizeUser()

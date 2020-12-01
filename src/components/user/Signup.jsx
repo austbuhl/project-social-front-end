@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { createUser } from '../../redux/actions'
-import { Form, Button } from 'semantic-ui-react'
-import { useHistory } from 'react-router-dom'
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Message,
+  Segment,
+} from 'semantic-ui-react'
+import { useHistory, NavLink } from 'react-router-dom'
 import SuccessMessage from './SuccessMessage'
 
 const Signup = ({ createUser }) => {
@@ -38,31 +46,55 @@ const Signup = ({ createUser }) => {
   }
 
   return (
-    <Form onSubmit={submitHandler}>
-      <Form.Input
-        label='Username'
-        name='username'
-        placeholder='Enter Username'
-        value={userInfo.username}
-        onChange={changeHandler}
-      />
-
-      <Form.Input
-        type='password'
-        label='Password'
-        name='password'
-        placeholder='Enter Password'
-        value={userInfo.password}
-        onChange={changeHandler}
-      />
+    <>
+      <Grid
+        textAlign='center'
+        style={{ height: '75vh' }}
+        verticalAlign='middle'
+      >
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as='h2' textAlign='center'>
+            <Image src='logo192.png' /> Create an Account
+          </Header>
+          <Form size='large' onSubmit={submitHandler}>
+            <Segment stacked>
+              <Form.Input
+                fluid
+                icon='user'
+                iconPosition='left'
+                name='username'
+                placeholder='Enter Username'
+                value={userInfo.username}
+                onChange={changeHandler}
+              />
+              <Form.Input
+                fluid
+                icon='lock'
+                iconPosition='left'
+                placeholder='Password'
+                type='password'
+                name='password'
+                placeholder='Enter Password'
+                value={userInfo.password}
+                onChange={changeHandler}
+              />
+              <Button primary fluid size='large'>
+                Signup
+              </Button>
+            </Segment>
+          </Form>
+          <Message>
+            Already have an account? <NavLink to='/login'>Login</NavLink>
+          </Message>
+        </Grid.Column>
+      </Grid>
       {successMsg && (
         <SuccessMessage
           header={'Account Creation Succesful'}
           seconds={redirectTime}
         />
       )}
-      <Button content='Signup' labelPosition='left' icon='user' primary />
-    </Form>
+    </>
   )
 }
 

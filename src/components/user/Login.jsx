@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { loginHandler } from '../../redux/actions'
-import { Form, Button, Segment, Grid } from 'semantic-ui-react'
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Message,
+  Segment,
+} from 'semantic-ui-react'
 import { useHistory, NavLink } from 'react-router-dom'
 import SuccessMessage from './SuccessMessage'
 
@@ -41,33 +49,53 @@ const Login = ({ loginHandler }) => {
     }))
   }
   return (
-    <Segment>
-      <Form onSubmit={submitHandler}>
-        <Form.Input
-          label='Username'
-          name='username'
-          placeholder='Enter Username'
-          value={userInfo.username}
-          onChange={changeHandler}
-        />
+    <>
+      <Grid
+        textAlign='center'
+        style={{ height: '75vh' }}
+        verticalAlign='middle'
+      >
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as='h2' textAlign='center'>
+            <Image src='logo192.png' /> Login To Your Account
+          </Header>
+          <Form size='large' onSubmit={submitHandler}>
+            <Segment stacked>
+              <Form.Input
+                fluid
+                icon='user'
+                iconPosition='left'
+                name='username'
+                placeholder='Enter Username'
+                value={userInfo.username}
+                onChange={changeHandler}
+              />
+              <Form.Input
+                fluid
+                icon='lock'
+                iconPosition='left'
+                placeholder='Password'
+                type='password'
+                name='password'
+                placeholder='Enter Password'
+                value={userInfo.password}
+                onChange={changeHandler}
+              />
 
-        <Form.Input
-          type='password'
-          label='Password'
-          name='password'
-          placeholder='Enter Password'
-          value={userInfo.password}
-          onChange={changeHandler}
-        />
-        {successMsg && (
-          <SuccessMessage header={'Login Succesful'} seconds={redirectTime} />
-        )}
-        <Button content='Login' labelPosition='left' icon='user' primary />
-        <div>
-          <NavLink to='/signup'>Don't have an account?</NavLink>
-        </div>
-      </Form>
-    </Segment>
+              <Button primary fluid size='large'>
+                Login
+              </Button>
+            </Segment>
+          </Form>
+          {successMsg && (
+            <SuccessMessage header={'Login Succesful'} seconds={redirectTime} />
+          )}
+          <Message>
+            New to us? <NavLink to='/signup'>Signup</NavLink>
+          </Message>
+        </Grid.Column>
+      </Grid>
+    </>
   )
 }
 
