@@ -57,17 +57,18 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
     }
   }, [parks])
 
-  const filteredParks = selectedActivity
-    ? parks.filter((park) => {
-        if (
-          parkActivities(park.id).some(
-            (activity) => activity.attributes.name === selectedActivity
-          )
-        ) {
-          return park
-        }
-      })
-    : parks
+  const filteredParks =
+    selectedActivity.length > 0
+      ? parks.filter((park) => {
+          if (
+            parkActivities(park.id).some(
+              (activity) => activity.attributes.name === selectedActivity
+            )
+          ) {
+            return park
+          }
+        })
+      : parks
 
   const renderParks = () => {
     return filteredParks.map((park) => {

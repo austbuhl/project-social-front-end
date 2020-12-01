@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button } from 'semantic-ui-react'
-import { resetActivity, setActivity } from '../../redux/actions'
+import { resetActivity, setActivity, removeActivity } from '../../redux/actions'
 import {
   FaPalette,
   FaUmbrellaBeach,
@@ -29,13 +29,20 @@ import {
   GiBarbecue,
 } from 'react-icons/gi'
 
-const Filter = ({ selectedActivity, setActivity, resetActivity }) => {
+const Filter = ({
+  selectedActivity,
+  setActivity,
+  removeActivity,
+  resetActivity,
+}) => {
   const clickHandler = (e) => {
     let activity = e.target.closest('button').name
     if (activity === 'Reset') {
       resetActivity()
     } else {
-      selectedActivity !== activity ? setActivity(activity) : resetActivity()
+      !selectedActivity.includes(activity)
+        ? setActivity(activity)
+        : removeActivity(activity)
     }
   }
 
@@ -45,107 +52,107 @@ const Filter = ({ selectedActivity, setActivity, resetActivity }) => {
         <Button name='Reset' icon={<FaUndoAlt />} />
         <Button
           name='Art'
-          active={selectedActivity === 'Art'}
+          active={selectedActivity.includes('Art')}
           icon={<FaPalette />}
         />
         <Button
           name='Barbecue'
-          active={selectedActivity === 'Barbecue'}
+          active={selectedActivity.includes('Barbecue')}
           icon={<GiBarbecue />}
         />
         <Button
           name='Basketball'
-          active={selectedActivity === 'Basketball'}
+          active={selectedActivity.includes('Basketball')}
           icon={<FaBasketballBall />}
         />
         <Button
           name='Beach'
-          active={selectedActivity === 'Beach'}
+          active={selectedActivity.includes('Beach')}
           icon={<FaUmbrellaBeach />}
         />
         <Button
           name='Bocce'
-          active={selectedActivity === 'Bocce'}
+          active={selectedActivity.includes('Bocce')}
           icon={<FaTablets />}
         />
         <Button
           name='Cricket'
-          active={selectedActivity === 'Cricket'}
+          active={selectedActivity.includes('Cricket')}
           icon={<GiCricketBat />}
         />
         <Button
           name='Dog Run'
-          active={selectedActivity === 'Dog Run'}
+          active={selectedActivity.includes('Dog Run')}
           icon={<FaDog />}
         />
         <Button
           name='Handball'
-          active={selectedActivity === 'Handball'}
+          active={selectedActivity.includes('Handball')}
           icon={<FaRegHandSpock />}
         />
         <Button
           name='Hiking'
           icon={<FaHiking />}
-          active={selectedActivity === 'Hiking'}
+          active={selectedActivity.includes('Hiking')}
         />
         <Button
           name='Horseback Riding'
-          active={selectedActivity === 'Horseback Riding'}
+          active={selectedActivity.includes('Horseback Riding')}
           icon={<FaHorse />}
         />
         <Button
           name='Ice Skating'
-          active={selectedActivity === 'Ice Skating'}
+          active={selectedActivity.includes('Ice Skating')}
           icon={<FaSkating />}
         />
         <Button
           name='Indoor Pool'
-          active={selectedActivity === 'Indoor Pool'}
+          active={selectedActivity.includes('Indoor Pool')}
           icon={<FaSwimmingPool />}
         />
         <Button
           name='Kayaking'
-          active={selectedActivity === 'Kayaking'}
+          active={selectedActivity.includes('Kayaking')}
           icon={<GiCanoe />}
         />
         <Button
           name='Monument'
-          active={selectedActivity === 'Monument'}
+          active={selectedActivity.includes('Monument')}
           icon={<FaMonument />}
         />
         <Button
           name='Nature Center'
-          active={selectedActivity === 'Nature Center'}
+          active={selectedActivity.includes('Nature Center')}
           icon={<FaCanadianMapleLeaf />}
         />
         <Button
           name='Nature Preserve'
-          active={selectedActivity === 'Nature Preserve'}
+          active={selectedActivity.includes('Nature Preserve')}
           icon={<FaLeaf />}
         />
         <Button
           name='Outdoor Pool'
-          active={selectedActivity === 'Outdoor Pool'}
+          active={selectedActivity.includes('Outdoor Pool')}
           icon={<FaSwimmer />}
         />
         <Button
           name='Playground'
-          active={selectedActivity === 'Playground'}
+          active={selectedActivity.includes('Playground')}
           icon={<FaChild />}
         />
         <Button
           name='Running Track'
-          active={selectedActivity === 'Running Track'}
+          active={selectedActivity.includes('Running Track')}
           icon={<FaRunning />}
         />
         <Button
           name='Tennis'
-          active={selectedActivity === 'Tennis'}
+          active={selectedActivity.includes('Tennis')}
           icon={<GiTennisCourt />}
         />
         <Button
           name='Zoo'
-          active={selectedActivity === 'Zoo'}
+          active={selectedActivity.includes('Zoo')}
           icon={<FaHippo />}
         />
       </Button.Group>
@@ -162,6 +169,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setActivity: (activity) => dispatch(setActivity(activity)),
+    removeActivity: (activity) => dispatch(removeActivity(activity)),
     resetActivity: () => dispatch(resetActivity()),
   }
 }

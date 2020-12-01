@@ -41,17 +41,18 @@ const EventsList = ({
     setFilterValue(value)
   }
 
-  const filteredEvents = selectedActivity
-    ? events.filter((event) => {
-        if (
-          eventActivities(event.id).some(
-            (activity) => activity.attributes.name === selectedActivity
-          )
-        ) {
-          return event
-        }
-      })
-    : events
+  const filteredEvents =
+    selectedActivity.length > 0
+      ? events.filter((event) => {
+          if (
+            eventActivities(event.id).some(
+              (activity) => activity.attributes.name === selectedActivity
+            )
+          ) {
+            return event
+          }
+        })
+      : events
 
   const filteredBorough =
     filterValue && filterValue !== 'All'

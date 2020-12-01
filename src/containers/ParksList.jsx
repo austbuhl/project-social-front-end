@@ -26,17 +26,18 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
     setFilterValue(value)
   }
 
-  const filteredParks = selectedActivity
-    ? parks.filter((park) => {
-        if (
-          parkActivities(park.id).some(
-            (activity) => activity.attributes.name === selectedActivity
-          )
-        ) {
-          return park
-        }
-      })
-    : parks
+  const filteredParks =
+    selectedActivity.length > 0
+      ? parks.filter((park) => {
+          if (
+            parkActivities(park.id).some(
+              (activity) => activity.attributes.name === selectedActivity
+            )
+          ) {
+            return park
+          }
+        })
+      : parks
 
   const filteredBorough =
     filterValue && filterValue !== 'All'
