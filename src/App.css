@@ -44,7 +44,7 @@
   transform: translateX(-50%);
   width: 100%;
   max-width: 400px;
-  z-index: 10;
+  z-index: 5;
 }
 
 .search input {
@@ -59,6 +59,7 @@
 
 .locate {
   position: absolute;
+  cursor: pointer;
   top: 2rem;
   right: 1.5rem;
   background: none;

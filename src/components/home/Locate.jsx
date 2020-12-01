@@ -6,8 +6,7 @@ const Locate = ({ panTo }) => {
   return (
     <Button
       className='locate'
-      secondary
-      size='large'
+      style={{ backgroundColor: 'white' }}
       onClick={() => {
         navigator.geolocation.getCurrentPosition(
           (position) =>
