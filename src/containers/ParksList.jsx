@@ -49,16 +49,19 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
         )
       : filteredParks
 
-  const totalPages = Math.ceil(filteredBorough.length / parksPerPage)
+  const filteredSearch = filteredBorough.filter((park) =>
+    park.attributes.name.toLowerCase().includes(searchValue)
+  )
+
+  const totalPages = Math.ceil(filteredSearch.length / parksPerPage)
   const indexOfLastPark = currentPage * parksPerPage
   const indexOfFirstPark = indexOfLastPark - parksPerPage
   const renderParks = () => {
-    return filteredBorough
+    return filteredSearch
       .slice(indexOfFirstPark, indexOfLastPark)
       .map((park) => <Park key={park.id} park={park} />)
   }
 
-  console.log(searchValue)
   return (
     <Switch>
       <Route
@@ -84,6 +87,13 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
                 floated='right'
               />
             </h1>
+
+            <h4>
+              Active Filter:{' '}
+              {selectedActivity.length > 0
+                ? selectedActivity.sort().join(', ')
+                : 'All'}
+            </h4>
             <div
               style={{
                 display: 'flex',
@@ -91,12 +101,21 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
                 alignItems: 'baseline',
               }}
             >
-              <h4>
-                Active Filter:{' '}
-                {selectedActivity.length > 0
-                  ? selectedActivity.sort().join(', ')
-                  : 'All'}
-              </h4>
+              <Input
+                icon={
+                  <Icon
+                    link
+                    name={searchValue === '' ? 'search' : 'cancel'}
+                    onClick={
+                      searchValue !== '' ? () => setSearchValue('') : null
+                    }
+                    style={{ marginLeft: '5.5em' }}
+                  />
+                }
+                placeholder='Search...'
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
               <FilterByBorough
                 filterHandler={boroughFilterHandler}
                 filterValue={filterValue}

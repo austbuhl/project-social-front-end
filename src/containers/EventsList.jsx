@@ -4,7 +4,7 @@ import Event from '../components/events/Event'
 import EventDetail from '../components/events/EventDetail'
 import Filter from '../components/home/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { Grid, Item, Input } from 'semantic-ui-react'
+import { Grid, Item, Input, Icon } from 'semantic-ui-react'
 import Paginate from '../components/home/Paginate'
 import FilterByBorough from '../components/home/FilterByBorough'
 import {
@@ -26,6 +26,7 @@ const EventsList = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [filterValue, setFilterValue] = useState(null)
+  const [searchValue, setSearchValue] = useState('')
   const eventsPerPage = 5
 
   useEffect(() => {
@@ -49,9 +50,6 @@ const EventsList = ({
                 (activity) => activity.attributes.name === selected
               )
             )
-            // eventActivities(event.id).some(
-            //   (activity) => activity.attributes.name === selectedActivity
-            // )
           ) {
             return event
           }
@@ -65,6 +63,10 @@ const EventsList = ({
           return park.attributes.nycParkId[0] === filterValue
         })
       : filteredEvents
+
+  const filteredSearch = filteredBorough.filter((event) =>
+    event.attributes.name.toLowerCase().includes(searchValue)
+  )
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const radlat1 = (Math.PI * lat1) / 180
@@ -85,7 +87,7 @@ const EventsList = ({
   }
 
   const eventsPlusDistance = activitiesLoaded
-    ? filteredBorough.map((event) => {
+    ? filteredSearch.map((event) => {
         const park = selectEventPark(event.id)
         const parkLat = park.attributes.latitude
         const parkLong = park.attributes.longitude
@@ -113,6 +115,7 @@ const EventsList = ({
         return <Event key={event.id} event={event} activities={activities} />
       })
   }
+
   return (
     <Switch>
       <Route
@@ -138,6 +141,13 @@ const EventsList = ({
                 floated='right'
               />
             </h1>
+
+            <h4>
+              Active Filter:{' '}
+              {selectedActivity.length > 0
+                ? selectedActivity.sort().join(', ')
+                : 'All'}
+            </h4>
             <div
               style={{
                 display: 'flex',
@@ -145,13 +155,21 @@ const EventsList = ({
                 alignItems: 'baseline',
               }}
             >
-              <h4>
-                Active Filter:{' '}
-                {selectedActivity.length > 0
-                  ? selectedActivity.sort().join(', ')
-                  : 'All'}
-              </h4>
-
+              <Input
+                icon={
+                  <Icon
+                    link
+                    name={searchValue === '' ? 'search' : 'cancel'}
+                    onClick={
+                      searchValue !== '' ? () => setSearchValue('') : null
+                    }
+                    style={{ marginLeft: '5.5em' }}
+                  />
+                }
+                placeholder='Search...'
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
               <FilterByBorough
                 filterHandler={boroughFilterHandler}
                 filterValue={filterValue}
