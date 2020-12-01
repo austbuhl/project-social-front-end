@@ -12,29 +12,28 @@ import { Dimmer, Loader, Segment, Grid } from 'semantic-ui-react'
 import { selectParks, selectParkActivities } from '../../redux/selectors'
 import Search from './Search'
 import Locate from './Locate'
+import mapStyles from './mapStyles'
 
 import '@reach/combobox/styles.css'
+const mapContainerStyle = {
+  width: '100%',
+  height: '85vh',
+  // height: '850px',
+}
+const center = {
+  lat: 40.73061,
+  lng: -73.935242,
+}
+const options = {
+  disableDefaultUI: true,
+  zoomControl: true,
+  styles: mapStyles,
+}
+const libraries = ['places']
 
 const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
   const [selectedPark, setSelectedPark] = useState(null)
   const [loading, setLoading] = useState(true)
-
-  const mapContainerStyle = {
-    width: '100%',
-    height: '85vh',
-    // height: '850px',
-  }
-  const intitalCenter = {
-    lat: 40.73061,
-    lng: -73.935242,
-  }
-  const [center, setCenter] = useState(intitalCenter)
-
-  const options = {
-    disableDefaultUI: true,
-    zoomControl: true,
-  }
-  const libraries = ['places']
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,

@@ -95,14 +95,12 @@ const EventsList = ({
   const eventsSortedByDistance = eventsPlusDistance
     ? eventsPlusDistance.sort((a, b) => a.distance - b.distance)
     : []
-  console.log(eventsSortedByDistance)
+
   const totalPages = Math.ceil(eventsSortedByDistance.length / eventsPerPage)
-  // const totalPages = Math.ceil(filteredBorough.length / eventsPerPage)
   const indexOfLastEvent = currentPage * eventsPerPage
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage
 
   const renderEvents = () => {
-    // return filteredBorough
     return eventsSortedByDistance
       .slice(indexOfFirstEvent, indexOfLastEvent)
       .map((event) => {
