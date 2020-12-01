@@ -45,9 +45,14 @@ const EventsList = ({
     selectedActivity.length > 0
       ? events.filter((event) => {
           if (
-            eventActivities(event.id).some(
-              (activity) => activity.attributes.name === selectedActivity
+            selectedActivity.every((selected) =>
+              eventActivities(event.id).find(
+                (activity) => activity.attributes.name === selected
+              )
             )
+            // eventActivities(event.id).some(
+            //   (activity) => activity.attributes.name === selectedActivity
+            // )
           ) {
             return event
           }
@@ -141,7 +146,10 @@ const EventsList = ({
                 alignItems: 'baseline',
               }}
             >
-              <h4>Active Filter: {selectedActivity || 'All'}</h4>
+              <h4>
+                Active Filter:
+                {selectedActivity.length > 0 ? selectedActivity : 'All'}
+              </h4>
               <FilterByBorough
                 filterHandler={boroughFilterHandler}
                 filterValue={filterValue}
@@ -165,7 +173,8 @@ const EventsList = ({
             />
           </Grid.Row>
           <h4 style={{ marginTop: 0 }}>
-            Active Filter: {selectedActivity || 'All'}
+            Active Filter:
+            {selectedActivity.length > 0 ? selectedActivity : 'All'}
           </h4>
           <Grid.Row>
             <Item.Group divided>{renderEvents()}</Item.Group>

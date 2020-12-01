@@ -61,8 +61,10 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
     selectedActivity.length > 0
       ? parks.filter((park) => {
           if (
-            parkActivities(park.id).some(
-              (activity) => activity.attributes.name === selectedActivity
+            selectedActivity.every((selected) =>
+              parkActivities(park.id).find(
+                (activity) => activity.attributes.name === selected
+              )
             )
           ) {
             return park

@@ -30,8 +30,10 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
     selectedActivity.length > 0
       ? parks.filter((park) => {
           if (
-            parkActivities(park.id).some(
-              (activity) => activity.attributes.name === selectedActivity
+            selectedActivity.every((selected) =>
+              parkActivities(park.id).find(
+                (activity) => activity.attributes.name === selected
+              )
             )
           ) {
             return park
@@ -87,7 +89,10 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
                 alignItems: 'baseline',
               }}
             >
-              <h4>Active Filter: {selectedActivity || 'All'}</h4>
+              <h4>
+                Active Filter:{' '}
+                {selectedActivity.length > 0 ? selectedActivity : 'All'}
+              </h4>
               <FilterByBorough
                 filterHandler={boroughFilterHandler}
                 filterValue={filterValue}
