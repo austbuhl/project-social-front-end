@@ -331,9 +331,9 @@ export function createUser(userObj) {
       body: JSON.stringify({ user: userObj }),
     })
       .then((resp) => resp.json())
-      .then((data) => {
-        localStorage.setItem('token', data.jwt)
-        dispatch({ type: 'LOGIN_USER', payload: data.user })
+      .then((user) => {
+        localStorage.setItem('token', user.meta)
+        dispatch({ type: 'LOGIN_USER', payload: normalize(user).user })
       })
       .catch(console.log)
   }

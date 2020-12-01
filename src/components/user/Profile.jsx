@@ -72,7 +72,7 @@ const Profile = ({
   }
 
   const mutualFriends = () => {
-    const currentUserFriends = userFriends(currentUser.id)
+    const currentUserFriends = userFriends(currentUser.id) || []
     return friends.filter((friend) =>
       currentUserFriends.find(
         (current) =>
