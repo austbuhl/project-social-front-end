@@ -14,7 +14,7 @@ const Home = () => {
   }
 
   return (
-    <Grid container fluid padded>
+    <Grid container padded>
       <Grid.Column width={1}>
         <Filter />
       </Grid.Column>

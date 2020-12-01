@@ -78,6 +78,10 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
             lat: parseFloat(park.attributes.latitude),
             lng: parseFloat(park.attributes.longitude),
           }}
+          // icon={{
+          //   url: '/logo192.png',
+          //   scaledSize: new window.google.maps.Size(25, 25),
+          // }}
           onClick={() => setSelectedPark(park)}
         />
       )

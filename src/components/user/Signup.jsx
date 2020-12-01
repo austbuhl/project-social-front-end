@@ -96,21 +96,23 @@ const Signup = ({ createUser }) => {
                 placeholder='Password'
                 type={showPassword ? 'text' : 'password'}
                 name='password'
-                labelPosition='right'
+                labelPosition={showPasswordStrength ? 'right' : null}
                 placeholder='Enter Password'
                 value={userInfo.password}
                 onChange={validatePassword}
               >
                 <Icon name='lock' />
                 <input />
-                <Label
-                  basic
-                  style={{ cursor: 'help' }}
-                  onMouseOver={() => setShowPassword(true)}
-                  onMouseOut={() => setShowPassword(false)}
-                >
-                  {showPassword ? '🙈' : '👀'}
-                </Label>
+                {showPasswordStrength && (
+                  <Label
+                    basic
+                    style={{ cursor: 'help' }}
+                    onMouseOver={() => setShowPassword(true)}
+                    onMouseOut={() => setShowPassword(false)}
+                  >
+                    {showPassword ? '🙈' : '👀'}
+                  </Label>
+                )}
               </Input>
 
               <Button primary fluid size='large' disabled={strength < 4}>
