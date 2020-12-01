@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { sortByDistance } from 'sort-by-distance'
 import Event from '../components/events/Event'
 import EventDetail from '../components/events/EventDetail'
 import Filter from '../components/home/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { Grid, Item } from 'semantic-ui-react'
+import { Grid, Item, Input } from 'semantic-ui-react'
 import Paginate from '../components/home/Paginate'
 import FilterByBorough from '../components/home/FilterByBorough'
 import {
@@ -152,6 +151,7 @@ const EventsList = ({
                   ? selectedActivity.sort().join(', ')
                   : 'All'}
               </h4>
+
               <FilterByBorough
                 filterHandler={boroughFilterHandler}
                 filterValue={filterValue}

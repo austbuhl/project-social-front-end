@@ -4,7 +4,7 @@ import Park from '../components/parks/Park'
 import ParkDetail from '../components/parks/ParkDetail'
 import Filter from '../components/home/Filter'
 import { Switch, Route, withRouter } from 'react-router-dom'
-import { Grid, Item } from 'semantic-ui-react'
+import { Grid, Item, Input, Icon } from 'semantic-ui-react'
 import Paginate from '../components/home/Paginate'
 import FilterByBorough from '../components/home/FilterByBorough'
 import {
@@ -16,6 +16,7 @@ import {
 const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [filterValue, setFilterValue] = useState(null)
+  const [searchValue, setSearchValue] = useState('')
   const parksPerPage = 8
 
   useEffect(() => {
@@ -57,6 +58,7 @@ const ParksList = ({ parks, selectedActivity, parkActivities, selectPark }) => {
       .map((park) => <Park key={park.id} park={park} />)
   }
 
+  console.log(searchValue)
   return (
     <Switch>
       <Route
