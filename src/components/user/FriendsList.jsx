@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 import { acceptRequest, deleteFriend } from '../../redux/actions'
 import { selectUser, selectCurrentUser } from '../../redux/selectors'
 import { Button, Item, Icon, Grid, Menu } from 'semantic-ui-react'
@@ -14,6 +14,7 @@ const FriendsList = ({
   selectUser,
 }) => {
   const [activeItem, setActiveItem] = useState('Received')
+  const history = useHistory()
   const imgs = [
     'https://react.semantic-ui.com/images/avatar/large/stevie.jpg',
     'https://react.semantic-ui.com/images/avatar/large/veronika.jpg',
@@ -24,19 +25,40 @@ const FriendsList = ({
     'https://react.semantic-ui.com/images/avatar/large/steve.jpg',
     'https://react.semantic-ui.com/images/avatar/large/christian.jpg',
   ]
-  const sentRequests = friends.filter(
-    (friend) =>
-      friend.attributes.frienderId === currentUser.attributes.id &&
-      friend.attributes.status === 'pending'
-  )
-  const rcvdRequests = friends.filter(
-    (friend) =>
-      friend.attributes.frienderId !== currentUser.attributes.id &&
-      friend.attributes.status === 'pending'
-  )
-  const confirmed = friends.filter(
-    (friend) => friend.attributes.status === 'accepted'
-  )
+  const sortAlphabetically = (a, b) => {
+    const nameA = a.attributes.friendName
+    const nameB = b.attributes.friendName
+    if (nameA < nameB) {
+      return -1
+    }
+    if (nameA > nameB) {
+      return 1
+    }
+    return 0
+  }
+
+  const sentRequests = friends
+    .filter(
+      (friend) =>
+        friend.attributes.frienderId === currentUser.attributes.id &&
+        friend.attributes.status === 'pending'
+    )
+    .sort(sortAlphabetically)
+
+  const rcvdRequests = friends
+    .filter(
+      (friend) =>
+        friend.attributes.frienderId !== currentUser.attributes.id &&
+        friend.attributes.status === 'pending'
+    )
+    .sort(sortAlphabetically)
+  const confirmed = friends
+    .filter(
+      (friend) =>
+        friend.attributes.friendId !== currentUser.attributes.id &&
+        friend.attributes.status === 'accepted'
+    )
+    .sort(sortAlphabetically)
 
   const renderFriendsList = () => {
     const friendsList = (activeItem) => {
@@ -48,8 +70,13 @@ const FriendsList = ({
         case 'Confirmed':
           return confirmed
         case 'All':
-          return friends
+          return [...confirmed, ...sentRequests, ...rcvdRequests]
       }
+    }
+
+    const deleteHandler = (friendId) => {
+      deleteFriend(friendId)
+      history.push(`/users/${currentUser.id}/profile`)
     }
 
     return friendsList(activeItem).map((friend) => {
@@ -104,7 +131,7 @@ const FriendsList = ({
                 <Button
                   secondary
                   size='tiny'
-                  onClick={() => deleteFriend(friendId)}
+                  onClick={() => deleteHandler(friendId)}
                 >
                   Delete Friend
                 </Button>
