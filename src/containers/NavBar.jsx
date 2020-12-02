@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { logoutHandler } from '../redux/actions'
 import { selectCurrentUser } from '../redux/selectors'
 import { useHistory } from 'react-router-dom'
-import { Menu, Sticky } from 'semantic-ui-react'
+import { Menu, Sticky, Image } from 'semantic-ui-react'
 
 const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
   const history = useHistory()
@@ -17,7 +17,10 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
   return (
     // <div className='ui ten item menu'>
     <Sticky>
-      <Menu widths={10} inverted>
+      <Menu inverted>
+        <div className='header item'>
+          <Image src='PS.png' size='tiny' />
+        </div>
         <NavLink className='item ' exact to='/'>
           Home
         </NavLink>
@@ -28,23 +31,19 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
           Events
         </NavLink>
         {!loggedIn && (
-          <>
-            <NavLink className='item' exact to='/login'>
-              Login
-            </NavLink>
-            <NavLink className='item' exact to='/signup'>
-              Signup
-            </NavLink>
-          </>
+          <Menu.Menu position='right'>
+            <Menu.Item href='/login'>Login</Menu.Item>
+            <Menu.Item href='/signup'>Signup</Menu.Item>
+          </Menu.Menu>
         )}
         {loggedIn && (
           <>
             <NavLink className='item' to={`/users/${currentUser.id}/profile`}>
-              Logged in as {currentUser.attributes.username}
+              Profile
             </NavLink>
-            <a className='item' onClick={logout}>
+            <Menu.Item position='right' onClick={logout}>
               Logout
-            </a>
+            </Menu.Item>
           </>
         )}
       </Menu>

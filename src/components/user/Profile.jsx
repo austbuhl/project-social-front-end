@@ -126,12 +126,13 @@ const Profile = ({
         <Grid.Column width={5} textAlign='center' verticalAlign='middle'>
           <h3>Favorite Activities</h3>
           {renderFavActivities()}
-          {!yourProfile && (
-            <UserRadarChart
-              currentUserActivities={currentUserActivities}
-              userActivities={activities}
-            />
-          )}
+
+          <UserRadarChart
+            username={user.attributes.username}
+            currentUsername={currentUser.attributes.username}
+            currentUserActivities={currentUserActivities}
+            userActivities={activities}
+          />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row centered>
