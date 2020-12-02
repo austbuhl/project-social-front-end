@@ -86,48 +86,46 @@ const EventDetail = ({
   return (
     <Grid container padded centered>
       <Grid.Column width={10}>
-        <Segment stacked>
-          <h1>{event.attributes.name}</h1>
-          <NavLink to={`/parks/${park.id}`}>
-            <h3>Location: {park.attributes.name}</h3>
-          </NavLink>
-          <br />
-          <div>
-            <strong>Date:</strong> {date}
-          </div>
-          <div>
-            <strong>Time:</strong> {time}
-          </div>
-          <h4>Event Description: {event.attributes.description}</h4>
-          <RSVPButton
-            eventId={event.id}
-            attending={attending}
-            loggedIn={loggedIn}
+        {/* <Segment stacked> */}
+        <h1>{event.attributes.name}</h1>
+        <NavLink to={`/parks/${park.id}`}>
+          <h3>Location: {park.attributes.name}</h3>
+        </NavLink>
+        <br />
+        <div>
+          <strong>Date:</strong> {date}
+        </div>
+        <div>
+          <strong>Time:</strong> {time}
+        </div>
+        <h4>Event Description: {event.attributes.description}</h4>
+        <RSVPButton
+          eventId={event.id}
+          attending={attending}
+          loggedIn={loggedIn}
+        />
+        {renderActivityIcons()}
+        <br />
+        <div style={{ marginTop: '2em' }}>
+          <strong>People Needed: </strong>
+          {event.attributes.numOfPeople}
+        </div>
+        <div>
+          <strong>Currently Going: </strong>
+          {event.relationships.users.data.length}
+
+          <Button
+            floated='right'
+            circular
+            secondary
+            icon={viewAttendees ? 'angle double up' : 'angle double down'}
+            onClick={() => setViewAttendees((prevState) => !prevState)}
           />
-          {renderActivityIcons()}
-
-          <div style={{ marginTop: '2em' }}>
-            <strong>People Needed: </strong>
-            {event.attributes.numOfPeople}
-          </div>
-          <div>
-            <strong>Currently Going: </strong>
-            {event.relationships.users.data.length}
-
-            <Button
-              floated='right'
-              circular
-              secondary
-              icon={viewAttendees ? 'angle double up' : 'angle double down'}
-              onClick={() => setViewAttendees((prevState) => !prevState)}
-            />
-          </div>
-          <br />
-          <hr />
-          {viewAttendees && (
-            <Item.Group divided>{renderAttendees()}</Item.Group>
-          )}
-        </Segment>
+        </div>
+        <br />
+        <hr />
+        {viewAttendees && <Item.Group divided>{renderAttendees()}</Item.Group>}
+        {/* </Segment> */}
 
         <CommentsList comments={comments} />
         <CommentForm

@@ -67,9 +67,10 @@ const CommentForm = ({
       <Form.TextArea
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
+        placeholder='Enter comment here'
       />
       <Button
-        content='Add Reply'
+        content='Add Comment'
         labelPosition='left'
         icon='edit'
         primary

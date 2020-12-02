@@ -64,7 +64,7 @@ const Profile = ({
       return countedNames[b] - countedNames[a]
     })
     return sorted.map((activity, index) => (
-      <Label>
+      <Label basic>
         <ActivityIcon key={index} activity={activity} />
         <Label.Detail>{countedNames[activity]}</Label.Detail>
       </Label>
@@ -142,13 +142,16 @@ const Profile = ({
               Add Friend
             </Button>
           )}
+          <hr />
         </Grid.Column>
       </Grid.Row>
       {(yourProfile || friended) && (
         <>
           <Grid.Row>
             <Grid.Column width={5}>
-              <h3>Upcoming Events</h3>
+              <h2>
+                {yourProfile ? 'Your Upcoming Events' : 'Upcoming Events'}
+              </h2>
             </Grid.Column>
             <Grid.Column width={5}>
               <Paginate
