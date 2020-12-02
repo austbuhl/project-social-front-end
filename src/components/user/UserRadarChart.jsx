@@ -26,9 +26,10 @@ const UserRadarChart = ({
     return allNames
   }, {})
 
-  const currentUserActivityNames = currentUserActivities
-    .map((activity) => activity.attributes.name)
-    .slice(0, 5)
+  const currentUserActivityNames = currentUserActivities.map(
+    (activity) => activity.attributes.name
+  )
+  // .slice(0, 5)
   const currentUserCountedNames = currentUserActivityNames.reduce(function (
     allNames,
     name
@@ -43,23 +44,23 @@ const UserRadarChart = ({
   {})
 
   const createData = () => {
-    const userUniqActivityNames = userActivityNames
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .slice(0, 5)
+    const userUniqActivityNames = userActivityNames.filter(
+      (value, index, self) => self.indexOf(value) === index
+    )
     const userSorted = userUniqActivityNames.sort((a, b) => {
       return userCountedNames[b] - userCountedNames[a]
     })
 
-    return userSorted.map((activity) => {
-      return {
-        name: activity,
-        userCount: userCountedNames[activity],
-        currentUserCount: currentUserCountedNames[activity] || 0,
-      }
-    })
+    return userSorted
+      .map((activity) => {
+        return {
+          name: activity,
+          userCount: userCountedNames[activity],
+          currentUserCount: currentUserCountedNames[activity] || 0,
+        }
+      })
+      .slice(0, 5)
   }
-
-  console.log(createData())
 
   return (
     <RadarChart outerRadius={90} width={350} height={250} data={createData()}>

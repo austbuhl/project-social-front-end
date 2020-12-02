@@ -13,7 +13,7 @@ const FriendsList = ({
   acceptRequest,
   selectUser,
 }) => {
-  const [activeItem, setActiveItem] = useState('Received')
+  const [activeItem, setActiveItem] = useState('All')
   const history = useHistory()
   const imgs = [
     'https://react.semantic-ui.com/images/avatar/large/stevie.jpg',
@@ -74,10 +74,10 @@ const FriendsList = ({
       }
     }
 
-    const deleteHandler = (friendId) => {
-      deleteFriend(friendId)
-      history.push(`/users/${currentUser.id}/profile`)
-    }
+    // const deleteHandler = (friendId) => {
+    //   deleteFriend(friendId)
+    //   history.push(`/users/${currentUser.id}/profile`)
+    // }
 
     return friendsList(activeItem).map((friend) => {
       const friendsCount = selectUser(friend.attributes.friendId).relationships
@@ -118,7 +118,7 @@ const FriendsList = ({
                   />
                 </Button.Group>
               )}
-              {youFriended && (
+              {youFriended && status === 'pending' && (
                 <Button
                   secondary
                   size='tiny'
@@ -131,7 +131,7 @@ const FriendsList = ({
                 <Button
                   secondary
                   size='tiny'
-                  onClick={() => deleteHandler(friendId)}
+                  onClick={() => deleteFriend(friendId)}
                 >
                   Delete Friend
                 </Button>

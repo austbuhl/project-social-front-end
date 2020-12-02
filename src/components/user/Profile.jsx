@@ -57,18 +57,21 @@ const Profile = ({
   }, {})
 
   const renderFavActivities = () => {
-    const uniqActivityNames = activityNames
-      .filter((value, index, self) => self.indexOf(value) === index)
-      .slice(0, 5)
+    const uniqActivityNames = activityNames.filter(
+      (value, index, self) => self.indexOf(value) === index
+    )
+    // .slice(0, 5)
     const sorted = uniqActivityNames.sort((a, b) => {
       return countedNames[b] - countedNames[a]
     })
-    return sorted.map((activity, index) => (
-      <Label basic>
-        <ActivityIcon key={index} activity={activity} />
-        <Label.Detail>{countedNames[activity]}</Label.Detail>
-      </Label>
-    ))
+    return sorted
+      .map((activity, index) => (
+        <Label basic>
+          <ActivityIcon key={index} activity={activity} />
+          <Label.Detail>{countedNames[activity]}</Label.Detail>
+        </Label>
+      ))
+      .slice(0, 5)
   }
 
   const mutualFriends = () => {
