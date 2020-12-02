@@ -30,6 +30,7 @@ const EventsList = ({
   const [filterValue, setFilterValue] = useState(null)
   const [searchValue, setSearchValue] = useState('')
   const [open, setOpen] = useState(false)
+  const [noEvents, setNoEvents] = useState(false)
   const history = useHistory()
   const eventsPerPage = 5
 
@@ -63,6 +64,7 @@ const EventsList = ({
         })
       : events
 
+  console.log(filteredEvents)
   const filteredBorough =
     filterValue && filterValue !== 'All'
       ? filteredEvents.filter((event) => {
@@ -78,8 +80,6 @@ const EventsList = ({
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const radlat1 = (Math.PI * lat1) / 180
     const radlat2 = (Math.PI * lat2) / 180
-    const radlon1 = (Math.PI * lon1) / 180
-    const radlon2 = (Math.PI * lon2) / 180
     const theta = lon1 - lon2
     const radtheta = (Math.PI * theta) / 180
     let dist =
@@ -109,6 +109,12 @@ const EventsList = ({
   const eventsSortedByDistance = eventsPlusDistance
     ? eventsPlusDistance.sort((a, b) => a.distance - b.distance)
     : []
+
+  useEffect(() => {
+    if (eventsSortedByDistance.length === 0) {
+      setNoEvents(true)
+    }
+  }, [eventsSortedByDistance])
 
   const totalPages = Math.ceil(eventsSortedByDistance.length / eventsPerPage)
   const indexOfLastEvent = currentPage * eventsPerPage
@@ -182,10 +188,10 @@ const EventsList = ({
                 filterValue={filterValue}
               />
             </div>
+
             <Item.Group divided>
-              {eventsSortedByDistance.length > 0 ? (
-                renderEvents()
-              ) : (
+              {renderEvents()}
+              {noEvents && (
                 <Item style={{ padding: 'none' }}>
                   <Item.Content>
                     <Item.Header>No Events</Item.Header>

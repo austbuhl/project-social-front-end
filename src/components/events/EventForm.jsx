@@ -38,7 +38,6 @@ const EventForm = ({
       })
     : parks
 
-  console.log(filteredParks)
   const activityNames = park
     ? selectParkActivities(park.id)
         .map((activity) => activity.attributes.name)
@@ -71,7 +70,7 @@ const EventForm = ({
     delete eventInfo.park
     eventInfo.park_id = park_id
     createEvent(eventInfo)
-    setOpen(false)
+    // setOpen(false)
     setEventData(initialState)
   }
 

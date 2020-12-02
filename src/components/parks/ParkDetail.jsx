@@ -76,7 +76,7 @@ const ParkDetail = ({ park, loggedIn, parkEvents, eventActivities }) => {
                 </Button>
               }
             >
-              <EventForm park={park} />
+              <EventForm park={park} setOpen={setOpen} />
             </Modal>
           </Grid.Column>
           <Grid.Column width={6}>
