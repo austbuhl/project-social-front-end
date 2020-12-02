@@ -70,7 +70,7 @@ const EventForm = ({
     delete eventInfo.park
     eventInfo.park_id = park_id
     createEvent(eventInfo)
-    // setOpen(false)
+    setOpen(false)
     setEventData(initialState)
   }
 

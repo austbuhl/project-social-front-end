@@ -52,7 +52,7 @@ const Login = ({ loginHandler }) => {
     <>
       <Grid textAlign='center' style={{ height: '75vh' }}>
         <Grid.Column style={{ maxWidth: 450, marginTop: '2em' }}>
-          <Image src='PS.png' size='medium' />
+          <Image src='PS_full.png' size='medium' />
           <Header as='h2' textAlign='center'>
             Login To Your Account
           </Header>

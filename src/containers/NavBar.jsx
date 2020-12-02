@@ -15,11 +15,18 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
   }
 
   return (
-    // <div className='ui ten item menu'>
     <Sticky>
-      <Menu inverted>
-        <div className='header item'>
-          <Image src='PS.png' size='tiny' />
+      <Menu
+        inverted
+        pointing
+        secondary
+        style={{ backgroundColor: 'black', padding: '.5em' }}
+      >
+        <div className='header item' style={{ height: 35, width: 75 }}>
+          <Image
+            src='PS_dark.png'
+            style={{ objectFit: 'contain', marginTop: 5 }}
+          />
         </div>
         <NavLink className='item ' exact to='/'>
           Home
@@ -32,8 +39,12 @@ const NavBar = ({ currentUser, logoutHandler, loggedIn }) => {
         </NavLink>
         {!loggedIn && (
           <Menu.Menu position='right'>
-            <Menu.Item href='/login'>Login</Menu.Item>
-            <Menu.Item href='/signup'>Signup</Menu.Item>
+            <NavLink className='item' to='/login'>
+              Login
+            </NavLink>
+            <NavLink className='item' to='/signup'>
+              Signup
+            </NavLink>
           </Menu.Menu>
         )}
         {loggedIn && (

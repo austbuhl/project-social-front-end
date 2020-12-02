@@ -75,8 +75,9 @@ const Signup = ({ createUser }) => {
     <>
       <Grid textAlign='center' style={{ height: '75vh' }}>
         <Grid.Column style={{ maxWidth: 450, marginTop: '2em' }}>
+          <Image src='PS_full.png' size='medium' />
           <Header as='h2' textAlign='center'>
-            <Image src='logo192.png' /> Create an Account
+            Create an Account
           </Header>
           <Form size='large' onSubmit={submitHandler}>
             <Segment stacked>
@@ -172,17 +173,17 @@ const Signup = ({ createUser }) => {
               </ul>
             </Segment>
           )}
+          {successMsg && (
+            <SuccessMessage
+              header={'Account Creation Succesful'}
+              seconds={redirectTime}
+            />
+          )}
           <Message>
             Already have an account? <NavLink to='/login'>Login</NavLink>
           </Message>
         </Grid.Column>
       </Grid>
-      {successMsg && (
-        <SuccessMessage
-          header={'Account Creation Succesful'}
-          seconds={redirectTime}
-        />
-      )}
     </>
   )
 }

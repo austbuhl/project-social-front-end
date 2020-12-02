@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import EventsList from './EventsList'
 import Filter from '../components/home/Filter'
 import Map from '../components/home/Map'
-import { Grid } from 'semantic-ui-react'
+import { Grid, Image } from 'semantic-ui-react'
 
 const Home = () => {
   const [mapLat, setMapLat] = useState(0)

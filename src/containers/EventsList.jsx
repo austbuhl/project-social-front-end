@@ -189,9 +189,9 @@ const EventsList = ({
               />
             </div>
 
-            <Item.Group divided>
-              {renderEvents()}
-              {/* {noEvents && (
+            <Item.Group divided>{renderEvents()}</Item.Group>
+            {/* <Item.Group>
+              {noEvents && (
                 <Item style={{ padding: 'none' }}>
                   <Item.Content>
                     <Item.Header>No Events</Item.Header>
@@ -220,8 +220,8 @@ const EventsList = ({
                     </Modal>
                   </Item.Extra>
                 </Item>
-              )} */}
-            </Item.Group>
+              )}
+            </Item.Group> */}
           </Grid.Column>
         </Grid>
       </Route>
