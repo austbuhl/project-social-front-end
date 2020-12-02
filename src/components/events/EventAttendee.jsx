@@ -9,7 +9,7 @@ const EventAttendee = ({ user }) => {
   const clickHandler = () => {
     loggedIn
       ? history.push(`/users/${user.id}/profile`)
-      : history.push('/login', history.location.pathname)
+      : history.push('/login', `/users/${user.id}/profile`)
   }
 
   const friendsCount = user.relationships.friendships.data.length

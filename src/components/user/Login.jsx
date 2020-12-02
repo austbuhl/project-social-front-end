@@ -25,6 +25,8 @@ const Login = ({ loginHandler }) => {
     redirectTimeout()
   }
 
+  console.log(history.location.state)
+
   const redirectTimeout = () =>
     setInterval(() => {
       setSuccessMsg(true)

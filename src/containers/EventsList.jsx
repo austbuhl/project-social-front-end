@@ -64,7 +64,6 @@ const EventsList = ({
         })
       : events
 
-  console.log(filteredEvents)
   const filteredBorough =
     filterValue && filterValue !== 'All'
       ? filteredEvents.filter((event) => {

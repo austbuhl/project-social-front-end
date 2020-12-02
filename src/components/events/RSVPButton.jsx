@@ -12,7 +12,6 @@ const RSVPButton = ({
   cancelRSVP,
 }) => {
   const history = useHistory()
-  console.log(loggedIn)
 
   const clickHandler = () => {
     if (!loggedIn) history.push('/login', history.location.pathname)
@@ -23,9 +22,24 @@ const RSVPButton = ({
     }
   }
   return (
-    <Button floated='right' secondary onClick={clickHandler}>
-      <Button.Content>{attending ? 'Cancel' : 'RSVP'}</Button.Content>
-    </Button>
+    <>
+      {loggedIn && (
+        <Button floated='right' secondary onClick={clickHandler}>
+          <Button.Content>{attending ? 'Cancel' : 'RSVP'}</Button.Content>
+        </Button>
+      )}
+      {!loggedIn && (
+        <Button
+          animated='fade'
+          secondary
+          floated='right'
+          onClick={clickHandler}
+        >
+          <Button.Content visible>RSVP</Button.Content>
+          <Button.Content hidden>{loggedIn ? 'RSVP' : 'Login'}</Button.Content>
+        </Button>
+      )}
+    </>
   )
 }
 
