@@ -14,7 +14,7 @@ const defaultState = {
 }
 
 function eventsReducer(state = defaultState.events, action) {
-  const { eventId, commentId, userId } = action
+  const { eventId, commentId } = action
   const event = state[eventId]
 
   switch (action.type) {
@@ -298,10 +298,10 @@ function currentUserReducer(state = defaultState.currentUser, action) {
           ...user,
           relationships: {
             ...user.relationships,
-            friends: {
+            events: {
               data: [
-                { id: userId, type: 'friend' },
-                ...user.relationships.friends.data,
+                { id: eventId, type: 'event' },
+                ...user.relationships.events.data,
               ],
             },
           },

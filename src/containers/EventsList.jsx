@@ -207,7 +207,10 @@ const EventsList = ({
                         </Button>
                       }
                     >
-                      <EventForm />
+                      <EventForm
+                        selectedActivities={selectedActivity}
+                        setOpen={setOpen}
+                      />
                     </Modal>
                   </Item.Extra>
                 </Item>

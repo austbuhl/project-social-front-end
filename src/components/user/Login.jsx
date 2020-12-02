@@ -52,8 +52,9 @@ const Login = ({ loginHandler }) => {
     <>
       <Grid textAlign='center' style={{ height: '75vh' }}>
         <Grid.Column style={{ maxWidth: 450, marginTop: '2em' }}>
+          <Image src='PS.png' size='medium' />
           <Header as='h2' textAlign='center'>
-            <Image src='logo192.png' /> Login To Your Account
+            Login To Your Account
           </Header>
           <Form size='large' onSubmit={submitHandler}>
             <Segment stacked>
