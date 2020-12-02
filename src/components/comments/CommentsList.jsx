@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import CommentDetail from './CommentDetail'
-import { Comment, Header, Button } from 'semantic-ui-react'
+import { Comment, Header, Button, Segment } from 'semantic-ui-react'
 
 const CommentsList = ({ comments }) => {
   const commentsToShow = comments.length < 3 ? comments.length : 3
@@ -22,20 +22,26 @@ const CommentsList = ({ comments }) => {
   }
 
   return (
-    <div>
-      <Comment.Group>
+    <Segment stacked>
+      <Comment.Group size='large'>
         <Header as='h3' dividing>
           Comments
         </Header>
         {firstComment > 0 && (
-          <Button secondary onClick={() => setFirstComment(firstComment - 1)}>
+          <Button
+            style={{ marginLeft: '37.5%' }}
+            basic
+            size='tiny'
+            secondary
+            onClick={() => setFirstComment(firstComment - 1)}
+          >
             Load Previous Comments
           </Button>
         )}
 
         {renderComments()}
       </Comment.Group>
-    </div>
+    </Segment>
   )
 }
 

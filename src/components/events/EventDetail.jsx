@@ -17,7 +17,7 @@ import {
   selectCurrentUser,
   selectCurrentUserEvents,
 } from '../../redux/selectors'
-import { Grid, Item, Button } from 'semantic-ui-react'
+import { Grid, Item, Button, Segment } from 'semantic-ui-react'
 
 const EventDetail = ({
   currentUser,
@@ -86,45 +86,48 @@ const EventDetail = ({
   return (
     <Grid container padded centered>
       <Grid.Column width={10}>
-        <h1>{event.attributes.name}</h1>
-        <NavLink to={`/parks/${park.id}`}>
-          <h3>Location: {park.attributes.name}</h3>
-        </NavLink>
-        <br />
-        <div>
-          <strong>Date:</strong> {date}
-        </div>
-        <div>
-          <strong>Time:</strong> {time}
-        </div>
-        <h4>Event Description: {event.attributes.description}</h4>
-        <RSVPButton
-          eventId={event.id}
-          attending={attending}
-          loggedIn={loggedIn}
-        />
-        {renderActivityIcons()}
-
-        <br />
-        <br />
-
-        <div>
-          <strong>People Needed: </strong>
-          {event.attributes.numOfPeople}
-        </div>
-        <div>
-          <strong>Currently Going: </strong>
-          {event.relationships.users.data.length}
-          <Button
-            floated='right'
-            circular
-            secondary
-            icon={viewAttendees ? 'angle double up' : 'angle double down'}
-            onClick={() => setViewAttendees((prevState) => !prevState)}
+        <Segment stacked>
+          <h1>{event.attributes.name}</h1>
+          <NavLink to={`/parks/${park.id}`}>
+            <h3>Location: {park.attributes.name}</h3>
+          </NavLink>
+          <br />
+          <div>
+            <strong>Date:</strong> {date}
+          </div>
+          <div>
+            <strong>Time:</strong> {time}
+          </div>
+          <h4>Event Description: {event.attributes.description}</h4>
+          <RSVPButton
+            eventId={event.id}
+            attending={attending}
+            loggedIn={loggedIn}
           />
-        </div>
-        <br />
-        {viewAttendees && <Item.Group divided>{renderAttendees()}</Item.Group>}
+          {renderActivityIcons()}
+
+          <div style={{ marginTop: '2em' }}>
+            <strong>People Needed: </strong>
+            {event.attributes.numOfPeople}
+          </div>
+          <div>
+            <strong>Currently Going: </strong>
+            {event.relationships.users.data.length}
+
+            <Button
+              floated='right'
+              circular
+              secondary
+              icon={viewAttendees ? 'angle double up' : 'angle double down'}
+              onClick={() => setViewAttendees((prevState) => !prevState)}
+            />
+          </div>
+          <br />
+          <hr />
+          {viewAttendees && (
+            <Item.Group divided>{renderAttendees()}</Item.Group>
+          )}
+        </Segment>
 
         <CommentsList comments={comments} />
         <CommentForm
