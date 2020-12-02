@@ -136,18 +136,19 @@ const Profile = ({
             currentUserActivities={currentUserActivities}
             userActivities={activities}
           />
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row centered>
-        <Grid.Column width={10}>
           {!yourProfile && !friended && (
-            <Button primary floated='right' onClick={() => addFriend(user.id)}>
+            <Button
+              style={{ marginTop: '1em' }}
+              primary
+              onClick={() => addFriend(user.id)}
+            >
               Add Friend
             </Button>
           )}
-          <hr />
         </Grid.Column>
       </Grid.Row>
+      <hr style={{ width: '55%', opacity: '30%' }} />
+
       {(yourProfile || friended) && (
         <>
           <Grid.Row>
