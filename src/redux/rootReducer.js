@@ -130,7 +130,7 @@ function usersReducer(state = defaultState.users, action) {
             ...user.relationships,
             friendships: {
               data: [
-                { id: Object.keys(action.payload)[0], type: 'friend' },
+                { id: Object.keys(action.payload)[0], type: 'friendship' },
                 ...user.relationships.friendships.data,
               ],
             },
@@ -142,7 +142,7 @@ function usersReducer(state = defaultState.users, action) {
             ...friend.relationships,
             friendships: {
               data: [
-                { id: Object.keys(action.payload)[1], type: 'friend' },
+                { id: Object.keys(action.payload)[1], type: 'friendship' },
                 ...friend.relationships.friendships.data,
               ],
             },
@@ -158,7 +158,7 @@ function usersReducer(state = defaultState.users, action) {
             ...user.relationships,
             friendships: {
               data: [
-                { id: Object.keys(action.payload)[0], type: 'friend' },
+                { id: Object.keys(action.payload)[0], type: 'friendship' },
                 ...user.relationships.friendships.data,
               ],
             },
@@ -170,7 +170,7 @@ function usersReducer(state = defaultState.users, action) {
             ...friend.relationships,
             friendships: {
               data: [
-                { id: Object.keys(action.payload)[1], type: 'friend' },
+                { id: Object.keys(action.payload)[1], type: 'friendship' },
                 ...friend.relationships.friendships.data,
               ],
             },
@@ -349,7 +349,7 @@ function currentUserReducer(state = defaultState.currentUser, action) {
             ...user.relationships,
             friendships: {
               data: [
-                { id: Object.keys(action.payload)[0], type: 'friend' },
+                { id: Object.keys(action.payload)[0], type: 'friendship' },
                 ...user.relationships.friendships.data,
               ],
             },

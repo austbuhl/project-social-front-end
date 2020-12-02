@@ -57,9 +57,9 @@ const Profile = ({
   }, {})
 
   const renderFavActivities = () => {
-    const uniqActivityNames = activityNames.filter(
-      (value, index, self) => self.indexOf(value) === index
-    )
+    const uniqActivityNames = activityNames
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .slice(0, 5)
     const sorted = uniqActivityNames.sort((a, b) => {
       return countedNames[b] - countedNames[a]
     })
@@ -138,7 +138,7 @@ const Profile = ({
       <Grid.Row centered>
         <Grid.Column width={10}>
           {!yourProfile && !friended && (
-            <Button floated='right' onClick={() => addFriend(user.id)}>
+            <Button primary floated='right' onClick={() => addFriend(user.id)}>
               Add Friend
             </Button>
           )}

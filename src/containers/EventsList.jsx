@@ -189,45 +189,13 @@ const EventsList = ({
             </div>
 
             <Item.Group divided>{renderEvents()}</Item.Group>
-            {/* <Item.Group>
-              {noEvents && (
-                <Item style={{ padding: 'none' }}>
-                  <Item.Content>
-                    <Item.Header>No Events</Item.Header>
-                    <Item.Meta>Be the first to create one!</Item.Meta>
-                  </Item.Content>
-                  <Item.Extra>
-                    <Modal
-                      onClose={() => setOpen(false)}
-                      onOpen={clickHandler}
-                      open={open}
-                      trigger={
-                        <Button animated='fade' secondary floated='right'>
-                          <Button.Content visible>
-                            Create an Event
-                          </Button.Content>
-                          <Button.Content hidden>
-                            {loggedIn ? 'Show Form' : 'Login'}
-                          </Button.Content>
-                        </Button>
-                      }
-                    >
-                      <EventForm
-                        selectedActivities={selectedActivity}
-                        setOpen={setOpen}
-                      />
-                    </Modal>
-                  </Item.Extra>
-                </Item>
-              )}
-            </Item.Group> */}
           </Grid.Column>
         </Grid>
       </Route>
 
       <Route path='/'>
         <Grid centered divided>
-          <Grid.Row>
+          <Grid.Row style={{ paddingBottom: 0 }}>
             <h2>Events Near You</h2>
           </Grid.Row>
           <Grid.Row>

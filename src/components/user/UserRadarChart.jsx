@@ -26,9 +26,9 @@ const UserRadarChart = ({
     return allNames
   }, {})
 
-  const currentUserActivityNames = currentUserActivities.map(
-    (activity) => activity.attributes.name
-  )
+  const currentUserActivityNames = currentUserActivities
+    .map((activity) => activity.attributes.name)
+    .slice(0, 5)
   const currentUserCountedNames = currentUserActivityNames.reduce(function (
     allNames,
     name
@@ -43,9 +43,9 @@ const UserRadarChart = ({
   {})
 
   const createData = () => {
-    const userUniqActivityNames = userActivityNames.filter(
-      (value, index, self) => self.indexOf(value) === index
-    )
+    const userUniqActivityNames = userActivityNames
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .slice(0, 5)
     const userSorted = userUniqActivityNames.sort((a, b) => {
       return userCountedNames[b] - userCountedNames[a]
     })
