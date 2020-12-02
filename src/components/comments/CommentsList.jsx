@@ -28,7 +28,7 @@ const CommentsList = ({ comments }) => {
           Comments
         </Header>
         {firstComment > 0 && (
-          <Button onClick={() => setFirstComment(firstComment - 1)}>
+          <Button secondary onClick={() => setFirstComment(firstComment - 1)}>
             Load Previous Comments
           </Button>
         )}

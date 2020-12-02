@@ -68,7 +68,13 @@ const CommentForm = ({
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
       />
-      <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+      <Button
+        content='Add Reply'
+        labelPosition='left'
+        icon='edit'
+        primary
+        fluid
+      />
     </Form>
   )
 }
