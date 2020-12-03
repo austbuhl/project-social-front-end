@@ -10,7 +10,7 @@ const Activity = ({ title, activities, active, clickHandler }) => {
       case 'Art':
         detail = addlDetail.split(' - ')
         return (
-          <a href={detail[1]} alt={detail[0]}>
+          <a href={detail[1]} alt={detail[0]} target='_blank'>
             {addlDetail}
           </a>
         )
@@ -87,7 +87,7 @@ const Activity = ({ title, activities, active, clickHandler }) => {
       case 'Monument':
         detail = addlDetail.split(' - ')
         return (
-          <a href={detail[1]} alt={detail[0]}>
+          <a href={detail[1]} alt={detail[0]} target='_blank'>
             {addlDetail}
           </a>
         )

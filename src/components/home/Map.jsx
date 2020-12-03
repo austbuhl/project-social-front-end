@@ -145,7 +145,9 @@ const Map = ({ parks, selectedActivity, parkActivities, mapDragHandler }) => {
                   <a href={selectedPark.attributes.website} target='_blank'>
                     {selectedPark.attributes.website}
                   </a>
-                  <div>{renderActivityIcons()}</div>
+                  <div style={{ marginTop: 5, marginBottom: 3 }}>
+                    {renderActivityIcons()}
+                  </div>
                   <NavLink to={`/parks/${selectedPark.id}`}>More Info</NavLink>
                 </div>
               </InfoWindow>
