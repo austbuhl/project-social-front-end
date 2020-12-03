@@ -123,7 +123,7 @@ const EventDetail = ({
           />
         </div>
         <br />
-        <hr />
+        <hr style={{ opacity: '30%' }} />
         {viewAttendees && <Item.Group divided>{renderAttendees()}</Item.Group>}
         {/* </Segment> */}
 
