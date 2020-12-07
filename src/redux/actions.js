@@ -357,3 +357,7 @@ export function removeActivity(activity) {
 export function resetActivity() {
   return { type: 'RESET_ACTIVITY' }
 }
+
+export function clearError() {
+  return { type: 'CLEAR_ERROR' }
+}

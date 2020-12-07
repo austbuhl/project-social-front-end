@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { loginHandler } from '../../redux/actions'
+import { loginHandler, clearError } from '../../redux/actions'
 import {
   Button,
   Form,
@@ -14,7 +14,7 @@ import { useHistory, NavLink } from 'react-router-dom'
 import SuccessMessage from './SuccessMessage'
 import FailMessage from './FailMessage'
 
-const Login = ({ loginHandler, authError }) => {
+const Login = ({ loginHandler, authError, loggedIn, clearError }) => {
   const [userInfo, setUserInfo] = useState({ username: '', password: '' })
   const [msgTimer, setMsgTimer] = useState(3)
   const [successMsg, setSuccessMsg] = useState(false)
@@ -24,34 +24,40 @@ const Login = ({ loginHandler, authError }) => {
   const submitHandler = (e) => {
     e.preventDefault()
     loginHandler(userInfo)
-    redirectTimeout()
   }
 
-  const redirectTimeout = () =>
-    setInterval(() => {
-      setSuccessMsg(true)
-      setMsgTimer((prevState) => prevState - 1)
-    }, 1000)
-
   useEffect(() => {
-    if (msgTimer === 0) {
+    if (msgTimer === 0 && loggedIn) {
       if (history.location.state) {
         history.push(history.location.state)
       } else {
         history.push('/')
       }
+    } else if (msgTimer === 0) {
+      setFailMsg(false)
+      clearError()
+      setMsgTimer(3)
     }
-    return () => clearTimeout(redirectTimeout())
   }, [msgTimer])
 
   useEffect(() => {
-    if (authError !== '') {
-      setInterval(() => {
-        setFailMsg(true)
+    if (loggedIn) {
+      setSuccessMsg(true)
+      const redirectTimeout = setInterval(() => {
         setMsgTimer((prevState) => prevState - 1)
       }, 1000)
+      return () => clearTimeout(redirectTimeout)
     }
-    // return () => clearTimeout()
+  }, [loggedIn])
+
+  useEffect(() => {
+    if (authError !== '') {
+      setFailMsg(true)
+      const errorTimeout = setInterval(() => {
+        setMsgTimer((prevState) => prevState - 1)
+      }, 1000)
+      return () => clearTimeout(errorTimeout)
+    }
   }, [authError])
 
   const changeHandler = (e) => {
@@ -60,6 +66,7 @@ const Login = ({ loginHandler, authError }) => {
       [e.target.name]: e.target.value,
     }))
   }
+
   return (
     <>
       <Grid textAlign='center' style={{ height: '75vh' }}>
@@ -112,12 +119,14 @@ const Login = ({ loginHandler, authError }) => {
 const mapStateToProps = (state) => {
   return {
     authError: state.authError,
+    loggedIn: state.loggedIn,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     loginHandler: (userObj) => dispatch(loginHandler(userObj)),
+    clearError: () => dispatch(clearError()),
   }
 }
 
