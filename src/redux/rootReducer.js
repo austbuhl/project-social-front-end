@@ -10,6 +10,7 @@ const defaultState = {
   friendships: {},
   currentUser: {},
   loggedIn: false,
+  authError: '',
   selectedActivity: [],
 }
 
@@ -449,6 +450,17 @@ function activityReducer(state = defaultState.selectedActivity, action) {
   }
 }
 
+function authErrorReducer(state = defaultState.authError, action) {
+  switch (action.type) {
+    case 'SET_ERROR':
+      return action.payload
+    case 'CLEAR_ERROR':
+      return ''
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   parks: parksReducer,
   activities: activitiesReducer,
@@ -456,6 +468,7 @@ const rootReducer = combineReducers({
   comments: commentsReducer,
   currentUser: currentUserReducer,
   loggedIn: loggedInReducer,
+  authError: authErrorReducer,
   users: usersReducer,
   friendships: friendsReducer,
   selectedActivity: activityReducer,

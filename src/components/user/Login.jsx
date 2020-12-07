@@ -12,11 +12,13 @@ import {
 } from 'semantic-ui-react'
 import { useHistory, NavLink } from 'react-router-dom'
 import SuccessMessage from './SuccessMessage'
+import FailMessage from './FailMessage'
 
-const Login = ({ loginHandler }) => {
+const Login = ({ loginHandler, authError }) => {
   const [userInfo, setUserInfo] = useState({ username: '', password: '' })
-  const [redirectTime, setRedirectTime] = useState(3)
+  const [msgTimer, setMsgTimer] = useState(3)
   const [successMsg, setSuccessMsg] = useState(false)
+  const [failMsg, setFailMsg] = useState(false)
   const history = useHistory()
 
   const submitHandler = (e) => {
@@ -25,24 +27,32 @@ const Login = ({ loginHandler }) => {
     redirectTimeout()
   }
 
-  console.log(history.location.state)
-
   const redirectTimeout = () =>
     setInterval(() => {
       setSuccessMsg(true)
-      setRedirectTime((prevState) => prevState - 1)
+      setMsgTimer((prevState) => prevState - 1)
     }, 1000)
 
   useEffect(() => {
-    if (redirectTime === 0) {
+    if (msgTimer === 0) {
       if (history.location.state) {
         history.push(history.location.state)
       } else {
         history.push('/')
       }
     }
-    return () => clearTimeout(redirectTimeout)
-  }, [redirectTime])
+    return () => clearTimeout(redirectTimeout())
+  }, [msgTimer])
+
+  useEffect(() => {
+    if (authError !== '') {
+      setInterval(() => {
+        setFailMsg(true)
+        setMsgTimer((prevState) => prevState - 1)
+      }, 1000)
+    }
+    // return () => clearTimeout()
+  }, [authError])
 
   const changeHandler = (e) => {
     setUserInfo((prevState) => ({
@@ -87,8 +97,9 @@ const Login = ({ loginHandler }) => {
             </Segment>
           </Form>
           {successMsg && (
-            <SuccessMessage header={'Login Succesful'} seconds={redirectTime} />
+            <SuccessMessage header={'Login Succesful'} seconds={msgTimer} />
           )}
+          {failMsg && <FailMessage error={authError} />}
           <Message>
             New to us? <NavLink to='/signup'>Signup</NavLink>
           </Message>
@@ -98,10 +109,16 @@ const Login = ({ loginHandler }) => {
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    authError: state.authError,
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     loginHandler: (userObj) => dispatch(loginHandler(userObj)),
   }
 }
 
-export default connect(null, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

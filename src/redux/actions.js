@@ -160,10 +160,16 @@ export function loginHandler(userObj) {
     })
       .then((resp) => resp.json())
       .then((user) => {
-        localStorage.setItem('token', user.meta)
-        dispatch({ type: 'LOGIN_USER', payload: normalize(user).user })
+        if (user.message) {
+          dispatch({ type: 'SET_ERROR', payload: user.message })
+        } else {
+          localStorage.setItem('token', user.meta)
+          dispatch({ type: 'LOGIN_USER', payload: normalize(user).user })
+        }
       })
-      .catch(console.log)
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 
@@ -300,6 +306,7 @@ export function logoutHandler() {
   return function (dispatch) {
     localStorage.removeItem('token')
     dispatch({ type: 'LOGOUT_USER' })
+    dispatch({ type: 'CLEAR_ERROR' })
   }
 }
 
