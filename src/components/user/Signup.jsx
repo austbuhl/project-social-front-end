@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { createUser } from '../../redux/actions'
+import { createUser, clearError } from '../../redux/actions'
 import {
   Button,
   Form,
@@ -15,11 +15,13 @@ import {
 } from 'semantic-ui-react'
 import { useHistory, NavLink } from 'react-router-dom'
 import SuccessMessage from './SuccessMessage'
+import FailMessage from './FailMessage'
 
-const Signup = ({ createUser }) => {
+const Signup = ({ createUser, error, loggedIn, clearError }) => {
   const [userInfo, setUserInfo] = useState({ username: '', password: '' })
-  const [redirectTime, setRedirectTime] = useState(3)
+  const [msgTimer, setMsgTimer] = useState(3)
   const [successMsg, setSuccessMsg] = useState(false)
+  const [failMsg, setFailMsg] = useState(false)
   const [strength, setStrength] = useState(0)
   const [validations, setValidations] = useState([])
   const [showPassword, setShowPassword] = useState(false)
@@ -29,21 +31,41 @@ const Signup = ({ createUser }) => {
   const submitHandler = (e) => {
     e.preventDefault()
     createUser(userInfo)
-    redirectTimeout()
   }
 
-  const redirectTimeout = () =>
-    setInterval(() => {
-      setSuccessMsg(true)
-      setRedirectTime((prevState) => prevState - 1)
-    }, 1000)
+  useEffect(() => {
+    if (msgTimer === 0 && loggedIn) {
+      if (history.location.state) {
+        history.push(history.location.state)
+      } else {
+        history.push('/')
+      }
+    } else if (msgTimer === 0) {
+      setFailMsg(false)
+      clearError()
+      setMsgTimer(3)
+    }
+  }, [msgTimer])
 
   useEffect(() => {
-    if (redirectTime === 0) {
-      history.push('/')
+    if (loggedIn) {
+      setSuccessMsg(true)
+      const redirectTimeout = setInterval(() => {
+        setMsgTimer((prevState) => prevState - 1)
+      }, 1000)
+      return () => clearTimeout(redirectTimeout)
     }
-    return () => clearTimeout(redirectTimeout)
-  }, [redirectTime])
+  }, [loggedIn])
+
+  useEffect(() => {
+    if (error !== '') {
+      setFailMsg(true)
+      const errorTimeout = setInterval(() => {
+        setMsgTimer((prevState) => prevState - 1)
+      }, 1000)
+      return () => clearTimeout(errorTimeout)
+    }
+  }, [error])
 
   const changeHandler = (e) => {
     setUserInfo((prevState) => ({
@@ -176,9 +198,10 @@ const Signup = ({ createUser }) => {
           {successMsg && (
             <SuccessMessage
               header={'Account Creation Succesful'}
-              seconds={redirectTime}
+              seconds={msgTimer}
             />
           )}
+          {failMsg && <FailMessage error={error} />}
           <Message>
             Already have an account? <NavLink to='/login'>Login</NavLink>
           </Message>
@@ -188,10 +211,18 @@ const Signup = ({ createUser }) => {
   )
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    createUser: (userObj) => dispatch(createUser(userObj)),
+    error: state.error,
+    loggedIn: state.loggedIn,
   }
 }
 
-export default connect(null, mapDispatchToProps)(Signup)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createUser: (userObj) => dispatch(createUser(userObj)),
+    clearError: () => dispatch(clearError()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup)

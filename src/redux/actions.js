@@ -148,31 +148,6 @@ export function deleteFriend(friendId) {
   }
 }
 
-export function loginHandler(userObj) {
-  return function (dispatch) {
-    fetch('http://localhost:5000/api/v1/login', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        accepts: 'application/json',
-      },
-      body: JSON.stringify(userObj),
-    })
-      .then((resp) => resp.json())
-      .then((user) => {
-        if (user.message) {
-          dispatch({ type: 'SET_ERROR', payload: user.message })
-        } else {
-          localStorage.setItem('token', user.meta)
-          dispatch({ type: 'LOGIN_USER', payload: normalize(user).user })
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-}
-
 export function createComment(commentObj) {
   return function (dispatch, getState) {
     const token = localStorage.getItem('token')
@@ -327,6 +302,31 @@ export function authorizeUser() {
   }
 }
 
+export function loginHandler(userObj) {
+  return function (dispatch) {
+    fetch('http://localhost:5000/api/v1/login', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        accepts: 'application/json',
+      },
+      body: JSON.stringify(userObj),
+    })
+      .then((resp) => resp.json())
+      .then((user) => {
+        if (user.message) {
+          dispatch({ type: 'SET_ERROR', payload: user.message })
+        } else {
+          localStorage.setItem('token', user.meta)
+          dispatch({ type: 'LOGIN_USER', payload: normalize(user).user })
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+}
+
 export function createUser(userObj) {
   return function (dispatch) {
     fetch('http://localhost:5000/api/v1/users/', {
@@ -339,8 +339,12 @@ export function createUser(userObj) {
     })
       .then((resp) => resp.json())
       .then((user) => {
-        localStorage.setItem('token', user.meta)
-        dispatch({ type: 'LOGIN_USER', payload: normalize(user).user })
+        if (user.errors) {
+          dispatch({ type: 'SET_ERROR', payload: user.errors })
+        } else {
+          localStorage.setItem('token', user.meta)
+          dispatch({ type: 'LOGIN_USER', payload: normalize(user).user })
+        }
       })
       .catch(console.log)
   }

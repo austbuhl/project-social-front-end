@@ -14,7 +14,7 @@ import { useHistory, NavLink } from 'react-router-dom'
 import SuccessMessage from './SuccessMessage'
 import FailMessage from './FailMessage'
 
-const Login = ({ loginHandler, authError, loggedIn, clearError }) => {
+const Login = ({ loginHandler, error, loggedIn, clearError }) => {
   const [userInfo, setUserInfo] = useState({ username: '', password: '' })
   const [msgTimer, setMsgTimer] = useState(3)
   const [successMsg, setSuccessMsg] = useState(false)
@@ -51,14 +51,14 @@ const Login = ({ loginHandler, authError, loggedIn, clearError }) => {
   }, [loggedIn])
 
   useEffect(() => {
-    if (authError !== '') {
+    if (error !== '') {
       setFailMsg(true)
       const errorTimeout = setInterval(() => {
         setMsgTimer((prevState) => prevState - 1)
       }, 1000)
       return () => clearTimeout(errorTimeout)
     }
-  }, [authError])
+  }, [error])
 
   const changeHandler = (e) => {
     setUserInfo((prevState) => ({
@@ -106,7 +106,7 @@ const Login = ({ loginHandler, authError, loggedIn, clearError }) => {
           {successMsg && (
             <SuccessMessage header={'Login Succesful'} seconds={msgTimer} />
           )}
-          {failMsg && <FailMessage error={authError} />}
+          {failMsg && <FailMessage error={error} />}
           <Message>
             New to us? <NavLink to='/signup'>Signup</NavLink>
           </Message>
@@ -118,7 +118,7 @@ const Login = ({ loginHandler, authError, loggedIn, clearError }) => {
 
 const mapStateToProps = (state) => {
   return {
-    authError: state.authError,
+    error: state.error,
     loggedIn: state.loggedIn,
   }
 }
