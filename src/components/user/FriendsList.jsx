@@ -13,6 +13,7 @@ const FriendsList = ({
   acceptRequest,
   selectUser,
 }) => {
+  console.log(friends)
   const [activeItem, setActiveItem] = useState('All')
   const history = useHistory()
   const imgs = [

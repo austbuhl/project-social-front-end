@@ -108,34 +108,35 @@ export function usersReducer(state = defaultState.users, action) {
           },
         },
       }
-    case 'ACCEPT_REQUEST':
-      return {
-        ...state,
-        [userId]: {
-          ...user,
-          relationships: {
-            ...user.relationships,
-            friendships: {
-              data: [
-                { id: Object.keys(action.payload)[0], type: 'friendship' },
-                ...user.relationships.friendships.data,
-              ],
-            },
-          },
-        },
-        [friendId]: {
-          ...friend,
-          relationships: {
-            ...friend.relationships,
-            friendships: {
-              data: [
-                { id: Object.keys(action.payload)[1], type: 'friendship' },
-                ...friend.relationships.friendships.data,
-              ],
-            },
-          },
-        },
-      }
+    // case 'ACCEPT_REQUEST':
+    //   debugger
+    //   return {
+    //     ...state,
+    //     [userId]: {
+    //       ...user,
+    //       relationships: {
+    //         ...user.relationships,
+    //         friendships: {
+    //           data: [
+    //             { id: Object.keys(action.payload)[0], type: 'friendship' },
+    //             ...user.relationships.friendships.data,
+    //           ],
+    //         },
+    //       },
+    //     },
+    //     [friendId]: {
+    //       ...friend,
+    //       relationships: {
+    //         ...friend.relationships,
+    //         friendships: {
+    //           data: [
+    //             { id: Object.keys(action.payload)[1], type: 'friendship' },
+    //             ...friend.relationships.friendships.data,
+    //           ],
+    //         },
+    //       },
+    //     },
+    //   }
     case 'DELETE_FRIEND':
       return {
         ...state,
@@ -227,22 +228,22 @@ export function currentUserReducer(state = defaultState.currentUser, action) {
           },
         },
       }
-    case 'ADD_FRIEND':
-      return {
-        ...state,
-        [userId]: {
-          ...user,
-          relationships: {
-            ...user.relationships,
-            friendships: {
-              data: [
-                { id: Object.keys(action.payload)[0], type: 'friend' },
-                ...user.relationships.friendships.data,
-              ],
-            },
-          },
-        },
-      }
+    // case 'ADD_FRIEND':
+    //   return {
+    //     ...state,
+    //     [userId]: {
+    //       ...user,
+    //       relationships: {
+    //         ...user.relationships,
+    //         friendships: {
+    //           data: [
+    //             { id: Object.keys(action.payload)[0], type: 'friend' },
+    //             ...user.relationships.friendships.data,
+    //           ],
+    //         },
+    //       },
+    //     },
+    //   }
     case 'DELETE_FRIEND':
       return {
         ...state,
