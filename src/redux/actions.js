@@ -141,7 +141,7 @@ export function deleteFriend(friendId) {
             first: deleted.first.id,
             second: deleted.second.id,
             userId: deleted.userId,
-            friendId: parseInt(deleted.friendId),
+            friendId: deleted.friendId,
           })
         })
     }
