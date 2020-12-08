@@ -1,54 +1,12 @@
-import { combineReducers } from 'redux'
-
 const defaultState = {
-  parks: {},
-  activitiesLoaded: false,
-  activities: {},
-  events: {},
-  comments: {},
   users: {},
   friendships: {},
   currentUser: {},
   loggedIn: false,
-  authError: '',
-  selectedActivity: [],
+  error: '',
 }
 
-function eventsReducer(state = defaultState.events, action) {
-  const { eventId, commentId } = action
-  const event = state[eventId]
-
-  switch (action.type) {
-    case 'FETCH_EVENTS':
-      return action.payload
-    case 'NEW_EVENT':
-      return { ...state, ...action.payload }
-    case 'NEW_COMMENT':
-      return {
-        ...state,
-        [eventId]: {
-          ...event,
-          relationships: {
-            ...event.relationships,
-            comments: {
-              data: [
-                ...event.relationships.comments.data,
-                { id: commentId, type: 'comment' },
-              ],
-            },
-          },
-        },
-      }
-    case 'ATTEND_EVENT':
-      return { ...state, ...action.payload }
-    case 'CANCEL_RSVP':
-      return { ...state, ...action.payload }
-    default:
-      return state
-  }
-}
-
-function usersReducer(state = defaultState.users, action) {
+export function usersReducer(state = defaultState.users, action) {
   const { eventId, commentId, userId, friendId } = action
   const user = state[userId]
   const friend = state[friendId]
@@ -213,46 +171,7 @@ function usersReducer(state = defaultState.users, action) {
   }
 }
 
-function parksReducer(state = defaultState.parks, action) {
-  const { eventId, parkId } = action
-  const park = state[parkId]
-  switch (action.type) {
-    case 'FETCH_PARKS':
-      return action.payload
-    case 'NEW_EVENT':
-      return {
-        ...state,
-        [parkId]: {
-          ...park,
-          relationships: {
-            ...park.relationships,
-            events: {
-              data: [
-                ...park.relationships.events.data,
-                { id: eventId, type: 'event' },
-              ],
-            },
-          },
-        },
-      }
-    default:
-      return state
-  }
-}
-
-function activitiesLoadedReducer(
-  state = defaultState.activitiesLoaded,
-  action
-) {
-  switch (action.type) {
-    case 'FETCH_ACTIVITIES':
-      return true
-    default:
-      return state
-  }
-}
-
-function loggedInReducer(state = defaultState.loggedIn, action) {
+export function loggedInReducer(state = defaultState.loggedIn, action) {
   switch (action.type) {
     case 'LOGIN_USER':
       return true
@@ -265,7 +184,7 @@ function loggedInReducer(state = defaultState.loggedIn, action) {
   }
 }
 
-function currentUserReducer(state = defaultState.currentUser, action) {
+export function currentUserReducer(state = defaultState.currentUser, action) {
   const { userId, eventId, commentId } = action
   const user = userId ? state[userId] : {}
 
@@ -396,7 +315,7 @@ function currentUserReducer(state = defaultState.currentUser, action) {
   }
 }
 
-function friendsReducer(state = defaultState.friendships, action) {
+export function friendsReducer(state = defaultState.friendships, action) {
   switch (action.type) {
     case 'FETCH_FRIENDS':
       return action.payload
@@ -417,40 +336,7 @@ function friendsReducer(state = defaultState.friendships, action) {
   }
 }
 
-function commentsReducer(state = defaultState.comments, action) {
-  switch (action.type) {
-    case 'FETCH_COMMENTS':
-      return action.payload
-    case 'NEW_COMMENT':
-      return { ...state, ...action.payload }
-    default:
-      return state
-  }
-}
-
-function activitiesReducer(state = defaultState.activities, action) {
-  switch (action.type) {
-    case 'FETCH_ACTIVITIES':
-      return action.payload
-    default:
-      return state
-  }
-}
-
-function activityReducer(state = defaultState.selectedActivity, action) {
-  switch (action.type) {
-    case 'SET_ACTIVITY':
-      return [...state, action.payload]
-    case 'REMOVE_ACTIVITY':
-      return state.filter((activity) => activity !== action.payload)
-    case 'RESET_ACTIVITY':
-      return []
-    default:
-      return state
-  }
-}
-
-function authErrorReducer(state = defaultState.authError, action) {
+export function errorReducer(state = defaultState.error, action) {
   switch (action.type) {
     case 'SET_ERROR':
       return action.payload
@@ -460,19 +346,3 @@ function authErrorReducer(state = defaultState.authError, action) {
       return state
   }
 }
-
-const rootReducer = combineReducers({
-  parks: parksReducer,
-  activities: activitiesReducer,
-  events: eventsReducer,
-  comments: commentsReducer,
-  currentUser: currentUserReducer,
-  loggedIn: loggedInReducer,
-  authError: authErrorReducer,
-  users: usersReducer,
-  friendships: friendsReducer,
-  selectedActivity: activityReducer,
-  activitiesLoaded: activitiesLoadedReducer,
-})
-
-export default rootReducer
