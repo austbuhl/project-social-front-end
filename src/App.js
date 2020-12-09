@@ -7,7 +7,7 @@ import {
   authorizeUser,
   fetchComments,
   fetchFriends,
-  fetchUsers,
+  fetchUsers
 } from './redux/actions'
 import { Switch, Route } from 'react-router-dom'
 import EventsList from './containers/EventsList'
@@ -24,7 +24,7 @@ function App({
   fetchComments,
   fetchUsers,
   fetchFriends,
-  authorizeUser,
+  authorizeUser
 }) {
   useEffect(() => {
     fetchEvents()
@@ -71,7 +71,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchComments: () => dispatch(fetchComments()),
     fetchUsers: () => dispatch(fetchUsers()),
     fetchFriends: () => dispatch(fetchFriends()),
-    authorizeUser: () => dispatch(authorizeUser()),
+    authorizeUser: () => dispatch(authorizeUser())
   }
 }
 
