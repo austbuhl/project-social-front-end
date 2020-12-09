@@ -15,7 +15,7 @@ import {
   selectEventActivities,
   selectEventPark,
   selectCurrentUser,
-  selectCurrentUserEvents,
+  selectCurrentUserEvents
 } from '../../redux/selectors'
 import { Grid, Item, Button, Segment } from 'semantic-ui-react'
 
@@ -28,7 +28,7 @@ const EventDetail = ({
   eventComments,
   eventActivities,
   eventLocation,
-  newCommentReceived,
+  newCommentReceived
 }) => {
   const park = eventLocation(event.id)
   const attendees = eventUsers(event.id)
@@ -57,13 +57,19 @@ const EventDetail = ({
     const subscription = consumer.subscriptions.create(
       {
         channel: 'FeedChannel',
-        event: event.id,
+        event: event.id
       },
       {
-        received: (comment) =>
-          newCommentReceived(comment, event.id, currentUser.id),
+        received: (comment) => {
+          console.log(comment)
+          newCommentReceived(
+            comment,
+            event.id,
+            comment.data.relationships.user.data.id
+          )
+        },
         connected: () => console.log('connected'),
-        disconnected: () => console.log('disconnected'),
+        disconnected: () => console.log('disconnected')
       }
     )
     return () => subscription.unsubscribe()
@@ -146,14 +152,14 @@ const mapStateToProps = (state) => {
     eventUsers: selectEventUsers(state),
     eventComments: selectEventComments(state),
     eventActivities: selectEventActivities(state),
-    eventLocation: selectEventPark(state),
+    eventLocation: selectEventPark(state)
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     newCommentReceived: (comment, eventId, userId) =>
-      dispatch(newCommentReceived(comment, eventId, userId)),
+      dispatch(newCommentReceived(comment, eventId, userId))
   }
 }
 

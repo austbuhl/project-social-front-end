@@ -1,5 +1,5 @@
 import { createConsumer } from '@rails/actioncable'
 
-const consumer = createConsumer('ws://localhost:5000/cable')
+const consumer = createConsumer('wss://project-social-api.herokuapp.com/cable')
 
 export default consumer
