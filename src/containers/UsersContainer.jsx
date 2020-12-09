@@ -1,12 +1,12 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import Profile from '../components/user/Profile'
 import FriendsList from '../components/user/FriendsList'
 import { connect } from 'react-redux'
 import {
   selectCurrentUser,
   selectUser,
-  selectUserFriends,
+  selectUserFriends
 } from '../redux/selectors'
 import MutualFriends from '../components/user/MutualFriends'
 const UsersContainer = ({ selectUser, currentUser, selectUserFriends }) => {
@@ -23,6 +23,7 @@ const UsersContainer = ({ selectUser, currentUser, selectUserFriends }) => {
 
   return (
     <Switch>
+      {!!!currentUser ? <Redirect to='/' /> : null}
       <Route
         path='/users/:id/profile'
         render={({ match }) => {
@@ -57,7 +58,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: selectCurrentUser(state),
     selectUser: selectUser(state),
-    selectUserFriends: selectUserFriends(state),
+    selectUserFriends: selectUserFriends(state)
   }
 }
 export default connect(mapStateToProps)(UsersContainer)
