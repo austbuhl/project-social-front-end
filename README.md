@@ -16,6 +16,6 @@ Semantic UI for styling.
 Backend: https://github.com/austbuhl/project-social-back-end
 
 ## Contact
+Github: [@austbuhl](https://github.com/austbuhl)
 
-Github: https://github.com/austbuhl
 Feel free to reach me at austinbuhler@gmail.com
