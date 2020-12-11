@@ -9,9 +9,10 @@ This is a Single-Page Application built with React/Redux, PostgreSQL and a RESTf
 User authentication implemented with JWT and BCrypt.
 Semantic UI for styling.
 
-## Homepage
+## Homepage - https://projectsocial.netlify.app/
 
-https://projectsocial.netlify.app/
+![image](https://user-images.githubusercontent.com/44592690/101916720-53618d00-3b95-11eb-86e0-c2127dea6703.png)
+
 Backend: https://github.com/austbuhl/project-social-back-end
 
 ## Contact
